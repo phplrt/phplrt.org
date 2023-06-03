@@ -491,7 +491,7 @@
       }
 
       .code-output {
-        position: relative;
+        position: relative !important;
 
         &:before {
           content: 'Output';
@@ -502,11 +502,10 @@
           display: block;
           white-space: nowrap;
           padding: 20px;
+          margin-top: 20px;
           border-radius: 4px;
           color: #fff;
-          position: absolute;
-          bottom: 20px;
-          width: calc(100% - 40px);
+          width: 100%;
           box-sizing: border-box;
           line-height: 14px;
         }

@@ -4,17 +4,17 @@
       "js": [
         "/dist/runtime.9a71ee5d.js",
         "/dist/442.29c1c67d.js",
-        "/dist/app.3051b99a.js"
+        "/dist/app.dd477451.js"
       ],
       "css": [
-        "/dist/app.d0d0e402.css"
+        "/dist/app.2538e37e.css"
       ]
     }
   },
   "integrity": {
     "/dist/runtime.9a71ee5d.js": "sha384-L4SfYhQVswKjKEKxhUFNdD2PfZVf5e+dP5WHQBz8eTm5xp/Qy0Y3Vfw4GKUxNZrZ",
     "/dist/442.29c1c67d.js": "sha384-z3oBYnlpijj7kSW4tt01sAUTyPU416QFp0iBIKfzTYT3Om8IHZM7PpCpZZ88JZKC",
-    "/dist/app.3051b99a.js": "sha384-Xd2d5Wg6ffnVqmEJfHMvaNsJaqRvJy1rPGA0CzftahX1P0Ny9CPzMkzgPLtVXKzN",
-    "/dist/app.d0d0e402.css": "sha384-B2FzywqR7RS2V9zbRspOsnT1WaKN8M7zRZixsA7cckYPocMtxpnE0HTVTI5SxGup"
+    "/dist/app.dd477451.js": "sha384-dp4QBUCCCSCaNbsJ1drJ1h9kxwY4yyCD7FgutSXM/oi3QIzNZUSrSaAHw2TkUjw1",
+    "/dist/app.2538e37e.css": "sha384-HMbE+8h6XN4gV31s6xxybleZRJ522WDQIim4HnOF/U5fxbuSgrtTGyHSrhVMT5aZ"
   }
 }

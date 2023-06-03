@@ -24,52 +24,78 @@ return [
         
     ],
     'grammar' => [
-        0 => new \Phplrt\Parser\Grammar\Alternation(['Addition', 'Subtraction', 1]),
-        'Addition' => new \Phplrt\Parser\Grammar\Concatenation([1, 7, 0]),
-        'Division' => new \Phplrt\Parser\Grammar\Concatenation([2, 11, 1]),
-        'Multiplication' => new \Phplrt\Parser\Grammar\Alternation([9, 10]),
-        'Subtraction' => new \Phplrt\Parser\Grammar\Concatenation([1, 6, 0]),
-        1 => new \Phplrt\Parser\Grammar\Alternation(['Multiplication', 'Division', 2]),
-        2 => new \Phplrt\Parser\Grammar\Alternation([5, 'Value']),
-        3 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_OPEN', false),
-        4 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_CLOSE', false),
-        5 => new \Phplrt\Parser\Grammar\Concatenation([3, 0, 4]),
-        6 => new \Phplrt\Parser\Grammar\Lexeme('T_MINUS', false),
-        7 => new \Phplrt\Parser\Grammar\Lexeme('T_PLUS', false),
-        8 => new \Phplrt\Parser\Grammar\Lexeme('T_MUL', false),
-        9 => new \Phplrt\Parser\Grammar\Concatenation([2, 8, 1]),
-        10 => new \Phplrt\Parser\Grammar\Concatenation([2, 1]),
-        11 => new \Phplrt\Parser\Grammar\Lexeme('T_DIV', false),
-        12 => new \Phplrt\Parser\Grammar\Lexeme('T_FLOAT', true),
-        13 => new \Phplrt\Parser\Grammar\Lexeme('T_INT', true),
-        'Value' => new \Phplrt\Parser\Grammar\Alternation([12, 13])
+        0 => new \Phplrt\Parser\Grammar\Concatenation([1]),
+        1 => new \Phplrt\Parser\Grammar\Concatenation([2]),
+        2 => new \Phplrt\Parser\Grammar\Concatenation([8, 3]),
+        3 => new \Phplrt\Parser\Grammar\Concatenation([14, 9]),
+        4 => new \Phplrt\Parser\Grammar\Lexeme('T_PLUS', true),
+        5 => new \Phplrt\Parser\Grammar\Lexeme('T_MINUS', true),
+        6 => new \Phplrt\Parser\Grammar\Alternation([4, 5]),
+        7 => new \Phplrt\Parser\Grammar\Concatenation([3, 6]),
+        8 => new \Phplrt\Parser\Grammar\Repetition(7, 0, INF),
+        9 => new \Phplrt\Parser\Grammar\Alternation([17, 18]),
+        10 => new \Phplrt\Parser\Grammar\Lexeme('T_DIV', true),
+        11 => new \Phplrt\Parser\Grammar\Lexeme('T_MUL', true),
+        12 => new \Phplrt\Parser\Grammar\Alternation([10, 11]),
+        13 => new \Phplrt\Parser\Grammar\Concatenation([9, 12]),
+        14 => new \Phplrt\Parser\Grammar\Repetition(13, 0, INF),
+        15 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_OPEN', false),
+        16 => new \Phplrt\Parser\Grammar\Lexeme('T_BRACE_CLOSE', false),
+        17 => new \Phplrt\Parser\Grammar\Concatenation([15, 0, 16]),
+        19 => new \Phplrt\Parser\Grammar\Lexeme('T_FLOAT', true),
+        20 => new \Phplrt\Parser\Grammar\Lexeme('T_INT', true),
+        18 => new \Phplrt\Parser\Grammar\Alternation([19, 20])
     ],
     'reducers' => [
+        0 => function (\Phplrt\Parser\Context $ctx, $children) {
+            return \is_array($children) ? $children[0] : $children;
+        },
         2 => function (\Phplrt\Parser\Context $ctx, $children) {
-            if (\is_array($children)) {
-            return $children[0];
+            while (\count($children) >= 3) {
+            [$a, $op, $b] = [
+                \array_shift($children),
+                \array_shift($children),
+                \array_shift($children),
+            ];
+    
+            switch ($op->getName()) {
+                case 'T_PLUS':
+                    \array_unshift($children, new Ast\Addition([$a, $b], $a->getOffset()));
+                    break;
+    
+                case 'T_MINUS':
+                    \array_unshift($children, new Ast\Subtraction([$a, $b], $a->getOffset()));
+                    break;
+            }
         }
+    
         return $children;
         },
-        'Subtraction' => function (\Phplrt\Parser\Context $ctx, $children) {
-            $token = $ctx->getToken();
-            return new Ast\Subtraction($children, $token->getOffset());
+        3 => function (\Phplrt\Parser\Context $ctx, $children) {
+            while (\count($children) >= 3) {
+            [$a, $op, $b] = [
+                \array_shift($children),
+                \array_shift($children),
+                \array_shift($children),
+            ];
+    
+            switch ($op->getName()) {
+                case 'T_DIV':
+                    \array_unshift($children, new Ast\Division([$a, $b], $a->getOffset()));
+                    break;
+    
+                case 'T_MUL':
+                    \array_unshift($children, new Ast\Multiplication([$a, $b], $a->getOffset()));
+                    break;
+            }
+        }
+    
+        return $children;
         },
-        'Addition' => function (\Phplrt\Parser\Context $ctx, $children) {
+        18 => function (\Phplrt\Parser\Context $ctx, $children) {
             $token = $ctx->getToken();
-            return new Ast\Addition($children, $token->getOffset());
-        },
-        'Multiplication' => function (\Phplrt\Parser\Context $ctx, $children) {
-            $token = $ctx->getToken();
-            return new Ast\Multiplication($children, $token->getOffset());
-        },
-        'Division' => function (\Phplrt\Parser\Context $ctx, $children) {
-            $token = $ctx->getToken();
-            return new Ast\Division($children, $token->getOffset());
-        },
-        'Value' => function (\Phplrt\Parser\Context $ctx, $children) {
-            $token = $ctx->getToken();
-            return new Ast\Value($children, $token->getOffset());
+            $offset = $token->getOffset();
+            return new Ast\Literal($children, $offset);
         }
     ]
 ];

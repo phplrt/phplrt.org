@@ -2,7 +2,7 @@
 import ko from "knockout";
 
 export default class ParserViewModel {
-    expression = ko.observable('(2 + 2) 2')
+    expression = ko.observable('(2 + 2) * 2 - 4 - 4')
         .extend({ throttle: 300 })
 
     output = ko.observable('');
