@@ -7,7 +7,7 @@
         "/dist/app.dd477451.js"
       ],
       "css": [
-        "/dist/app.2538e37e.css"
+        "/dist/app.80ad8be6.css"
       ]
     }
   },
@@ -15,6 +15,6 @@
     "/dist/runtime.9a71ee5d.js": "sha384-L4SfYhQVswKjKEKxhUFNdD2PfZVf5e+dP5WHQBz8eTm5xp/Qy0Y3Vfw4GKUxNZrZ",
     "/dist/442.29c1c67d.js": "sha384-z3oBYnlpijj7kSW4tt01sAUTyPU416QFp0iBIKfzTYT3Om8IHZM7PpCpZZ88JZKC",
     "/dist/app.dd477451.js": "sha384-dp4QBUCCCSCaNbsJ1drJ1h9kxwY4yyCD7FgutSXM/oi3QIzNZUSrSaAHw2TkUjw1",
-    "/dist/app.2538e37e.css": "sha384-HMbE+8h6XN4gV31s6xxybleZRJ522WDQIim4HnOF/U5fxbuSgrtTGyHSrhVMT5aZ"
+    "/dist/app.80ad8be6.css": "sha384-dxs9tJKqLsSfE6GVw4dg2dE70acC9sn3MU8i4ySUXp0ecFuRtJdf1bnookja5FdK"
   }
 }
