@@ -21,7 +21,7 @@
             "begin": "<[\\w\\d_]+>"
         },
         {
-            "className": "literal",
+            "className": "doctag",
             "begin": "::[\\w\\d_]+::"
         },
         {
@@ -62,6 +62,13 @@
                     "relevance": 0
                 }
             ]
+        },
+        {
+            "className": "literal",
+            "begin": "->\\s*{",
+            "end": "}\\s*:",
+            "excludeEnd": true,
+            "excludeBegin": true
         }
     ]
 }
