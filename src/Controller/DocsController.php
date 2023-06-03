@@ -11,43 +11,38 @@ use App\Repository\MenuRepository;
 use App\Repository\SearchIndexRepository;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 final class DocsController extends Controller
 {
-    /**
-     * @var MenuRepository
-     */
-    private MenuRepository $menu;
-
-    /**
-     * @var DocumentationRepository
-     */
-    private DocumentationRepository $docs;
-
-    /**
-     * @param Environment $view
-     * @param MenuRepository $menu
-     * @param DocumentationRepository $docs
-     */
-    public function __construct(Environment $view, MenuRepository $menu, DocumentationRepository $docs)
-    {
+    public function __construct(
+        Environment $view,
+        private readonly MenuRepository $menu,
+        private readonly DocumentationRepository $docs,
+        private readonly UrlGeneratorInterface $routes,
+    ) {
         parent::__construct($view);
-
-        $this->menu = $menu;
-        $this->docs = $docs;
     }
 
     #[Route(
         path: '/docs/{path}',
+        name: 'docs',
         requirements: ['path' => '[\w\-\d/]+'],
-        defaults: ['path' => ''],
+        defaults: ['path' => '']
     )]
     public function show(string $path): Response
     {
+        if ($path === '') {
+            return new RedirectResponse($this->routes->generate('docs', [
+                'path' => 'guide/introduction',
+            ]));
+        }
+
         $page = $this->docs->findByPath($path);
 
         $result = $this->view->render('page/docs.html.twig', [
