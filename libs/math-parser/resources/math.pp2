@@ -1,0 +1,54 @@
+
+%token  T_FLOAT         \d+\.\d+
+%token  T_INT           \d+
+
+%token  T_PLUS          \+
+%token  T_MINUS         \-
+%token  T_MUL           \*
+%token  T_DIV           [/÷]
+
+%token  T_BRACE_OPEN    \(
+%token  T_BRACE_CLOSE   \)
+
+%skip   T_WHITESPACE    \s+
+
+%pragma root Expression
+
+Expression
+  : Addition()
+  | Subtraction()
+  | Term()
+  ;
+
+Term
+  : Multiplication()
+  | Division()
+  | Factor()
+  ;
+
+Factor
+  : ::T_BRACE_OPEN:: Expression() ::T_BRACE_CLOSE::
+  | Value()
+  ;
+
+#Subtraction -> { return new Ast\Subtraction($children, $token->getOffset()); }
+  : Term() ::T_MINUS:: Expression()
+  ;
+
+#Addition -> { return new Ast\Addition($children, $token->getOffset()); }
+  : Term() ::T_PLUS:: Expression()
+  ;
+
+#Multiplication -> { return new Ast\Multiplication($children, $token->getOffset()); }
+  : Factor() ::T_MUL:: Term()
+  | Factor() Term()
+  ;
+
+#Division -> { return new Ast\Division($children, $token->getOffset()); }
+  : Factor() ::T_DIV:: Term()
+  ;
+
+#Value -> { return new Ast\Value($children, $token->getOffset()); }
+  : <T_FLOAT>
+  | <T_INT>
+  ;

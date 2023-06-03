@@ -1,0 +1,30 @@
+{% code 'pp2' %}
+Expression: Addition() | Subtraction() | Term()
+
+Term: Multiplication() | Division() | Factor()
+
+Factor
+  : ::T_BRACE_OPEN:: Expression() ::T_BRACE_CLOSE::
+  | Value()
+
+Subtraction ->
+  { return new Ast\Subtraction($children, $offset); }
+  : Term() ::T_MINUS:: Expression()
+
+Addition ->
+  { return new Ast\Addition($children, $offset); }
+  : Term() ::T_PLUS:: Expression()
+
+Multiplication ->
+  { return new Ast\Multiplication($children, $offset); }
+  : Factor() ::T_MUL:: Term()
+  | Factor() Term()
+
+Division ->
+  { return new Ast\Division($children, $offset); }
+  : Factor() ::T_DIV:: Term()
+
+Value ->
+  { return new Ast\Value($children, $offset); }
+  : <T_FLOAT> | <T_INT>
+{% endcode %}

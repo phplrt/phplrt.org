@@ -1,0 +1,20 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/dist/runtime.88ab7134.js",
+        "/dist/627.be5ba0fa.js",
+        "/dist/app.6f6c3716.js"
+      ],
+      "css": [
+        "/dist/app.1804be03.css"
+      ]
+    }
+  },
+  "integrity": {
+    "/dist/runtime.88ab7134.js": "sha384-u6nOrdttSL+Lonpallr/+OOLWV9jZA2E+w2GQhlykntXRE6Eu8QQeIUtbTUxINLW",
+    "/dist/627.be5ba0fa.js": "sha384-wDSg3cE0eYKPmB99QenBJhmP+jqKqY2irgC7XMI4iXTdNTAZlMXtXW2JmBiOp7Ry",
+    "/dist/app.6f6c3716.js": "sha384-vMIkmHO4n1XtVIhC94I9YZSBdjgY63prpTM175UuFAPVDhN0UJhOh1X2VlHYprl/",
+    "/dist/app.1804be03.css": "sha384-Q9jC+PaKQcebqMjbjHEcgwZFXaMWE6nnZzQbteofU2rXuT8NqGt/w4rRd+HuOXsz"
+  }
+}
