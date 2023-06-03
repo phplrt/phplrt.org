@@ -36,7 +36,7 @@ body {
     font-family: $font-family;
   }
 
-  @include scrollbar(14px);
+  @include scrollbar(8px);
 
   code, pre {
     @include font-optimize;
