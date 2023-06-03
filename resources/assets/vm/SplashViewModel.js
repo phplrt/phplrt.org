@@ -61,7 +61,7 @@ export default class SplashViewModel {
         setTimeout(() => {
             this.title(title);
 
-            if (Math.random() >= 0.95) {
+            if (Math.random() >= 0.5) {
                 this.#letterAnimationTick(buffer);
             } else {
                 this.#titleAnimationTick(buffer);

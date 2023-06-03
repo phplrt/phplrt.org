@@ -6,6 +6,9 @@
     <main class="documentation">
         <aside class="documentation-menu" data-vm="MenuViewModel">
             <section class="documentation-menu-sticky">
+                <div class="documentation-menu-nav">
+                    <a href="/" class="documentation-menu-title documentation-menu-home">Home</a>
+                </div>
                 <div class="documentation-search">
                     <label>
                         <input type="text" placeholder="Search..."
@@ -30,7 +33,7 @@
                         " class="documentation-menu-title active">
                             {{ item.title }}
                         </a>
-                        <ul class="documentation-menu-child visible" data-bind="
+                        <ul class="documentation-menu-child" data-bind="
                             css: { visible: menu({{ item.id }}) }
                         ">
                             {% for child in item.children %}

@@ -26,7 +26,12 @@ Term
   | Factor()
   ;
 
-Factor
+Factor -> {
+    if (\is_array($children)) {
+        return $children[0];
+    }
+    return $children;
+}
   : ::T_BRACE_OPEN:: Expression() ::T_BRACE_CLOSE::
   | Value()
   ;

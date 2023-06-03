@@ -12,7 +12,7 @@ export default class MenuViewModel {
      * @type {KnockoutObservable<boolean>}
      */
     shown = ko.observable(false)
-        .extend({ throttle: 100 });
+        .extend({ throttle: 300 });
 
     /**
      * @type {KnockoutObservableArray<Object>}
@@ -73,8 +73,13 @@ export default class MenuViewModel {
      */
     menu(id) {
         if (! this.#menu[id]) {
-            this.#menu[id] = ko.observable(true);
+            let defaultValue = localStorage.getItem(`menu-shown-${id}`);
+
+            defaultValue = defaultValue === null || defaultValue === '1';
+
+            this.#menu[id] = ko.observable(!!defaultValue);
         }
+
         return this.#menu[id];
     }
 
@@ -84,6 +89,8 @@ export default class MenuViewModel {
      */
     toggle(id) {
         let status = this.menu(id);
+
+        localStorage.setItem(`menu-shown-${id}`, status() ? '0' : '1');
 
         status(! status());
 

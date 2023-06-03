@@ -1,8 +1,11 @@
+
+@use "sass:math";
+
 .splash {
   box-sizing: border-box;
   background:
-          url(../../img/splash.svg) top center no-repeat,
-          url('data:image/gif;base64,R0lGODlhCgAKAIABAMpUUf///yH5BAEAAAEALAAAAAAKAAoAAAIPjGGpqNsBomTuHXux3rgAADs=') repeat fixed;
+    url(../../img/splash.svg) top center no-repeat,
+    url('data:image/gif;base64,R0lGODlhCgAKAIABAMpUUf///yH5BAEAAAEALAAAAAAKAAoAAAIPjGGpqNsBomTuHXux3rgAADs=') repeat fixed;
   background-color: $color-main-alter;
   background-size: auto 110vh, auto;
   min-width: 1200px;
@@ -123,7 +126,7 @@
     background-size: $width $height;
     bottom: -1px;
     left: 50%;
-    margin-left: -$width / 2;
+    margin-left: math.div(-$width, 2);
     display: block;
     width: $width;
     height: $height;
@@ -254,9 +257,9 @@
         color: $color-description;
         font-style: italic;
         box-shadow: 3px 3px 10px rgba($color-description, .1);
-
+        perspective: 10px;
         transform-origin: 20px 100%;
-        animation: code-shake 30s linear infinite;
+        animation: code-shake 30s ease-in-out infinite;
       }
 
       &:before {
@@ -269,9 +272,8 @@
         top: -50px;
         left: -50px;
         z-index: -1;
-
         perspective: 200px;
-        animation: code-shake 10s ease infinite;
+        animation: code-shake 5s ease-in-out infinite;
       }
 
       .code-footer {
@@ -302,6 +304,8 @@
           transition: .3s ease;
           box-shadow: 0 0 0 4px $color-main;
           transform: scale(1.1);
+          color: #fff;
+          background: $color-main;
         }
       }
 
@@ -312,7 +316,6 @@
         font-style: italic;
         transform: scale(1);
         z-index: 3;
-        border-radius: 50%;
         width: 40px;
         height: 40px;
         text-align: center;
@@ -321,7 +324,6 @@
 
         &-hover {
           color: $color-main;
-          background: #fff;
           transform: scale(1.2);
         }
 
@@ -365,48 +367,25 @@
     }
 
     &:before {
-      background: url(../../img/delimiter-1.svg) center bottom no-repeat;
+      background: url(../../img/delimiter-1.svg) center bottom repeat-x;
       background-size: 100% 379px;
       top: -378px;
     }
 
     &:after {
       height: 190px;
-      background: url(../../img/delimiter-2.svg) center top no-repeat;
+      background: url(../../img/delimiter-2.svg) center top repeat;
       background-size: 100% 190px;
       bottom: -190px;
     }
 
     .expr-section {
-      min-width: 600px;
+      width: 100%;
       margin-top: 80px;
-      background: $color-light-gray;
       border-radius: 4px 4px 0 0;
       padding: 10px 60px 30px 60px;
       display: inline-block;
       position: relative;
-
-      &::after,
-      &::before {
-        content: '';
-        width: 20px;
-        height: 20px;
-        display: block;
-        bottom: -6px;
-        position: absolute;
-        border-radius: 50%;
-        border-bottom: $color-light-gray 8px solid;
-      }
-
-      &::after {
-        left: -18px;
-        transform: rotate(-45deg);
-      }
-
-      &::before {
-        right: -18px;
-        transform: rotate(45deg);
-      }
 
       h3 {
         color: $color-description;
@@ -417,10 +396,13 @@
       input {
         width: 100%;
         text-align: center;
-        box-shadow: 0 0 0 6px rgba(#fff, .4);
+        box-shadow: none;
+        border-radius: 4px;
+        border: rgba($color-main, .3) 2px solid;
 
         &:focus {
-          box-shadow: 0 0 0 3px $color-main;
+          transition: border .1s ease;
+          border: $color-main 2px solid;
         }
       }
     }
@@ -429,7 +411,7 @@
       width: 100%;
       border-radius: 8px;
       padding: 8px;
-      background: $color-light-gray;
+      background: $color-extra-light-gray;
       display: flex;
       justify-content: space-between;
       box-sizing: border-box;

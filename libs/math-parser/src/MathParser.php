@@ -16,6 +16,7 @@ use Phplrt\Lexer\Lexer;
 use Phplrt\Parser\BuilderInterface;
 use Phplrt\Parser\ContextInterface;
 use Phplrt\Parser\Parser;
+use Phplrt\Parser\ParserConfigsInterface;
 
 class MathParser implements ParserInterface, BuilderInterface
 {
@@ -38,8 +39,8 @@ class MathParser implements ParserInterface, BuilderInterface
         $lexer = new Lexer($grammar['tokens']['default'], $grammar['skip']);
 
         $this->runtime = new Parser($lexer, $grammar['grammar'], [
-            Parser::CONFIG_INITIAL_RULE => $grammar['initial'],
-            Parser::CONFIG_AST_BUILDER  => $this,
+            ParserConfigsInterface::CONFIG_INITIAL_RULE => $grammar['initial'],
+            ParserConfigsInterface::CONFIG_AST_BUILDER  => $this,
         ]);
     }
 

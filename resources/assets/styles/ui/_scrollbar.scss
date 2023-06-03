@@ -10,8 +10,8 @@ $scroll-track-active: $color-main !default;
 $scroll-track-inactive: $color-dark-white !default;
 
 @mixin scrollbar(
-  $width: 8px,
-  $height: 8px,
+  $width: 4px,
+  $height: 4px,
   $scroll-bg: #fff,
   $scroll-track: $color-light-silver
 ) {
@@ -24,8 +24,6 @@ $scroll-track-inactive: $color-dark-white !default;
     }
 
     &-thumb {
-      border-radius: 4px;
-      box-shadow: inset 0 0 0 2px $scroll-bg;
       background: $scroll-track;
 
       &:window-inactive {

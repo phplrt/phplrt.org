@@ -2,25 +2,17 @@
     {% set page = '' %}
 {% endif %}
 
-<header {% if page == "docs" %} class="header header-docs sticky" {% else %}
-    class="header" data-vm="HeaderViewModel" data-bind="css: { sticky: sticky }"
-{% endif %}>
+{% if page != "docs" %}
+<header class="header" data-vm="HeaderViewModel" data-bind="css: { sticky: sticky }">
     <section class="container">
-        {% if page != "docs" %}
         <a href="/" class="logo">
             <h1>PHP Language Recognition Tool</h1>
         </a>
-        {% endif %}
 
         <nav class="menu">
-            {% if page == "docs" %}
-                <a href="/">Home</a>
-            {% endif %}
-            {#
-                <a href="#" {% if page == 'guides' %}class="active"{% endif %}>Guides</a>
-            #}
             <a href="/docs" {% if page == 'docs' %}class="active"{% endif %}>Docs</a>
             <a href="https://github.com/phplrt/phplrt" target="_blank" rel="nofollow">Source</a>
         </nav>
     </section>
 </header>
+{% endif %}

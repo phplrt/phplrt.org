@@ -48,39 +48,23 @@
       padding: 0 20px;
       border-radius: 2px;
       overflow: hidden;
+      background: rgba($color-main-alter, 0);
+      transition: background .3s ease;
 
       &:before,
       &:after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: -2px;
-        left: 50%;
-        width: 2px;
-        height: 2px;
-        border-radius: 50%;
-        box-shadow: 0 0 2px 0 rgba(#fff, 0);
-        transition: box-shadow .1s ease;
+        display: none;
       }
 
       &:hover {
-        &:before {
-          box-shadow: 0 0 0 60px rgba(#fff, .1);
-          transition: box-shadow .5s ease;
-        }
-        &:after {
-          box-shadow: 0 0 0 60px rgba(#fff, .2);
-          transition: box-shadow 1s ease .2s;
-        }
+        background: rgba($color-main-alter, .9);
+        transition: background .1s ease;
       }
 
       &.active {
+        cursor: default;
         background: rgba($color-white, .9);
         color: $color-main;
-        &:before,
-        &:after {
-          display: none;
-        }
       }
     }
   }
@@ -92,21 +76,9 @@
     margin-bottom: -64px;
     transition: all .3s ease, background .2s ease .1s;
 
-
     .logo {
       transform: scale(.9);
       transition: transform .1s ease;
-    }
-  }
-
-  &-docs {
-    & > .container {
-      justify-content: left;
-      margin: 0;
-
-      .menu {
-        margin: 14px 0 14px 30px;
-      }
     }
   }
 }
