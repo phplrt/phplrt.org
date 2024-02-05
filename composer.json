@@ -15,6 +15,7 @@
         "local/content-renderer": "*",
         "local/math-parser": "*",
         "local/twig-highlight-extension": "*",
+        "moonshine/moonshine": "*",
         "ramsey/uuid": "^4.7",
         "scrivo/highlight.php": "^9.18",
         "symfony/asset": "7.0.*",

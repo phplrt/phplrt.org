@@ -1,0 +1,19 @@
+<label>
+    <input style="display:none" /><!-- Chrome autocompletion bug -->
+    <input type="search"
+           aria-autocomplete="none"
+           autocomplete="off"
+           placeholder="Search..."
+           data-bind="value: query, valueUpdate: 'input', event: { blur: blur, focus: focus }"
+           class="documentation-search" />
+</label>
+
+<!--ko if: results().length > 0 && shown()-->
+<div class="documentation-search-results" style="display: none"
+     data-bind="foreach: results, style: {display: 'block'}">
+    <a href="#" data-bind="attr: {href: url}" class="documentation-search-item">
+        <span class="documentation-search-item-title" data-bind="html: title"></span>
+        <span class="documentation-search-item-page" data-bind="text: page"></span>
+    </a>
+</div>
+<!--/ko-->

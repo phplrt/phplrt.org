@@ -7,8 +7,8 @@
         "build": "encore production --progress"
     },
     "devDependencies": {
-        "@babel/core":"^7.22",
-        "@babel/preset-env":"^7.16",
+        "@babel/core": "^7.22",
+        "@babel/preset-env": "^7.16",
         "@symfony/webpack-encore": "^4.3",
         "core-js": "^3.30",
         "regenerator-runtime": "^0.13",
@@ -19,6 +19,7 @@
         "webpack-notifier": "^1.15"
     },
     "dependencies": {
+        "htmx.org": "^1.9",
         "knockout": "^3.5",
         "knockout-inview": "^2.5.0",
         "reset-scss": "^1.0"

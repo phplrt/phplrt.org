@@ -10,53 +10,14 @@
                     <a href="/" class="documentation-menu-title documentation-menu-home">Home</a>
                 </div>
                 <div class="documentation-search">
-                    <label>
-                        <input style="display:none" /><!-- Chrome autocompletion bug -->
-                        <input type="search"
-                               aria-autocomplete="none"
-                               autocomplete="off"
-                               placeholder="Search..."
-                               data-bind="value: query, valueUpdate: 'input', event: { blur: blur, focus: focus }"
-                               class="documentation-search" />
-                    </label>
-
-                    <!--ko if: results().length > 0 && shown()-->
-                    <div class="documentation-search-results" data-bind="foreach: results">
-                        <a href="#" data-bind="attr: {href: url}" class="documentation-search-item">
-                            <span class="documentation-search-item-title" data-bind="html: title"></span>
-                            <span class="documentation-search-item-page" data-bind="text: page"></span>
-                        </a>
-                    </div>
-                    <!--/ko-->
+                    {% include "components/search.html.twig" %}
                 </div>
                 <div class="documentation-menu-nav">
-                    {% for item in menu %}
-                        <a href="#" data-bind="
-                            click: function() { toggle('{{ item.id }}') },
-                            css: { active: menu('{{ item.id }}') }
-                        " class="documentation-menu-title active">
-                            {{ item.title }}
-                        </a>
-                        <ul class="documentation-menu-child" data-bind="
-                            css: { visible: menu('{{ item.id }}') }
-                        ">
-                            {% for child in item.links %}
-                                {% if child.isPage %}
-                                    <li>
-                                        <a href="/docs/{{ child.url }}"
-                                           class="{% if child.url == current %}active{% endif %}">{{ child.title }}</a>
-                                    </li>
-                                {% else %}
-                                    <li>
-                                        <a href="{{ child.url }}" target="_blank" rel="nofollow">{{ child.title }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
+                    {% include "components/menu.html.twig" with {menu: menu} %}
                 </div>
             </section>
         </aside>
+
         <section class="documentation-content">
             {% include "partials/header.html.twig" with {'page': 'docs'} %}
 

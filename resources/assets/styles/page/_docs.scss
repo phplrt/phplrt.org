@@ -218,8 +218,8 @@
       max-width: 1200px;
       margin: 50px auto 0 auto;
       padding: 25px 50px 50px 50px;
-      line-height: 28px;
-      font-size: 18px;
+      line-height: 30px;
+      font-size: 19px;
 
       p {
         margin: 24px 0;
@@ -250,20 +250,22 @@
         color: $color-extra-light-black;
         padding: 0 4px;
         border-radius: 2px;
-        background: $color-dark-white;
-        font-size: .8em;
-        box-shadow: 0 0 0 1px $color-extra-light-gray;
+        background: $color-light-gray;
+        font-size: .9em;
+        text-shadow: 0 1px 0 #fff;
       }
 
       pre > code {
+        color: $color-extra-light-gray;
         padding: 15px 20px;
-        border-radius: 5px;
+        border-radius: 7px;
         display: block;
-        font-size: $font-size - 1px;
+        font-size: $font-size;
         line-height: 26px;
         overflow: auto;
-        box-shadow: 0 0 0 2px $color-extra-light-gray;
-        background: $color-dark-white;
+        box-shadow: 0 0 0 4px $color-gray;
+        text-shadow: none;
+        background: $color-black;
         @include scrollbar(10px);
       }
 
@@ -302,11 +304,9 @@
           opacity: 1;
           margin-left: -.8em;
           padding-right: 10px;
-          color: rgba($color-extra-light-black, .2) !important;
-          text-shadow: 0 1px 0 #fff;
+          color: rgba($color-extra-light-black, .1) !important;
           transition: color .3s ease;
-          left: -70px;
-          font-size: 40px;
+          left: -10px;
         }
 
         &:hover:before {
@@ -327,6 +327,10 @@
         font-size: .9em;
         line-height: 24px;
         margin: 0;
+
+        code {
+          background: $color-extra-light-gray;
+        }
 
         p {
           margin: 0;
