@@ -5,9 +5,9 @@ services:
     autoconfigure: true
 
   _instanceof:
-    Bsg\HttpFactory\RequestMatcherInterface:
+    Local\HttpFactory\RequestMatcherInterface:
       tags: [ 'phpdoc.request.decoder' ]
-    Bsg\HttpFactory\ResponseMatcherInterface:
+    Local\HttpFactory\ResponseMatcherInterface:
       tags: [ 'phpdoc.response.encoder' ]
 
   #
@@ -16,9 +16,9 @@ services:
   # --------------------------------------------------------------------------
   #
 
-  Bsg\HttpFactory\Driver\MessagePackDriver: ~
-  Bsg\HttpFactory\Driver\YamlDriver: ~
-  Bsg\HttpFactory\Driver\JsonDriver:
+  Local\HttpFactory\Driver\MessagePackDriver: ~
+  Local\HttpFactory\Driver\YamlDriver: ~
+  Local\HttpFactory\Driver\JsonDriver:
     arguments:
       $debug: '%kernel.debug%'
 
@@ -28,12 +28,12 @@ services:
   # --------------------------------------------------------------------------
   #
 
-  Bsg\HttpFactory\RequestDecoderFactoryInterface:
-    class: Bsg\HttpFactory\RequestDecoderFactory
+  Local\HttpFactory\RequestDecoderFactoryInterface:
+    class: Local\HttpFactory\RequestDecoderFactory
     arguments:
       $decoders: !tagged_iterator 'phpdoc.request.decoder'
 
-  Bsg\HttpFactory\ResponseEncoderFactoryInterface:
-    class: Bsg\HttpFactory\ResponseEncoderFactory
+  Local\HttpFactory\ResponseEncoderFactoryInterface:
+    class: Local\HttpFactory\ResponseEncoderFactory
     arguments:
       $encoders: !tagged_iterator 'phpdoc.response.encoder'

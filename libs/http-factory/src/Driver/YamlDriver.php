@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bsg\HttpFactory\Driver;
+namespace Local\HttpFactory\Driver;
 
 use Symfony\Component\Yaml\Yaml;
 

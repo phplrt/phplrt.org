@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bsg\HttpFactory\Tests;
+namespace Local\HttpFactory\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 

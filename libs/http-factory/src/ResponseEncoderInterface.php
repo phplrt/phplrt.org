@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bsg\HttpFactory;
+namespace Local\HttpFactory;
 
 use Symfony\Component\HttpFoundation\Response;
 

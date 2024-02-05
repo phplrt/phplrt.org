@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bsg\HttpFactory\DependencyInjection;
+namespace Local\HttpFactory\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

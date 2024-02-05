@@ -1,5 +1,5 @@
 {
-    "name": "bsg/http-factory",
+    "name": "local/http-factory",
     "type": "library",
     "license": "proprietary",
     "require": {
@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Bsg\\HttpFactory\\": "src"
+            "Local\\HttpFactory\\": "src"
         }
     },
     "require-dev": {
@@ -18,14 +18,14 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Bsg\\HttpFactory\\Tests\\": "tests"
+            "Local\\HttpFactory\\Tests\\": "tests"
         }
     },
     "suggest": {
         "ext-json": "Adds JSON decoder and encoder",
         "symfony/yaml": "Adds YAML decoder and encoder",
         "rybakit/msgpack": "Adds MSGPACK decoder and encoder",
-        "symfony/http-kernel": "Adds Symfony bundle support (Bsg\\HttpFactory\\HttpFactoryBundle)"
+        "symfony/http-kernel": "Adds Symfony bundle support (Local\\HttpFactory\\HttpFactoryBundle)"
     },
     "scripts": {
         "linter": "@linter:check",

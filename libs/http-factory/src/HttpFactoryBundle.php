@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bsg\HttpFactory;
+namespace Local\HttpFactory;
 
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Bsg\HttpFactory\DependencyInjection\HttpFactoryExtension;
+use Local\HttpFactory\DependencyInjection\HttpFactoryExtension;
 
 final class HttpFactoryBundle extends AbstractBundle
 {

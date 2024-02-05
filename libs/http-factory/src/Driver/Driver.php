@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Bsg\HttpFactory\Driver;
+namespace Local\HttpFactory\Driver;
 
-use Bsg\HttpFactory\RequestMatcherInterface;
-use Bsg\HttpFactory\ResponseMatcherInterface;
+use Local\HttpFactory\RequestMatcherInterface;
+use Local\HttpFactory\ResponseMatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
