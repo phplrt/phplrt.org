@@ -13,14 +13,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CompileGrammarCommand extends Command
 {
-    /**
-     * @var string
-     */
     private const GRAMMAR_PATH = __DIR__ . '/../../resources';
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'phplrt:compile';
@@ -36,13 +30,7 @@ class CompileGrammarCommand extends Command
         return \realpath(self::GRAMMAR_PATH) . \DIRECTORY_SEPARATOR . $name . '.php';
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int|void
-     * @throws \Throwable
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         [$grammar, $file] = [$this->input('math'), $this->output('math')];
 
