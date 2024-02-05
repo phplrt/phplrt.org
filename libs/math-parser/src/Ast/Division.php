@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MathParser\Ast;
+namespace Local\MathParser\Ast;
 
 final class Division extends BinaryExpression
 {

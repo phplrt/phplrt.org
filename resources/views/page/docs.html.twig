@@ -11,7 +11,11 @@
                 </div>
                 <div class="documentation-search">
                     <label>
-                        <input type="text" placeholder="Search..."
+                        <input style="display:none" /><!-- Chrome autocompletion bug -->
+                        <input type="search"
+                               aria-autocomplete="none"
+                               autocomplete="off"
+                               placeholder="Search..."
                                data-bind="value: query, valueUpdate: 'input', event: { blur: blur, focus: focus }"
                                class="documentation-search" />
                     </label>
@@ -28,19 +32,25 @@
                 <div class="documentation-menu-nav">
                     {% for item in menu %}
                         <a href="#" data-bind="
-                            click: function() { toggle({{ item.id }}) },
-                            css: { active: menu({{ item.id }}) }
+                            click: function() { toggle('{{ item.id }}') },
+                            css: { active: menu('{{ item.id }}') }
                         " class="documentation-menu-title active">
                             {{ item.title }}
                         </a>
                         <ul class="documentation-menu-child" data-bind="
-                            css: { visible: menu({{ item.id }}) }
+                            css: { visible: menu('{{ item.id }}') }
                         ">
-                            {% for child in item.children %}
-                                <li>
-                                    <a href="/docs/{{ child.url }}"
-                                        class="{% if child.url == current %}active{% endif %}">{{ child.title }}</a>
-                                </li>
+                            {% for child in item.links %}
+                                {% if child.isPage %}
+                                    <li>
+                                        <a href="/docs/{{ child.url }}"
+                                           class="{% if child.url == current %}active{% endif %}">{{ child.title }}</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="{{ child.url }}" target="_blank" rel="nofollow">{{ child.title }}</a>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     {% endfor %}

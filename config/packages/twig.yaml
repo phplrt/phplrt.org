@@ -1,6 +1,18 @@
 twig:
   default_path: '%kernel.project_dir%/resources/views'
+  globals:
+    debug: '%kernel.debug%'
+    env: '%kernel.environment%'
+    metrika_id: 74981995
+
+services:
+  Local\Twig\HighlightExtension\HighlightExtension:
+    arguments:
+      $hl: '@Highlight\Highlighter'
+    tags: [ 'twig.extension' ]
+
 
 when@test:
   twig:
     strict_variables: true
+

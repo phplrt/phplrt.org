@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Twig\HighlightExtension\Internal;
+namespace Local\Twig\HighlightExtension\Internal;
 
 use Highlight\Highlighter;
 use Twig\Error\SyntaxError;
@@ -14,7 +14,7 @@ use Twig\TokenStream;
 
 /**
  * @internal This is an internal library class, please do not use it in your code.
- * @psalm-internal App\Twig\HighlightExtension
+ * @psalm-internal Local\Twig\HighlightExtension
  */
 class HighlightTokenParser extends AbstractTokenParser
 {

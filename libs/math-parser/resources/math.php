@@ -1,6 +1,6 @@
 <?php
 
-use App\MathParser\Ast;
+use Local\MathParser\Ast;
 
 return [
     'initial' => 0,
@@ -21,7 +21,7 @@ return [
         'T_WHITESPACE',
     ],
     'transitions' => [
-        
+
     ],
     'grammar' => [
         0 => new \Phplrt\Parser\Grammar\Concatenation([1]),
@@ -57,18 +57,18 @@ return [
                 \array_shift($children),
                 \array_shift($children),
             ];
-    
+
             switch ($op->getName()) {
                 case 'T_PLUS':
                     \array_unshift($children, new Ast\Addition([$a, $b], $a->getOffset()));
                     break;
-    
+
                 case 'T_MINUS':
                     \array_unshift($children, new Ast\Subtraction([$a, $b], $a->getOffset()));
                     break;
             }
         }
-    
+
         return $children;
         },
         3 => function (\Phplrt\Parser\Context $ctx, $children) {
@@ -78,18 +78,18 @@ return [
                 \array_shift($children),
                 \array_shift($children),
             ];
-    
+
             switch ($op->getName()) {
                 case 'T_DIV':
                     \array_unshift($children, new Ast\Division([$a, $b], $a->getOffset()));
                     break;
-    
+
                 case 'T_MUL':
                     \array_unshift($children, new Ast\Multiplication([$a, $b], $a->getOffset()));
                     break;
             }
         }
-    
+
         return $children;
         },
         18 => function (\Phplrt\Parser\Context $ctx, $children) {

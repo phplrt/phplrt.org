@@ -1,22 +1,45 @@
+parameters:
+  env(DB_DATABASE): phplrt
+  env(DB_HOST): postgres
+  env(DB_PORT): 5432
+  env(DB_USERNAME): user
+  env(DB_PASSWORD): password
+
 doctrine:
   dbal:
-    url: '%env(resolve:DATABASE_URL)%'
-
-    # IMPORTANT: You MUST configure your server version,
-    # either here or in the DATABASE_URL env var (see .env file)
-    #server_version: '16'
+    default_connection: default
+    connections:
+      default:
+        dbname: '%env(string:DB_DATABASE)%'
+        host: '%env(string:DB_HOST)%'
+        port: '%env(int:DB_PORT)%'
+        user: '%env(string:DB_USERNAME)%'
+        password: '%env(string:DB_PASSWORD)%'
+        server_version: '15.3'
+        driver: pdo_pgsql
+        logging: "%kernel.debug%"
+        profiling: "%kernel.debug%"
+    types:
+      App\Domain\Documentation\PageId: App\Infrastructure\Persistence\Doctrine\Type\PageIdType
+      App\Domain\Documentation\MenuId: App\Infrastructure\Persistence\Doctrine\Type\MenuIdType
+      App\Domain\Documentation\Menu\LinkId: App\Infrastructure\Persistence\Doctrine\Type\LinkIdType
+      App\Domain\Documentation\Search\IndexId: App\Infrastructure\Persistence\Doctrine\Type\IndexIdType
   orm:
-    report_fields_where_declared: true
+    connection: ~
+    default_entity_manager: ~
     auto_generate_proxy_classes: true
-    enable_lazy_ghost_objects: true
+    proxy_dir: '%kernel.cache_dir%/doctrine/orm/Proxies'
+    proxy_namespace: Proxies
     naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
     auto_mapping: true
+    report_fields_where_declared: true
+    enable_lazy_ghost_objects: true
     mappings:
       App:
         is_bundle: false
         type: attribute
-        dir: '%kernel.project_dir%/app/Entity'
-        prefix: 'App\Entity'
+        dir: '%kernel.project_dir%/app/Domain'
+        prefix: 'App\Domain'
         alias: App
 
 when@test:

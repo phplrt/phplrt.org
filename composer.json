@@ -2,21 +2,20 @@
     "type": "project",
     "license": "proprietary",
     "repositories": [
-        {"type": "path", "url": "libs/math-parser"},
-        {"type": "path", "url": "libs/twig-highlight-extension"}
+        {"type": "path", "url": "libs/*"}
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "app/math-parser": "*",
-        "app/twig-highlight-extension": "*",
         "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^2.18",
-        "illuminate/support": "^10.0|^11.0",
-        "league/commonmark": "^1.6",
+        "local/content-renderer": "*",
+        "local/math-parser": "*",
+        "local/twig-highlight-extension": "*",
+        "ramsey/uuid": "^4.7",
         "scrivo/highlight.php": "^9.18",
         "symfony/asset": "7.0.*",
         "symfony/console": "7.0.*",
@@ -81,9 +80,32 @@
     "replace": {
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*"
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*"
     },
     "scripts": {
+        "db:up": [
+            "@php -r \"is_file('.allow-drop-db') ?: exit(42);\"",
+            "@php bin/console doctrine:migrations:migrate --no-interaction"
+        ],
+        "db:down": [
+            "@php -r \"is_file('.allow-drop-db') ?: exit(42);\"",
+            "@php bin/console doctrine:migrations:migrate first --no-interaction"
+        ],
+        "db:info": "@php bin/console doctrine:mapping:info",
+        "db:diff": "@php bin/console doctrine:migrations:diff -vvv",
+        "db:warmup": [
+            "@php bin/console doctrine:cache:clear-metadata",
+            "@php bin/console doctrine:cache:clear-query",
+            "@php bin/console doctrine:cache:clear-result"
+        ],
+        "db:refresh": [
+            "@db:down",
+            "@db:up"
+        ],
         "linter": "@linter:check",
         "linter:check": [
             "psalm --no-cache",
@@ -94,15 +116,10 @@
         "phpcs": "@phpcs:check",
         "phpcs:check": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --dry-run --verbose --diff",
         "phpcs:fix": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --verbose --diff",
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
+        "post-autoload-dump": [
+            "@php -r \"is_file('.env') || copy('.env.example', '.env');\"",
+            "@php bin/console cache:clear",
+            "@php bin/console assets:install"
         ]
     },
     "conflict": {

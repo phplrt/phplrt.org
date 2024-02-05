@@ -51,6 +51,10 @@ RUN docker-php-ext-install opcache
 # 8. Sockets
 RUN docker-php-ext-install sockets
 
+# 9. PDO PostgreSQL
+RUN docker-php-ext-install pdo_pgsql && \
+    docker-php-ext-enable pdo_pgsql
+
 # ------------------------------------------------------------------------------
 # Cleanup Dependencies
 # ------------------------------------------------------------------------------

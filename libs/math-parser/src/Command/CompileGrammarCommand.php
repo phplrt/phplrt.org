@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MathParser\Command;
+namespace Local\MathParser\Command;
 
 use Phplrt\Compiler\Compiler;
 use Phplrt\Source\File;

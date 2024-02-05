@@ -1,0 +1,51 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\Domain\:
+    resource: '%kernel.project_dir%/app/Domain'
+
+  #
+  # -----------------------------------------------------------------------------
+  #   Database Repositories
+  # -----------------------------------------------------------------------------
+  #
+
+  App\Domain\Documentation\Search\IndexRepositoryInterface:
+    class: App\Infrastructure\Persistence\Repository\IndexDatabaseRepository
+
+  App\Domain\Documentation\Menu\LinkRepositoryInterface:
+    class: App\Infrastructure\Persistence\Repository\LinkDatabaseRepository
+
+  App\Domain\Documentation\MenuRepositoryInterface:
+    class: App\Infrastructure\Persistence\Repository\MenuDatabaseRepository
+
+  App\Domain\Documentation\PageRepositoryInterface:
+    class: App\Infrastructure\Persistence\Repository\PageDatabaseRepository
+
+
+  #
+  # ----------------------------------------------------------------------------
+  #  Database Listeners
+  # ----------------------------------------------------------------------------
+  #
+
+  App\Infrastructure\Persistence\Doctrine\Listener\CreatedDateListener:
+    tags:
+      - { name: doctrine.event_listener, event: prePersist }
+
+  App\Infrastructure\Persistence\Doctrine\Listener\UpdatedDateListener:
+    tags:
+      - { name: doctrine.event_listener, event: preUpdate }
+
+  #
+  # ----------------------------------------------------------------------------
+  #  Database Subscribers
+  # ----------------------------------------------------------------------------
+  #
+
+  App\Infrastructure\Persistence\Doctrine\Subscriber\RenderPageSubscriber:
+    tags:
+      - { name: doctrine.event_subscriber }

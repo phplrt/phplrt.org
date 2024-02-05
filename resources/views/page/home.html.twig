@@ -53,7 +53,11 @@
 
             <div class="expr-section">
                 <h3>try it in action:</h3>
-                <input type="text" data-bind="value: expression, valueUpdate: 'input'" />
+                <input style="display:none" /><!-- Chrome autocompletion bug -->
+                <input type="text"
+                       aria-autocomplete="none"
+                       autocomplete="off"
+                       data-bind="value: expression, valueUpdate: 'input'" />
             </div>
 
             <section class="code">

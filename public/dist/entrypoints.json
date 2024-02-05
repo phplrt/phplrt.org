@@ -2,19 +2,17 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/dist/runtime.9a71ee5d.js",
-        "/dist/442.29c1c67d.js",
-        "/dist/app.dd477451.js"
+        "/dist/460.7d96f24e.js",
+        "/dist/app.7fb28d4e.js"
       ],
       "css": [
-        "/dist/app.d0fe26d6.css"
+        "/dist/app.8e138279.css"
       ]
     }
   },
   "integrity": {
-    "/dist/runtime.9a71ee5d.js": "sha384-L4SfYhQVswKjKEKxhUFNdD2PfZVf5e+dP5WHQBz8eTm5xp/Qy0Y3Vfw4GKUxNZrZ",
-    "/dist/442.29c1c67d.js": "sha384-z3oBYnlpijj7kSW4tt01sAUTyPU416QFp0iBIKfzTYT3Om8IHZM7PpCpZZ88JZKC",
-    "/dist/app.dd477451.js": "sha384-dp4QBUCCCSCaNbsJ1drJ1h9kxwY4yyCD7FgutSXM/oi3QIzNZUSrSaAHw2TkUjw1",
-    "/dist/app.d0fe26d6.css": "sha384-lrpcoToHfMyJn5cE1tj2fjwLM47o/hJSTLle9QFS9F/Aoezl+1nKlC9AA/xWv3WI"
+    "/dist/460.7d96f24e.js": "sha384-+lX1Sr8RlmHr1aQt9eW1RhsZ838YulNYKlCwgXr42cZZOJ6QFmSjZPX+NXuKI316",
+    "/dist/app.7fb28d4e.js": "sha384-keUs7zoEJ4KK/RfVSuzF3jORVKcMOeBzKJvbZ3iW5VUH0H/10pKMTfeBoRXTS+ZO",
+    "/dist/app.8e138279.css": "sha384-F0zGEgi4pvC7qDVmhE8dxTBi6rbwUwkO4oLt6nnstVhG1WrAdgbpM1NziFqmVjxJ"
   }
 }

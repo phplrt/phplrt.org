@@ -1,17 +1,10 @@
+imports:
+  - { resource: services/*.yaml }
+
 services:
   _defaults:
     autowire: true
     autoconfigure: true
-
-  #
-  # -----------------------------------------------------------------------------
-  #   Database Repositories
-  # -----------------------------------------------------------------------------
-  #
-
-  App\Repository\MenuRepository: ~
-  App\Repository\DocumentationRepository: ~
-  App\Repository\SearchIndexRepository: ~
 
   #
   # --------------------------------------------------------------------------
@@ -21,9 +14,9 @@ services:
   # Controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class.
   #
-  App\Controller\:
-    resource: '../app/Controller/'
-    tags: ['controller.service_arguments']
+  App\Application\Controller\:
+    resource: '%kernel.project_dir%/app/Application/Controller/'
+    tags: [ 'controller.service_arguments' ]
 
   #
   # --------------------------------------------------------------------------
@@ -31,25 +24,13 @@ services:
   # --------------------------------------------------------------------------
   #
 
-  App\MathParser\Command\CompileGrammarCommand:
+  App\Application\Command\DocsUpdateCommand:
     tags:
       - { name: 'console.command' }
 
-  App\Command\DocsUpdateCommand:
-    autowire: true
-    arguments:
-      - "%kernel.project_dir%/resources/docs"
+  Local\MathParser\Command\CompileGrammarCommand:
     tags:
       - { name: 'console.command' }
-
-  #
-  # --------------------------------------------------------------------------
-  #   Twig Extensions
-  # --------------------------------------------------------------------------
-  #
-
-  App\Twig\HighlightExtension\HighlightExtension:
-    tags: ['twig.extension']
 
   #
   # --------------------------------------------------------------------------
@@ -57,36 +38,7 @@ services:
   # --------------------------------------------------------------------------
   #
 
-  Highlight\Highlighter:
-    calls:
-      - registerLanguage: ['ebnf', '%kernel.project_dir%/resources/lang/pp2.json']
-      - registerLanguage: ['bnf', '%kernel.project_dir%/resources/lang/pp2.json']
-      - registerLanguage: ['pp2', '%kernel.project_dir%/resources/lang/pp2.json']
-      - registerLanguage: ['pp', '%kernel.project_dir%/resources/lang/pp2.json']
-      - registerLanguage: ['ast', '%kernel.project_dir%/resources/lang/ast.json']
+  App\Infrastructure\Slug\CaseInsensitiveSlugger: ~
 
-  App\Sync\MenuUpdater:
-    arguments:
-      - '@doctrine.orm.entity_manager'
-      - '@App\Repository\MenuRepository'
-
-  App\Sync\DocsUpdater:
-    arguments:
-      - '@doctrine.orm.entity_manager'
-      - '@App\Repository\DocumentationRepository'
-      - '@League\CommonMark\MarkdownConverterInterface'
-      - '@Highlight\Highlighter'
-
-  App\Sync\SearchIndexUpdater:
-    arguments:
-      - '@doctrine.orm.entity_manager'
-      - '@App\Repository\SearchIndexRepository'
-      - '@App\Repository\DocumentationRepository'
-
-  App\MathParser\MathParser: ~
-  App\MathParser\AstDumper: ~
-
-  League\CommonMark\MarkdownConverterInterface:
-    class: League\CommonMark\GithubFlavoredMarkdownConverter
-    arguments:
-      - allow_unsafe_links: true
+  Local\MathParser\MathParser: ~
+  Local\MathParser\AstDumper: ~

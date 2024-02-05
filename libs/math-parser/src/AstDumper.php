@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MathParser;
+namespace Local\MathParser;
 
 use Highlight\Highlighter;
 use Symfony\Component\VarDumper\Cloner\VarCloner;

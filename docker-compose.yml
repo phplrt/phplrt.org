@@ -24,6 +24,21 @@ services:
     networks:
       - phplrt_org
 
+  postgres:
+    image: postgres:15.3
+    container_name: phplrt-postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./docker/data/postgres:/home/db
+    environment:
+      - POSTGRES_DB=${DB_DATABASE:-railt}
+      - POSTGRES_USER=${DB_USERNAME:-user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+    ports:
+      - "${APP_DATABASE_PUBLIC_PORT:-5432}:5432"
+    networks:
+      - phplrt_org
+
   node:
     build: docker/node
     container_name: phplrt-node
@@ -35,3 +50,6 @@ networks:
   phplrt_org:
     name: phplrt_org
     driver: bridge
+
+volumes:
+  postgres:

@@ -4,14 +4,10 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/.allow-drop-db
 
 /node_modules/
 /vendor/
 /var/
 /docker/data/
 /docker/.env
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###

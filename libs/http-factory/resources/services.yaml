@@ -1,0 +1,39 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  _instanceof:
+    Bsg\HttpFactory\RequestMatcherInterface:
+      tags: [ 'phpdoc.request.decoder' ]
+    Bsg\HttpFactory\ResponseMatcherInterface:
+      tags: [ 'phpdoc.response.encoder' ]
+
+  #
+  # --------------------------------------------------------------------------
+  #   Drivers
+  # --------------------------------------------------------------------------
+  #
+
+  Bsg\HttpFactory\Driver\MessagePackDriver: ~
+  Bsg\HttpFactory\Driver\YamlDriver: ~
+  Bsg\HttpFactory\Driver\JsonDriver:
+    arguments:
+      $debug: '%kernel.debug%'
+
+  #
+  # --------------------------------------------------------------------------
+  #   Factories
+  # --------------------------------------------------------------------------
+  #
+
+  Bsg\HttpFactory\RequestDecoderFactoryInterface:
+    class: Bsg\HttpFactory\RequestDecoderFactory
+    arguments:
+      $decoders: !tagged_iterator 'phpdoc.request.decoder'
+
+  Bsg\HttpFactory\ResponseEncoderFactoryInterface:
+    class: Bsg\HttpFactory\ResponseEncoderFactory
+    arguments:
+      $encoders: !tagged_iterator 'phpdoc.response.encoder'
