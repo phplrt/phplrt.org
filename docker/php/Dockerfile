@@ -1,4 +1,5 @@
 FROM php:8.2-fpm
+
 WORKDIR "/home/phplrt/phplrt.org"
 
 # Fix debconf warnings upon build
@@ -7,27 +8,54 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
 # ------------------------------------------------------------------------------
-# Installation Dependencies
+# Install Dependencies
 # ------------------------------------------------------------------------------
 
 RUN apt-get update \
+    && pecl channel-update pecl.php.net \
     && apt-get -y --no-install-recommends install \
       libzip-dev \
+      libicu-dev \
+      libpq-dev \
+      unzip \
       git \
       curl
 
-# Composer
+# ------------------------------------------------------------------------------
+# Install PHP
+# ------------------------------------------------------------------------------
+
+# 1. Composer
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
 
-# Zip
-RUN docker-php-ext-install zip
-RUN docker-php-ext-enable zip
+# 2. APCU
+RUN pecl install apcu && \
+    docker-php-ext-enable apcu
 
+# 3. Intl
+RUN docker-php-ext-install intl && \
+    docker-php-ext-enable intl
+
+# 5. Zip
+RUN docker-php-ext-install zip && \
+    docker-php-ext-enable zip
+
+# 6. Igbinary
+RUN pecl install igbinary && \
+    docker-php-ext-enable igbinary
+
+# 7. Opcache
+RUN docker-php-ext-install opcache
+
+# 8. Sockets
+RUN docker-php-ext-install sockets
 
 # ------------------------------------------------------------------------------
 # Cleanup Dependencies
 # ------------------------------------------------------------------------------
 
 RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
-    && ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+    && ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
+
+USER 1000:1000

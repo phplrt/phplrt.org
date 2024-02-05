@@ -6,95 +6,95 @@
 parameters:
 
 services:
-    # default configuration for services in *this* file
-    _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true    # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    #
-    # -----------------------------------------------------------------------------
-    #   Database Repositories
-    # -----------------------------------------------------------------------------
-    #
+  #
+  # -----------------------------------------------------------------------------
+  #   Database Repositories
+  # -----------------------------------------------------------------------------
+  #
 
-    App\Repository\MenuRepository: ~
-    App\Repository\DocumentationRepository: ~
-    App\Repository\SearchIndexRepository: ~
+  App\Repository\MenuRepository: ~
+  App\Repository\DocumentationRepository: ~
+  App\Repository\SearchIndexRepository: ~
 
-    #
-    # --------------------------------------------------------------------------
-    #   Controllers
-    # --------------------------------------------------------------------------
-    #
-    # Controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class.
-    #
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
+  #
+  # --------------------------------------------------------------------------
+  #   Controllers
+  # --------------------------------------------------------------------------
+  #
+  # Controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class.
+  #
+  App\Controller\:
+    resource: '../app/Controller/'
+    tags: ['controller.service_arguments']
 
-    #
-    # --------------------------------------------------------------------------
-    #   Console Commands
-    # --------------------------------------------------------------------------
-    #
+  #
+  # --------------------------------------------------------------------------
+  #   Console Commands
+  # --------------------------------------------------------------------------
+  #
 
-    App\MathParser\Command\CompileGrammarCommand:
-        tags:
-            - { name: 'console.command' }
+  App\MathParser\Command\CompileGrammarCommand:
+    tags:
+      - { name: 'console.command' }
 
-    App\Command\DocsUpdateCommand:
-        autowire: true
-        arguments:
-            - "%kernel.project_dir%/resources/docs"
-        tags:
-            - { name: 'console.command' }
+  App\Command\DocsUpdateCommand:
+    autowire: true
+    arguments:
+      - "%kernel.project_dir%/resources/docs"
+    tags:
+      - { name: 'console.command' }
 
-    #
-    # --------------------------------------------------------------------------
-    #   Twig Extensions
-    # --------------------------------------------------------------------------
-    #
+  #
+  # --------------------------------------------------------------------------
+  #   Twig Extensions
+  # --------------------------------------------------------------------------
+  #
 
-    App\Twig\HighlightExtension\HighlightExtension:
-        tags: ['twig.extension']
+  App\Twig\HighlightExtension\HighlightExtension:
+    tags: ['twig.extension']
 
-    #
-    # --------------------------------------------------------------------------
-    #   Services
-    # --------------------------------------------------------------------------
-    #
+  #
+  # --------------------------------------------------------------------------
+  #   Services
+  # --------------------------------------------------------------------------
+  #
 
-    Highlight\Highlighter:
-        calls:
-            - registerLanguage: ['ebnf', '%kernel.project_dir%/resources/lang/pp2.json']
-            - registerLanguage: ['bnf', '%kernel.project_dir%/resources/lang/pp2.json']
-            - registerLanguage: ['pp2', '%kernel.project_dir%/resources/lang/pp2.json']
-            - registerLanguage: ['pp', '%kernel.project_dir%/resources/lang/pp2.json']
-            - registerLanguage: ['ast', '%kernel.project_dir%/resources/lang/ast.json']
+  Highlight\Highlighter:
+    calls:
+      - registerLanguage: ['ebnf', '%kernel.project_dir%/resources/lang/pp2.json']
+      - registerLanguage: ['bnf', '%kernel.project_dir%/resources/lang/pp2.json']
+      - registerLanguage: ['pp2', '%kernel.project_dir%/resources/lang/pp2.json']
+      - registerLanguage: ['pp', '%kernel.project_dir%/resources/lang/pp2.json']
+      - registerLanguage: ['ast', '%kernel.project_dir%/resources/lang/ast.json']
 
-    App\Sync\MenuUpdater:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@App\Repository\MenuRepository'
+  App\Sync\MenuUpdater:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@App\Repository\MenuRepository'
 
-    App\Sync\DocsUpdater:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@App\Repository\DocumentationRepository'
-            - '@League\CommonMark\MarkdownConverterInterface'
-            - '@Highlight\Highlighter'
+  App\Sync\DocsUpdater:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@App\Repository\DocumentationRepository'
+      - '@League\CommonMark\MarkdownConverterInterface'
+      - '@Highlight\Highlighter'
 
-    App\Sync\SearchIndexUpdater:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@App\Repository\SearchIndexRepository'
-            - '@App\Repository\DocumentationRepository'
+  App\Sync\SearchIndexUpdater:
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@App\Repository\SearchIndexRepository'
+      - '@App\Repository\DocumentationRepository'
 
-    App\MathParser\MathParser: ~
-    App\MathParser\AstDumper: ~
+  App\MathParser\MathParser: ~
+  App\MathParser\AstDumper: ~
 
-    League\CommonMark\MarkdownConverterInterface:
-        class: League\CommonMark\GithubFlavoredMarkdownConverter
-        arguments:
-          - allow_unsafe_links: true
+  League\CommonMark\MarkdownConverterInterface:
+    class: League\CommonMark\GithubFlavoredMarkdownConverter
+    arguments:
+      - allow_unsafe_links: true
