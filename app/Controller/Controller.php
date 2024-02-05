@@ -10,6 +10,5 @@ abstract class Controller
 {
     public function __construct(
         protected readonly Environment $view,
-    ) {
-    }
+    ) {}
 }

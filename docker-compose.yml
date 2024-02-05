@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   nginx:
@@ -11,6 +11,8 @@ services:
       - ./docker/data/logs/nginx:/var/log/nginx/
     ports:
       - "${APP_HTTP_PUBLIC_PORT:-8081}:80"
+    networks:
+      - phplrt_org
 
   php:
     build: docker/php
@@ -19,3 +21,17 @@ services:
     volumes:
       - .:/home/phplrt/phplrt.org
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - phplrt_org
+
+  node:
+    build: docker/node
+    container_name: phplrt-node
+    working_dir: /home/phplrt/phplrt.org
+    volumes:
+      - .:/home/phplrt/phplrt.org
+
+networks:
+  phplrt_org:
+    name: phplrt_org
+    driver: bridge
