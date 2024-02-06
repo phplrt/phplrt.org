@@ -6,6 +6,4 @@ namespace App\Domain\Documentation;
 
 use App\Domain\Shared\UniversalUniqueId;
 
-final readonly class MenuId extends UniversalUniqueId
-{
-}
+final readonly class MenuId extends UniversalUniqueId {}

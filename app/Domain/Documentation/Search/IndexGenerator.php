@@ -14,8 +14,7 @@ final readonly class IndexGenerator
         private ObjectManager $em,
         private IndexRepositoryInterface $indices,
         private PageRepositoryInterface $pages,
-    ) {
-    }
+    ) {}
 
     public function truncate(): void
     {
@@ -55,7 +54,7 @@ final readonly class IndexGenerator
         );
 
         foreach ($matches as [, $level, $title]) {
-            yield (int)$level => \strip_tags($title);
+            yield (int) $level => \strip_tags($title);
         }
     }
 }

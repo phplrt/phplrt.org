@@ -19,8 +19,7 @@ final class Synchronizer
         private readonly MenuRepositoryInterface $menus,
         private readonly PageRepositoryInterface $pages,
         private readonly ObjectManager $em,
-    ) {
-    }
+    ) {}
 
     public function truncate(): void
     {
@@ -83,7 +82,7 @@ final class Synchronizer
 
         $contents = \file_get_contents($pathname);
 
-        return (array)\json_decode($contents, true, 512, \JSON_THROW_ON_ERROR);
+        return (array) \json_decode($contents, true, 512, \JSON_THROW_ON_ERROR);
     }
 
     private function fetchPage(string $title, string $path): ?Page

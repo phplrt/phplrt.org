@@ -38,7 +38,7 @@ final class Version20230731193216 extends AbstractMigration
 
         $this->addSql('CREATE INDEX IDX_402E827FC4663E4 ON menu_links (page_id)');
         $this->addSql('ALTER TABLE menu_links
-            ADD CONSTRAINT FK_402E827FC4663E4 FOREIGN KEY (page_id) 
+            ADD CONSTRAINT FK_402E827FC4663E4 FOREIGN KEY (page_id)
                 REFERENCES documentation (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
 
         $this->addSql('COMMENT ON COLUMN menu_links.id IS \'(DC2Type:App\\Domain\\Documentation\\Menu\\LinkId)\'');

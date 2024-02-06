@@ -11,8 +11,7 @@ final readonly class CaseInsensitiveSlugger implements SluggerInterface
 {
     public function __construct(
         private SluggerInterface $slugger,
-    ) {
-    }
+    ) {}
 
     public function slug(string $string, string $separator = '-', string $locale = null): AbstractUnicodeString
     {

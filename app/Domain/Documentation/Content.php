@@ -23,13 +23,13 @@ class Content implements ValueObjectInterface
 
     public function render(string|\Stringable $html): void
     {
-        $this->rendered = (string)$html;
+        $this->rendered = (string) $html;
     }
 
     public function update(string|\Stringable $content, string|\Stringable|null $html = null): void
     {
-        $this->rendered = $html === null ? $html : (string)$html;
-        $this->source = (string)$content;
+        $this->rendered = $html === null ? $html : (string) $html;
+        $this->source = (string) $content;
     }
 
     public function same(ValueObjectInterface $object): bool

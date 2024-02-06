@@ -18,8 +18,7 @@ final readonly class CreatedDateListener
 {
     public function __construct(
         private ClockInterface $clock,
-    ) {
-    }
+    ) {}
 
     public function prePersist(LifecycleEventArgs $event): void
     {

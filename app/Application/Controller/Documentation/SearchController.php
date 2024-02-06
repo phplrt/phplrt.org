@@ -17,8 +17,7 @@ final readonly class SearchController
     public function __construct(
         private SearchItemListCompiler $compiler,
         private Search $search,
-    ) {
-    }
+    ) {}
 
     public function __invoke(#[MapRequestPayload] SearchRequestDTO $dto): JsonResponse
     {

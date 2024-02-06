@@ -13,6 +13,4 @@ use App\Infrastructure\Compiler\Compiler;
  * @template-extends Compiler<TInput, TOutput>
  * @template-implements ResponseCompilerInterface<TInput, TOutput>
  */
-abstract readonly class ResponseCompiler extends Compiler implements ResponseCompilerInterface
-{
-}
+abstract readonly class ResponseCompiler extends Compiler implements ResponseCompilerInterface {}

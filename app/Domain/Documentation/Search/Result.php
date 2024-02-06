@@ -13,6 +13,5 @@ final readonly class Result
     public function __construct(
         public Index $index,
         public array $occurrences = [],
-    ) {
-    }
+    ) {}
 }

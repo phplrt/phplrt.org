@@ -20,7 +20,7 @@ final class Version20230731193008 extends AbstractMigration
             id UUID NOT NULL,
             title VARCHAR(255) NOT NULL,
             priority SMALLINT NOT NULL CHECK (priority >= 0),
-            created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL,
+            created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW(),
             updated_at TIMESTAMP(0) WITH TIME ZONE DEFAULT NULL,
             PRIMARY KEY(id)
         )');

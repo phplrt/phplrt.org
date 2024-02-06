@@ -6,6 +6,4 @@ namespace App\Domain\Documentation\Search;
 
 use App\Domain\Shared\UniversalUniqueId;
 
-final readonly class IndexId extends UniversalUniqueId
-{
-}
+final readonly class IndexId extends UniversalUniqueId {}

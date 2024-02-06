@@ -10,6 +10,4 @@ namespace App\Infrastructure\Compiler;
  *
  * @template-implements CompilerInterface<TInput, TOutput>
  */
-abstract readonly class Compiler implements CompilerInterface
-{
-}
+abstract readonly class Compiler implements CompilerInterface {}

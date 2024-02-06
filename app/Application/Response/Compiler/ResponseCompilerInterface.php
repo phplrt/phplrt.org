@@ -12,6 +12,4 @@ use App\Infrastructure\Compiler\CompilerInterface;
  *
  * @template-extends CompilerInterface<TInput, TOutput>
  */
-interface ResponseCompilerInterface extends CompilerInterface
-{
-}
+interface ResponseCompilerInterface extends CompilerInterface {}

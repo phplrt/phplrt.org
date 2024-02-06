@@ -1,7 +1,7 @@
 <?php
 
 $files = PhpCsFixer\Finder::create()
-    ->in([__DIR__ . '/src']);
+    ->in([__DIR__ . '/app']);
 
 return (new PhpCsFixer\Config())
     ->setRules([

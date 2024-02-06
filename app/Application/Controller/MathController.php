@@ -25,7 +25,7 @@ final readonly class MathController
     {
         try {
             /** @var Expression $ast */
-            $ast = $parser->parse((string)$request->getContent());
+            $ast = $parser->parse((string) $request->getContent());
 
             $result = $this->view->render('page/home/highlight.html.twig', [
                 'code' => $dumper->highlight($this->hl, $ast, 'Local\\MathParser'),

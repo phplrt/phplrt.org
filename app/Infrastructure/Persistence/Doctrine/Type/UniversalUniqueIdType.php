@@ -43,7 +43,7 @@ abstract class UniversalUniqueIdType extends Type
         }
 
         if ($value instanceof \Stringable) {
-            return (string)$value;
+            return (string) $value;
         }
 
         return null;

@@ -11,6 +11,4 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  *
  * @template-extends ServiceEntityRepository<TEntity>
  */
-abstract class DatabaseRepository extends ServiceEntityRepository
-{
-}
+abstract class DatabaseRepository extends ServiceEntityRepository {}

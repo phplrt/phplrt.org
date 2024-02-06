@@ -17,8 +17,7 @@ final readonly class UpdatedDateListener
 {
     public function __construct(
         private ClockInterface $clock,
-    ) {
-    }
+    ) {}
 
     public function preUpdate(LifecycleEventArgs $event): void
     {

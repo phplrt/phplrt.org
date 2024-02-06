@@ -18,8 +18,7 @@ final readonly class ShowController
         private Environment $view,
         private MenuRepositoryInterface $menu,
         private PageRepositoryInterface $docs,
-    ) {
-    }
+    ) {}
 
     public function __invoke(string $path): Response
     {

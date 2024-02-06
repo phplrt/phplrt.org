@@ -27,8 +27,8 @@ final class Version20230731193353 extends AbstractMigration
         )');
 
         $this->addSql('CREATE INDEX IDX_B446A4E8C4663E4 ON search_index (page_id)');
-        $this->addSql('ALTER TABLE search_index 
-            ADD CONSTRAINT FK_B446A4E8C4663E4 FOREIGN KEY (page_id) 
+        $this->addSql('ALTER TABLE search_index
+            ADD CONSTRAINT FK_B446A4E8C4663E4 FOREIGN KEY (page_id)
                 REFERENCES documentation (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
 
         $this->addSql('COMMENT ON COLUMN search_index.id IS \'(DC2Type:App\\Domain\\Search\\IndexId)\'');

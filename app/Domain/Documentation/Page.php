@@ -58,7 +58,7 @@ class Page implements
         $this->links = new ArrayCollection();
 
         if (!$content instanceof Content) {
-            $content = new Content((string)$content);
+            $content = new Content((string) $content);
         }
 
         $this->content = $content;

@@ -19,7 +19,7 @@ abstract readonly class UniversalUniqueId implements IdInterface
      */
     final public function __construct(string|\Stringable $value)
     {
-        $this->value = (string)$value;
+        $this->value = (string) $value;
     }
 
     public static function new(): static
@@ -76,7 +76,7 @@ abstract readonly class UniversalUniqueId implements IdInterface
 
     public function same(ValueObjectInterface $object): bool
     {
-        return $this->value === (string)$object;
+        return $this->value === (string) $object;
     }
 
     public function __toString(): string
