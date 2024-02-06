@@ -37,7 +37,6 @@ final class Synchronizer
     public function sync(): void
     {
         $menuPriority = 0;
-
         foreach ($this->getManifest() as $menuTitle => $items) {
             // Skip non-named items
             if ($menuTitle === '') {
@@ -46,11 +45,12 @@ final class Synchronizer
 
             $menu = $this->menus->findOneBy(['title' => $menuTitle])
                 ?? new Menu($menuTitle);
-            $menu->setPriority($menuPriority);
+            $menu->setPriority($menuPriority++);
 
             $this->em->persist($menu);
             $this->em->flush();
 
+            $linkPriority = 0;
             foreach ($items as $linkTitle => $linkPath) {
                 $page = $this->fetchPage($linkTitle, $linkPath);
 
@@ -60,9 +60,10 @@ final class Synchronizer
                 }
 
                 $link = $page === null
-                    ? new ExternalLink($menu, $linkPath, $linkTitle)
+                    ? new ExternalLink($menu, $linkTitle, $linkPath)
                     : new PageLink($page, $menu, $linkTitle)
                 ;
+                $link->setPriority($linkPriority++);
 
                 $this->em->persist($link);
                 $this->em->flush();
