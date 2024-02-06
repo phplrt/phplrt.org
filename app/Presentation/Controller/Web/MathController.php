@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-#[Route(path: '/math/parse.json', methods: ['POST'])]
+#[Route(path: '/math/parse', methods: ['POST'])]
 final readonly class MathController
 {
     public function __construct(

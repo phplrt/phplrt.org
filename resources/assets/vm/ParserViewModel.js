@@ -2,7 +2,7 @@
 import ko from "knockout";
 
 export default class ParserViewModel {
-    expression = ko.observable('(2 + 2) * 2 - 4 - 4')
+    expression = ko.observable('2 + 2 * 2')
         .extend({ throttle: 300 })
 
     output = ko.observable('');
@@ -21,7 +21,7 @@ export default class ParserViewModel {
         this.loading(true);
 
         try {
-            var response = await fetch('/math/parse.json', {
+            var response = await fetch('/math/parse', {
                 method: 'POST',
                 body: expression
             });
