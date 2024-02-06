@@ -15,15 +15,21 @@ framework:
     #app: cache.adapter.apcu
 
     # Namespaced pools use the above "app" backend by default
-    pools:
-      cache.versioned:
-        adapter: cache.adapter.filesystem
-        tags: true
+    app: cache.adapter.filesystem
 
-when@prod:
+    pools:
+      app_with_second_level:
+        adapters:
+          - cache.adapter.array
+          - cache.adapter.apcu
+          - cache.adapter.filesystem
+
+
+when@dev:
   framework:
     cache:
       pools:
-        cache.versioned:
-          adapter: cache.adapter.redis
-          tags: true
+        app_with_second_level:
+          adapters:
+            - cache.adapter.array
+            - cache.adapter.filesystem
