@@ -32,26 +32,28 @@ export default class MenuViewModel {
                 return;
             }
 
-            let form = new FormData();
-            form.append('query', value);
-
             try {
-                let response = await fetch('/docs/search.json', {
+                let response = await fetch('/api/search.json', {
                     method: 'POST',
-                    body: form
+                    headers: {
+                        'content-type': 'application/json',
+                        'accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: value,
+                    })
                 });
 
-                let results = await response.json();
+                let result = await response.json();
 
-                for (let result of results) {
-                    for (let query of result.found) {
-                        result.title = result.title
-                            .replace(query, `<span>${query}</span>`)
-                        ;
+                for (let entry of result.data) {
+                    for (let query of entry.found) {
+                        entry.title = entry.title
+                            .replace(query, `<span>${query}</span>`);
                     }
                 }
 
-                this.results(results);
+                this.results(result.data);
             } catch (e) {
                 this.results([]);
                 console.error(e);
