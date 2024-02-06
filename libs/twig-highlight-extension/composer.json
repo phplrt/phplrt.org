@@ -10,6 +10,25 @@
             "Local\\Twig\\HighlightExtension\\": "src"
         }
     },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.49",
+        "phpunit/phpunit": "^10.5|^11.0",
+        "vimeo/psalm": "^5.21"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Local\\Twig\\HighlightExtension\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev",
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }

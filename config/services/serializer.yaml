@@ -1,0 +1,63 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Local\Hydrator\JMS\Factory:
+    factory: ['Local\Hydrator\JMS\Factory', 'create']
+    arguments:
+      $debug: '%kernel.debug%'
+      $cache: '@cache.app'
+
+  # ----------------------------------------------------------------------------
+  #  Hydrator Deserializer
+  # ----------------------------------------------------------------------------
+
+  Local\Hydrator\ExtractorInterface:
+    factory: ['@Local\Hydrator\JMS\Factory', 'createExtractor']
+
+  # ----------------------------------------------------------------------------
+  #  Hydrator Serializer
+  # ----------------------------------------------------------------------------
+
+  Local\Hydrator\HydratorInterface:
+    factory: [ '@Local\Hydrator\JMS\Factory', 'createHydrator' ]
+
+when@dev:
+  services:
+    _defaults:
+      autowire: true
+      autoconfigure: true
+
+    # ----------------------------------------------------------------------------
+    #  Hydrator Deserializer Decorator
+    # ----------------------------------------------------------------------------
+
+    Local\Hydrator\LoggableExtractor:
+      decorates: Local\Hydrator\ExtractorInterface
+      arguments:
+        $extractor: '@.inner'
+        $logger: '@Psr\Log\LoggerInterface'
+
+    Local\Hydrator\TraceableExtractor:
+      decorates: Local\Hydrator\ExtractorInterface
+      arguments:
+        $extractor: '@.inner'
+        $stopwatch: '@?debug.stopwatch'
+
+    # ----------------------------------------------------------------------------
+    #  Hydrator Serializer Decorator
+    # ----------------------------------------------------------------------------
+
+    Local\Hydrator\LoggableHydrator:
+      decorates: Local\Hydrator\HydratorInterface
+      arguments:
+        $hydrator: '@.inner'
+        $logger: '@Psr\Log\LoggerInterface'
+
+    Local\Hydrator\TraceableHydrator:
+      decorates: Local\Hydrator\HydratorInterface
+      arguments:
+        $hydrator: '@.inner'
+        $stopwatch: '@?debug.stopwatch'

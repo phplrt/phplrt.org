@@ -16,7 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'menu_links')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['external' => ExternalLink::class, 'page' => PageLink::class])]
+#[ORM\DiscriminatorMap([
+    'external' => ExternalLink::class,
+    'page' => PageLink::class,
+])]
 #[ORM\Index(columns: ['priority'], name: 'menu_links_priority_idx')]
 abstract class Link implements
     IdentifiableInterface,

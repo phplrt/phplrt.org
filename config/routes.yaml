@@ -1,3 +1,10 @@
-controllers:
-  resource: ../app/Application/Controller/
+web:
+  resource: ../app/Presentation/Controller/Web/
   type: attribute
+
+api:
+  prefix: '/api'
+  resource: ../app/Presentation/Controller/Api/
+  type: attribute
+  requirements:
+    ext: \.json

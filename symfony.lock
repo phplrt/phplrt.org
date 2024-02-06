@@ -132,6 +132,12 @@
     "league/commonmark": {
         "version": "1.5.7"
     },
+    "local/http-factory": {
+        "version": "dev-master"
+    },
+    "local/http-factory-bundle": {
+        "version": "dev-master"
+    },
     "monolog/monolog": {
         "version": "2.2.0"
     },

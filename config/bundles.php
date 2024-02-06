@@ -9,6 +9,7 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
+    Local\HttpFactory\HttpFactoryBundle::class => ['all' => true],
     // Dev
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     // Dev + Test

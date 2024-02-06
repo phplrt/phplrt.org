@@ -43,9 +43,6 @@ abstract readonly class UniversalUniqueId implements IdInterface
         return new static(Uuid::fromString($value));
     }
 
-    /**
-     * @param \DateTimeInterface $date
-     */
     public static function fromDate(\DateTimeInterface $date): static
     {
         return new static(Uuid::uuid7($date));
@@ -64,6 +61,14 @@ abstract readonly class UniversalUniqueId implements IdInterface
     public function toUuid(): UuidInterface
     {
         return Uuid::fromString($this->value);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function toString(): string
+    {
+        return $this->value;
     }
 
     /**

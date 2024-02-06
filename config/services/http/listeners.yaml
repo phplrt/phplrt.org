@@ -1,0 +1,31 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  #
+  # --------------------------------------------------------------------------
+  #   Request Listeners
+  # --------------------------------------------------------------------------
+  #
+
+  # ...
+
+  #
+  # --------------------------------------------------------------------------
+  #   Response Listeners
+  # --------------------------------------------------------------------------
+  #
+
+  App\Presentation\Response\Listener\ExceptionLoggerListener:
+    tags: [ { name: kernel.event_listener, priority: 1023 } ]
+
+  App\Presentation\Response\Listener\FailedResponseListener:
+    tags: [ { name: kernel.event_listener, priority: 1024 } ]
+
+  App\Presentation\Response\Listener\SuccessfulResponseListener:
+    arguments:
+      $default: '@Local\HttpFactory\Driver\JsonDriver'
+    tags: [ { name: kernel.event_listener, priority: 1 } ]
+

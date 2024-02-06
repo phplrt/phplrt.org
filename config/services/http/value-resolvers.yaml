@@ -1,0 +1,35 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  _instanceof:
+    Symfony\Component\HttpKernel\Controller\ValueResolverInterface:
+      tags: [ 'controller.argument_value_resolver' ]
+
+  # ----------------------------------------------------------------------------
+  #  Value Resolvers
+  # ----------------------------------------------------------------------------
+
+  App\Presentation\Request\ValueResolver\QueryDTOResolver: ~
+
+  App\Presentation\Request\ValueResolver\BodyDTOResolver:
+    arguments:
+      $default: '@Local\HttpFactory\Driver\JsonDriver'
+
+  app.request.query_dto_resolver:
+    class: App\Presentation\Request\ValueResolver\ValidatorAwareDTOResolver
+    arguments:
+      $resolver: '@App\Presentation\Request\ValueResolver\QueryDTOResolver'
+    tags:
+      - controller.argument_value_resolver:
+          priority: 150
+
+  app.request.body_dto_resolver:
+    class: App\Presentation\Request\ValueResolver\ValidatorAwareDTOResolver
+    arguments:
+      $resolver: '@App\Presentation\Request\ValueResolver\BodyDTOResolver'
+    tags:
+      - controller.argument_value_resolver:
+          priority: 150

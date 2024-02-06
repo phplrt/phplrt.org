@@ -1,15 +1,6 @@
 {
     "name": "local/content-renderer",
-    "license": "MIT",
     "type": "library",
-    "description": "Content polymorphic renderer",
-    "version": "1.0.0",
-    "authors": [
-        {
-            "name": "Kirill Nesmeyanov",
-            "email": "nesk@xakep.ru"
-        }
-    ],
     "require": {
         "php": "^8.1",
         "ext-simplexml": "*",
@@ -23,10 +14,20 @@
             "Local\\ContentRenderer\\": "src"
         }
     },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.49",
+        "phpunit/phpunit": "^10.5|^11.0",
+        "vimeo/psalm": "^5.21"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Local\\ContentRenderer\\Tests\\": "tests"
+        }
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev",
-            "dev-main": "1.x-dev"
+            "dev-master": "1.0.x-dev",
+            "dev-main": "1.0.x-dev"
         }
     },
     "config": {

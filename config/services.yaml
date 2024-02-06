@@ -14,8 +14,8 @@ services:
   # Controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class.
   #
-  App\Application\Controller\:
-    resource: '%kernel.project_dir%/app/Application/Controller/'
+  App\Presentation\Controller\:
+    resource: '%kernel.project_dir%/app/Presentation/Controller/'
     tags: [ 'controller.service_arguments' ]
 
   #
@@ -24,7 +24,7 @@ services:
   # --------------------------------------------------------------------------
   #
 
-  App\Application\Command\DocsUpdateCommand:
+  App\Presentation\Command\DocsUpdateCommand:
     tags:
       - { name: 'console.command' }
 
