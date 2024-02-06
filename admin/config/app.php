@@ -158,6 +158,7 @@ return [
         \Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
         \Illuminate\Cookie\CookieServiceProvider::class,
         \Illuminate\Database\DatabaseServiceProvider::class,
+        \Illuminate\Queue\QueueServiceProvider::class, // Laravel bug
         \Illuminate\Encryption\EncryptionServiceProvider::class,
         \Illuminate\Filesystem\FilesystemServiceProvider::class,
         \Illuminate\Foundation\Providers\FoundationServiceProvider::class,
