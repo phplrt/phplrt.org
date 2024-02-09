@@ -19,15 +19,15 @@ final class AdminMenuResource extends ModelResource
     public string $column = 'title';
 
     public array $with = [
-        'links',
+        'pages',
     ];
 
-    protected string $sortColumn = 'priority';
+    protected string $sortColumn = 'sorting_order';
     protected string $sortDirection = 'asc';
 
     public function title(): string
     {
-        return __('Categories');
+        return __('Menu');
     }
 
     public function search(): array
@@ -41,13 +41,10 @@ final class AdminMenuResource extends ModelResource
             Text::make(__('Title'), 'title')
                 ->sortable()
                 ->required(),
-            Number::make(__('Order'), 'priority')
+            Number::make(__('Order'), 'sorting_order')
                 ->sortable()
                 ->default(0),
-            HasMany::make(__('Menu'), 'links', resource: new AdminLinkResource())
-                ->fields([
-                    Text::make(__('Title'), 'title')
-                ])
+            HasMany::make(__('Pages'), 'pages', resource: new AdminPageResource())
                 ->creatable()
                 ->async(),
         ];
@@ -58,20 +55,22 @@ final class AdminMenuResource extends ModelResource
         return [
             ID::make()
                 ->hideOnIndex(),
-            Preview::make(__('Order'), 'priority')
+            Preview::make(__('Order'), 'sorting_order')
+                ->badge('gray')
+                ->sortable(),
+            Preview::make(__('Title'), 'title')
                 ->badge(function () {
                     return $this->item->getLabelColor() ?? 'gray';
                 })
                 ->sortable(),
-            Text::make(__('Title'), 'title')
-                ->sortable(),
             HasMany::make(
-                label: __('Menu'),
-                relationName: 'links',
-                resource: new AdminLinkResource(),
+                label: __('Items'),
+                relationName: 'pages',
+                resource: new AdminPageResource(),
             )
                 ->fields([
-                    Text::make(__('Items'), 'title')
+                    Text::make(__('Title'), 'title'),
+                    Text::make(__('Url'), 'url'),
                 ]),
             Date::make(__('Created At'), 'created_at')
                 ->hideOnIndex(),

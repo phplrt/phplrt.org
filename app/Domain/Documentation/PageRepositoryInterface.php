@@ -11,8 +11,5 @@ use Doctrine\Persistence\ObjectRepository;
  */
 interface PageRepositoryInterface extends ObjectRepository
 {
-    /**
-     * @param string $path
-     */
     public function findByPath(string $path): ?Page;
 }

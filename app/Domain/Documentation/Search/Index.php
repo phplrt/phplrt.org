@@ -2,6 +2,7 @@
 
 namespace App\Domain\Documentation\Search;
 
+use App\Domain\Documentation\Document;
 use App\Domain\Documentation\Page;
 use App\Domain\Shared\CreatedDateProvider;
 use App\Domain\Shared\CreatedDateProviderInterface;
@@ -30,15 +31,18 @@ class Index implements
     #[ORM\Column(type: 'integer')]
     private int $level;
 
-    #[ORM\ManyToOne(targetEntity: Page::class, fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Document::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id', nullable: false)]
-    private Page $page;
+    private Document $document;
 
-    public function __construct(string $title, Page $page, int $level = 0)
-    {
+    public function __construct(
+        string $title,
+        Document $document,
+        int $level = 0,
+    ) {
         $this->id = IndexId::fromNamespace(static::class);
         $this->title = $title;
-        $this->page = $page;
+        $this->document = $document;
         $this->level = $level;
     }
 
@@ -60,9 +64,9 @@ class Index implements
         $this->level = $level;
     }
 
-    public function getPage(): Page
+    public function getDocument(): Document
     {
-        return $this->page;
+        return $this->document;
     }
 
     public function getTitle(): string

@@ -217,6 +217,7 @@
 
   &-content {
     flex: 1 1 auto;
+    min-height: 100vh;
 
     &-text {
       min-width: 650px;
@@ -225,6 +226,13 @@
       padding: 25px 50px 50px 50px;
       line-height: 30px;
       font-size: 19px;
+      min-height: calc(100vh - 220px);
+
+      h1.not-found {
+        text-align: center;
+        display: inline-block;
+        height: 100%;
+      }
 
       p {
         margin: 24px 0;

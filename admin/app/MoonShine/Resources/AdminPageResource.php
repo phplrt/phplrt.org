@@ -6,7 +6,9 @@ namespace Admin\MoonShine\Resources;
 
 use Admin\Models\AdminPage;
 use Admin\MoonShine\Fields\Markdown;
+use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
+use MoonShine\Fields\Number;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\Relationships\BelongsTo;
 use MoonShine\Fields\Text;
@@ -18,7 +20,7 @@ final class AdminPageResource extends ModelResource
     public string $column = 'title';
 
     public array $with = [
-        'link.menu',
+        'menu',
     ];
 
     protected string $sortColumn = 'url';
@@ -32,13 +34,13 @@ final class AdminPageResource extends ModelResource
     public function formFields(): array
     {
         return [
-            BelongsTo::make(
-                label: __('Menu'),
-                relationName: 'link',
-                resource: new AdminLinkResource(),
-            )
-                ->sortable()
-                ->nullable(),
+            ID::make(),
+            Block::make([
+                BelongsTo::make(__('Menu'), 'menu', resource: new AdminMenuResource()),
+                Number::make(__('Order'), 'sorting_order')
+                    ->min(0)
+                    ->default(0),
+            ]),
             Text::make(__('Title'), 'title')
                 ->sortable()
                 ->required(),
@@ -54,23 +56,20 @@ final class AdminPageResource extends ModelResource
         return [
             ID::make()
                 ->hideOnIndex(),
+            Preview::make(__('Order'), 'sorting_order')
+                ->badge('gray')
+                ->sortable(),
             Text::make(__('Title'), 'title')
                 ->sortable()
                 ->required(),
             Text::make(__('Url'), 'url')
                 ->sortable()
                 ->required(),
-            Preview::make(__('Menu'), 'link.title', function () {
-                return $this->item?->link?->title ?? '<unknown>';
+            Preview::make(__('Menu'), 'menu.title', function () {
+                return $this->item?->menu?->title ?? '<unknown>';
             })
                 ->badge(function () {
-                    return $this->item?->link?->menu?->getLabelSecondaryColor() ?? 'gray';
-                }),
-            Preview::make(__('Category'), 'link.menu.title', function () {
-                return $this->item?->link?->menu?->title ?? '<unknown>';
-            })
-                ->badge(function () {
-                    return $this->item?->link?->menu?->getLabelColor() ?? 'gray';
+                    return $this->item?->menu?->getLabelSecondaryColor() ?? 'gray';
                 }),
         ];
     }

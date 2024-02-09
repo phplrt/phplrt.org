@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Domain\Documentation;
 
-use App\Domain\Documentation\Menu\ExternalLink;
-use App\Domain\Documentation\Menu\PageLink;
 use Doctrine\Persistence\ObjectManager;
 
-final class Synchronizer
+final readonly class Synchronizer
 {
     /**
      * @psalm-taint-sink file $directory
      * @param non-empty-string $directory
      */
     public function __construct(
-        private readonly string $directory,
-        private readonly MenuRepositoryInterface $menus,
-        private readonly PageRepositoryInterface $pages,
-        private readonly ObjectManager $em,
+        private string $directory,
+        private MenuRepositoryInterface $menus,
+        private PageRepositoryInterface $pages,
+        private ObjectManager $em,
     ) {}
 
     public function truncate(): void
@@ -36,36 +34,20 @@ final class Synchronizer
 
     public function sync(): void
     {
-        $menuPriority = 0;
-        foreach ($this->getManifest() as $menuTitle => $items) {
-            // Skip non-named items
-            if ($menuTitle === '') {
-                return;
-            }
-
-            $menu = $this->menus->findOneBy(['title' => $menuTitle])
-                ?? new Menu($menuTitle);
-            $menu->setPriority($menuPriority++);
+        $menuOrder = 0;
+        foreach ($this->getManifest() as $category => $pages) {
+            $menu = new Menu($category);
+            $menu->setOrder($menuOrder++);
 
             $this->em->persist($menu);
             $this->em->flush();
 
-            $linkPriority = 0;
-            foreach ($items as $linkTitle => $linkPath) {
-                $page = $this->fetchPage($linkTitle, $linkPath);
+            $pageOrder = 0;
+            foreach ($pages as $title => $path) {
+                $page = $this->getPageByPath($menu, $title, $path);
+                $page->setOrder($pageOrder++);
 
-                if ($page !== null) {
-                    $this->em->persist($page);
-                    $this->em->flush();
-                }
-
-                $link = $page === null
-                    ? new ExternalLink($menu, $linkTitle, $linkPath)
-                    : new PageLink($page, $menu, $linkTitle)
-                ;
-                $link->setPriority($linkPriority++);
-
-                $this->em->persist($link);
+                $this->em->persist($page);
                 $this->em->flush();
             }
         }
@@ -73,6 +55,10 @@ final class Synchronizer
         $this->em->flush();
     }
 
+    /**
+     * @return array<non-empty-string, array<non-empty-string, non-empty-string>>
+     * @throws \JsonException
+     */
     private function getManifest(): array
     {
         $pathname = $this->directory . '/manifest.json';
@@ -83,19 +69,19 @@ final class Synchronizer
 
         $contents = \file_get_contents($pathname);
 
+        /** @var array<non-empty-string, array<non-empty-string, non-empty-string>> */
         return (array) \json_decode($contents, true, 512, \JSON_THROW_ON_ERROR);
     }
 
-    private function fetchPage(string $title, string $path): ?Page
+    private function getPageByPath(Menu $menu, string $title, string $path): Page
     {
         $pathname = $this->directory . '/' . $path . '.md';
 
         if (!\is_file($pathname)) {
-            return null;
+            return new Link($menu, $path, $title);
         }
 
-        $page = $this->pages->findByPath($path)
-            ?? new Page($title, $path);
+        $page = new Document($menu, $path, $title);
 
         $content = $page->getContent();
         $content->update(\file_get_contents($pathname));

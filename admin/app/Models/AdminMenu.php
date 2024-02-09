@@ -17,10 +17,6 @@ final class AdminMenu extends Model
 
     public $incrementing = false;
 
-    protected $with = [
-        'links',
-    ];
-
     protected $casts = [
         'id' => 'string',
     ];
@@ -51,10 +47,10 @@ final class AdminMenu extends Model
         return $this->getLabelColor(['purple', 'pink', 'blue', 'green', 'yellow', 'red']);
     }
 
-    public function links(): HasMany
+    public function pages(): HasMany
     {
         return $this->hasMany(
-            related: AdminLink::class,
+            related: AdminPage::class,
             foreignKey: 'menu_id',
             localKey: 'id',
         );

@@ -1,6 +1,12 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{% apply spaceless %}
+    {% if page.title is defined %}
+        {{ page.title }}
+    {% else %}
+        Not Found
+    {% endif %}
+{% endapply %}{% endblock %}
 
 {% block content %}
     <main class="documentation">
@@ -22,7 +28,11 @@
             {% include "partials/header.html.twig" with {'page': 'docs'} %}
 
             <article class="documentation-content-text">
-                {{ page.content | raw }}
+                {% if page %}
+                    {{ page.content | raw }}
+                {% else %}
+                    <h1 class="not-found">Page Not Found</h1>
+                {% endif %}
             </article>
 
             {% include "partials/footer.html.twig" %}

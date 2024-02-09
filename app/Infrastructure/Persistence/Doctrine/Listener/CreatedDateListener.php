@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Doctrine\Listener;
 
 use App\Domain\Shared\CreatedDateProviderInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Psr\Clock\ClockInterface;
 
@@ -14,6 +16,7 @@ use Psr\Clock\ClockInterface;
  * from the {@see ClockInterface} implementation of the interface before
  * SAVING data to the database.
  */
+#[AsDoctrineListener(event: Events::prePersist)]
 final readonly class CreatedDateListener
 {
     public function __construct(

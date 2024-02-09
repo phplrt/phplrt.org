@@ -29,7 +29,7 @@ final readonly class SearchItemTransformer extends ResponseTransformer
     {
         assert($entry instanceof Index);
 
-        $page = $entry->getPage();
+        $page = $entry->getDocument();
 
         return new SearchItemResponseDTO(
             page: $page->getTitle(),

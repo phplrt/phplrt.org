@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class AdminPage extends Model
 {
-    protected $table = 'documentation';
+    protected $table = 'pages';
 
     protected $keyType = 'string';
 
@@ -29,12 +29,12 @@ final class AdminPage extends Model
         });
     }
 
-    public function link(): BelongsTo
+    public function menu(): BelongsTo
     {
         return $this->belongsTo(
-            related: AdminLink::class,
-            foreignKey: 'id',
-            ownerKey: 'page_id',
+            related: AdminMenu::class,
+            foreignKey: 'menu_id',
+            ownerKey: 'id',
         );
     }
 }

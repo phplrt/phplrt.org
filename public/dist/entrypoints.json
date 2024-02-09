@@ -6,13 +6,13 @@
         "/dist/app.85a051cc.js"
       ],
       "css": [
-        "/dist/app.a4f4ccc2.css"
+        "/dist/app.2e7e40ca.css"
       ]
     }
   },
   "integrity": {
     "/dist/460.7d96f24e.js": "sha384-+lX1Sr8RlmHr1aQt9eW1RhsZ838YulNYKlCwgXr42cZZOJ6QFmSjZPX+NXuKI316",
     "/dist/app.85a051cc.js": "sha384-ccqAlNHwngR+9N8RytNRk5LFYPGazphjxwoDn8KV5uOlzEfcpN6Pzohn/eqEZs5D",
-    "/dist/app.a4f4ccc2.css": "sha384-9MPVisC5p8jqv5tH3l+AUf/5zDRc6HT1ZDlc9+NQk5zRFIeDnvgX4j1Q2eknx7OL"
+    "/dist/app.2e7e40ca.css": "sha384-I58b4O0ZbdyiZsmAqda9BEk7KsdpcuDh9VJsuCTwuX4ClLMQMPsgymB07TOo5Ujq"
   }
 }

@@ -2,20 +2,24 @@
 
 namespace App\Domain\Documentation;
 
-use App\Domain\Documentation\Menu\PageLink;
-use App\Domain\Documentation\Search\Index;
 use App\Domain\Shared\CreatedDateProvider;
 use App\Domain\Shared\CreatedDateProviderInterface;
 use App\Domain\Shared\IdentifiableInterface;
 use App\Domain\Shared\UpdatedDateProvider;
 use App\Domain\Shared\UpdatedDateProviderInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity, ORM\Table(name: 'documentation')]
-#[ORM\Index(columns: ['url'], name: 'documentation_url_idx')]
-class Page implements
+#[ORM\Entity]
+#[ORM\Table(name: 'pages')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([
+    'document' => Document::class,
+    'link' => Link::class,
+])]
+#[ORM\Index(columns: ['url'], name: 'page_url_idx')]
+#[ORM\Index(columns: ['sorting_order'], name: 'page_sorting_order_idx')]
+abstract class Page implements
     IdentifiableInterface,
     CreatedDateProviderInterface,
     UpdatedDateProviderInterface
@@ -23,109 +27,101 @@ class Page implements
     use CreatedDateProvider;
     use UpdatedDateProvider;
 
+    /**
+     * @psalm-readonly-allow-private-mutation
+     */
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: PageId::class)]
     private PageId $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $title;
-
+    /**
+     * @psalm-readonly-allow-private-mutation
+     */
     #[ORM\Column(type: 'string', length: 255)]
     private string $url;
 
-    #[ORM\Embedded(class: Content::class, columnPrefix: 'content_')]
-    private Content $content;
-
     /**
-     * @var Collection<PageLink>
+     * @psalm-readonly-allow-private-mutation
      */
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageLink::class, cascade: ['ALL'])]
-    private Collection $links;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $title;
 
     /**
-     * @param non-empty-string $title
+     * @var int<0, 32767>
+     */
+    #[ORM\Column(name: 'sorting_order', type: 'smallint')]
+    private int $order = 0;
+
+    /**
+     * @psalm-readonly-allow-private-mutation
+     */
+    #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'pages')]
+    #[ORM\JoinColumn(name: 'menu_id', referencedColumnName: 'id')]
+    private Menu $menu;
+
+    /**
      * @param non-empty-string $url
      */
     public function __construct(
-        string $title,
+        Menu $menu,
         string $url,
-        string|\Stringable $content = ''
+        string $title,
+        ?PageId $id = null,
     ) {
-        $this->id = PageId::fromNamespace(static::class);
-        $this->title = $title;
+        $this->menu = $menu;
         $this->url = $url;
-        $this->links = new ArrayCollection();
+        $this->title = $title;
+        $this->id = $id ?? PageId::fromNamespace(static::class);
 
-        if (!$content instanceof Content) {
-            $content = new Content((string) $content);
+
+        $pages = $menu->getPages();
+        if (!$pages->contains($this)) {
+            $pages->add($this);
         }
-
-        $this->content = $content;
-    }
-
-    public function findFirstLink(): ?PageLink
-    {
-        foreach ($this->links as $link) {
-            return $link;
-        }
-
-        return null;
     }
 
     /**
-     * @return iterable<PageLink>
+     * @api
      */
-    public function getLinks(): iterable
-    {
-        return $this->links;
-    }
-
-    public function removeLink(PageLink $link): void
-    {
-        $this->links->removeElement($link);
-    }
-
-    /**
-     * @param iterable<PageLink> $links
-     */
-    public function setLinks(iterable $links): void
-    {
-        $this->links->clear();
-
-        foreach ($links as $link) {
-            $this->addLink($link);
-        }
-    }
-
-    public function addLink(PageLink $link): void
-    {
-        if (!$this->links->contains($link)) {
-            if ($link->getPage() !== $this) {
-                throw new \InvalidArgumentException('PageLink must contain relation to valid Page');
-            }
-
-            $this->links->add($link);
-        }
-    }
-
     public function getId(): PageId
     {
         return $this->id;
     }
 
-    public function getTitle(): string
+    /**
+     * @api
+     */
+    public function getMenu(): Menu
     {
-        return $this->title;
+        return $this->menu;
     }
 
+    /**
+     * @api
+     */
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function getContent(): Content
+    /**
+     * @api
+     */
+    public function getTitle(): string
     {
-        return $this->content;
+        return $this->title;
     }
+
+    /**
+     * @param int<0, 32767> $value
+     */
+    public function setOrder(int $value): void
+    {
+        $this->order = $value;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    abstract public function getType(): string;
 }

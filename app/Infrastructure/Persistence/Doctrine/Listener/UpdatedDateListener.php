@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Doctrine\Listener;
 
 use App\Domain\Shared\UpdatedDateProviderInterface;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Psr\Clock\ClockInterface;
 
@@ -13,6 +15,7 @@ use Psr\Clock\ClockInterface;
  * UPDATE data in the database will also update its update date using the system
  * date returned from the interface's {@see ClockInterface} implementation.
  */
+#[AsDoctrineListener(event: Events::preUpdate)]
 final readonly class UpdatedDateListener
 {
     public function __construct(

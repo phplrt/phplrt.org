@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Subscriber;
 
+use App\Domain\Documentation\Document;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Local\ContentRenderer\ContentRendererInterface;
-use App\Domain\Documentation\Page;
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
@@ -32,7 +31,7 @@ final readonly class RenderPageSubscriber
 
     private function render(object $entity): void
     {
-        if ($entity instanceof Page) {
+        if ($entity instanceof Document) {
             $content = $entity->getContent();
 
             if (!$content->isRendered()) {

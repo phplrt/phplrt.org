@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Admin\Providers;
 
 use Admin\MoonShine\Resources\AdminPageResource;
-use Admin\MoonShine\Resources\AdminLinkResource;
 use Admin\MoonShine\Resources\AdminMenuResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\Menu\MenuGroup;
@@ -29,14 +28,9 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     {
         return [
             MenuItem::make(
-                label: __('Categories'),
+                label: __('Menu'),
                 filler: new AdminMenuResource(),
                 icon: 'heroicons.list-bullet',
-            ),
-            MenuItem::make(
-                label: __('Menu'),
-                filler: new AdminLinkResource(),
-                icon: 'heroicons.bars-3-bottom-right',
             ),
             MenuItem::make(
                 label: __('Documentation'),

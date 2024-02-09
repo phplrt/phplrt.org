@@ -2,7 +2,6 @@
 
 namespace App\Domain\Documentation;
 
-use App\Domain\Documentation\Menu\Link;
 use App\Domain\Shared\CreatedDateProvider;
 use App\Domain\Shared\CreatedDateProviderInterface;
 use App\Domain\Shared\IdentifiableInterface;
@@ -13,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'menu')]
-#[ORM\Index(columns: ['priority'], name: 'menu_priority_idx')]
+#[ORM\Index(columns: ['sorting_order'], name: 'menu_sorting_order_idx')]
 class Menu implements
     IdentifiableInterface,
     CreatedDateProviderInterface,
@@ -23,7 +22,6 @@ class Menu implements
     use UpdatedDateProvider;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: MenuId::class)]
     private MenuId $id;
 
@@ -36,14 +34,15 @@ class Menu implements
     /**
      * @var int<0, 32767>
      */
-    #[ORM\Column(type: 'smallint')]
-    private int $priority = 0;
+    #[ORM\Column(name: 'sorting_order', type: 'smallint')]
+    private int $order = 0;
 
     /**
-     * @var Collection<Link>
+     * @var Collection<array-key, Document>
      */
-    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: Link::class, cascade: ['ALL'], fetch: 'EAGER', orphanRemoval: true)]
-    private Collection $links;
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: Page::class, cascade: ['ALL'], fetch: 'EAGER')]
+    #[ORM\OrderBy(['sorting_order' => 'ASC'])]
+    private Collection $pages;
 
     /**
      * @param non-empty-string $title
@@ -52,48 +51,20 @@ class Menu implements
     {
         $this->id = MenuId::fromNamespace(static::class);
         $this->title = $title;
-        $this->links = new ArrayCollection();
-    }
-
-    /**
-     * @return iterable<Link>
-     */
-    public function getLinks(): iterable
-    {
-        return $this->links;
-    }
-
-    public function removeLink(Link $link): void
-    {
-        $this->links->removeElement($link);
-    }
-
-    /**
-     * @param iterable<Link> $links
-     */
-    public function setLinks(iterable $links): void
-    {
-        $this->links->clear();
-
-        foreach ($links as $link) {
-            if ($link->getMenu() !== $this) {
-                throw new \InvalidArgumentException('Link must contain relation to valid Menu');
-            }
-
-            $this->addLink($link);
-        }
-    }
-
-    public function addLink(Link $link): void
-    {
-        if (!$this->links->contains($link)) {
-            $this->links->add($link);
-        }
+        $this->pages = new ArrayCollection();
     }
 
     public function getId(): MenuId
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<array-key, Document>
+     */
+    public function getPages(): Collection
+    {
+        return $this->pages;
     }
 
     /**
@@ -115,18 +86,10 @@ class Menu implements
     }
 
     /**
-     * @return int<0, 32767>
-     */
-    public function getPriority(): int
-    {
-        return $this->priority;
-    }
-
-    /**
      * @param int<0, 32767> $value
      */
-    public function setPriority(int $value): void
+    public function setOrder(int $value): void
     {
-        $this->priority = $value;
+        $this->order = $value;
     }
 }

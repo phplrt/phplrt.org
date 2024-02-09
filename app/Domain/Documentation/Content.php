@@ -16,8 +16,10 @@ class Content implements ValueObjectInterface
     #[ORM\Column(name: 'rendered', type: 'text', nullable: true)]
     protected ?string $rendered = null;
 
-    public function __construct(string|\Stringable $content = '', string|\Stringable|null $html = null)
-    {
+    public function __construct(
+        string|\Stringable $content = '',
+        string|\Stringable|null $html = null,
+    ) {
         $this->update($content, $html);
     }
 
@@ -32,7 +34,7 @@ class Content implements ValueObjectInterface
         $this->source = (string) $content;
     }
 
-    public function same(ValueObjectInterface $object): bool
+    public function equals(ValueObjectInterface $object): bool
     {
         return $object === $this
             || ($object instanceof static && $object->source === $this->source);

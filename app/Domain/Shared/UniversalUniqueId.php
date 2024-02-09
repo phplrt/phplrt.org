@@ -7,6 +7,9 @@ namespace App\Domain\Shared;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * @psalm-consistent-constructor
+ */
 abstract readonly class UniversalUniqueId implements IdInterface
 {
     /**
@@ -17,14 +20,9 @@ abstract readonly class UniversalUniqueId implements IdInterface
     /**
      * @param non-empty-string|\Stringable $value
      */
-    final public function __construct(string|\Stringable $value)
+    public function __construct(string|\Stringable $value)
     {
         $this->value = (string) $value;
-    }
-
-    public static function new(): static
-    {
-        return new static(Uuid::uuid4());
     }
 
     /**
@@ -33,29 +31,6 @@ abstract readonly class UniversalUniqueId implements IdInterface
     public static function fromNamespace(string $namespace): static
     {
         return new static(Uuid::uuid5(Uuid::uuid4(), $namespace));
-    }
-
-    /**
-     * @param non-empty-string $value
-     */
-    public static function fromString(string $value): static
-    {
-        return new static(Uuid::fromString($value));
-    }
-
-    public static function fromDate(\DateTimeInterface $date): static
-    {
-        return new static(Uuid::uuid7($date));
-    }
-
-    public static function nil(): static
-    {
-        return new static(Uuid::NIL);
-    }
-
-    public static function max(): static
-    {
-        return new static(Uuid::MAX);
     }
 
     public function toUuid(): UuidInterface
@@ -79,9 +54,10 @@ abstract readonly class UniversalUniqueId implements IdInterface
         return $this->value;
     }
 
-    public function same(ValueObjectInterface $object): bool
+    public function equals(ValueObjectInterface $object): bool
     {
-        return $this->value === (string) $object;
+        return $this === $object
+            || ($object instanceof static && $this->value === (string) $object);
     }
 
     public function __toString(): string

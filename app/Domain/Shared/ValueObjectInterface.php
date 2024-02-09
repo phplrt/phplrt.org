@@ -7,13 +7,14 @@ namespace App\Domain\Shared;
 interface ValueObjectInterface extends \Stringable
 {
     /**
-     * @param self $object
-     *
-     * @return bool
+     * Returns {@see true} if the object is equal to the given
+     * object and {@see false} otherwise.
      */
-    public function same(self $object): bool;
+    public function equals(self $object): bool;
 
     /**
+     * Returns a string representation of the object.
+     *
      * @return non-empty-string
      */
     public function __toString(): string;

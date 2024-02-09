@@ -55,6 +55,10 @@ RUN docker-php-ext-install sockets
 RUN docker-php-ext-install pdo_pgsql && \
     docker-php-ext-enable pdo_pgsql
 
+# 10. Xdebug
+RUN pecl install xdebug && \
+    docker-php-ext-enable xdebug
+
 # ------------------------------------------------------------------------------
 # Cleanup Dependencies
 # ------------------------------------------------------------------------------
@@ -62,4 +66,5 @@ RUN docker-php-ext-install pdo_pgsql && \
 RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
     && ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
-USER 1000:1000
+RUN useradd -u 1000 -m phplrt
+USER phplrt

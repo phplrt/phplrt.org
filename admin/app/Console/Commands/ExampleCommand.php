@@ -14,7 +14,7 @@ final class ExampleCommand extends Command
     public function handle(): void
     {
         foreach (AdminMenu::all() as $item) {
-            dump($item->links()->getQuery()->ddRawSql());
+            dump($item->pages()->getQuery()->ddRawSql());
         }
     }
 }

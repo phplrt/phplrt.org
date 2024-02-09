@@ -1,23 +1,23 @@
-{% for item in menu %}
+{% for category in menu %}
     <a href="#" data-bind="
-        click: function() { toggle('{{ item.id }}') },
-        css: { active: menu('{{ item.id }}') }
+        click: function() { toggle('{{ category.id }}') },
+        css: { active: menu('{{ category.id }}') }
     " class="documentation-menu-title active">
-        {{ item.title }}
+        {{ category.title }}
     </a>
     <ul class="documentation-menu-child visible" style="opacity: 0" data-bind="
-        css: { visible: menu('{{ item.id }}') },
+        css: { visible: menu('{{ category.id }}') },
         style: { opacity: 1 }
     ">
-        {% for child in item.links %}
-            {% if child.isPage %}
+        {% for page in category.pages %}
+            {% if page.type == "document" %}
                 <li>
-                    <a href="/docs/{{ child.url }}"
-                       class="{% if child.url == current %}active{% endif %}">{{ child.title }}</a>
+                    <a href="/docs/{{ page.url }}"
+                       class="{% if page.url == current %}active{% endif %}">{{ page.title }}</a>
                 </li>
             {% else %}
                 <li>
-                    <a href="{{ child.url }}" target="_blank" rel="nofollow">{{ child.title }}</a>
+                    <a href="{{ page.url }}" target="_blank" rel="nofollow">{{ page.title }}</a>
                 </li>
             {% endif %}
         {% endfor %}

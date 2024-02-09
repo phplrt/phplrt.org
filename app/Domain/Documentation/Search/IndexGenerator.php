@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Documentation\Search;
 
+use App\Domain\Documentation\Document;
 use App\Domain\Documentation\Page;
 use App\Domain\Documentation\PageRepositoryInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -28,6 +29,10 @@ final readonly class IndexGenerator
     public function sync(): void
     {
         foreach ($this->pages->findAll() as $page) {
+            if (!$page instanceof Document) {
+                continue;
+            }
+
             foreach ($this->analyze($page) as $level => $title) {
                 $index = new Index($title, $page, $level);
                 $index->setLevel($level);

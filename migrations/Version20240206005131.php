@@ -11,7 +11,7 @@ final class Version20240206005131 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Admin migrations';
+        return 'Moonshine admin migrations';
     }
 
     public function up(Schema $schema): void

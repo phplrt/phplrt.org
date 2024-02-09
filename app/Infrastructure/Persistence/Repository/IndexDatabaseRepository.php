@@ -41,7 +41,7 @@ class IndexDatabaseRepository extends DatabaseRepository implements IndexReposit
         }
 
         return $builder
-            ->leftJoin('idx.page', 'page', Join::ON)
+            ->leftJoin('idx.document', 'page', Join::ON)
             ->orderBy('idx.level')
             //->groupBy('idx.page')
             ->setMaxResults($limit)

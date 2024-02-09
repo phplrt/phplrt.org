@@ -7,11 +7,11 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20230731193008 extends AbstractMigration
+final class Version20240206221128 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Create "menu" table';
+        return 'Create menus table';
     }
 
     public function up(Schema $schema): void
@@ -19,13 +19,13 @@ final class Version20230731193008 extends AbstractMigration
         $this->addSql('CREATE TABLE menu (
             id UUID NOT NULL,
             title VARCHAR(255) NOT NULL,
-            priority SMALLINT NOT NULL CHECK (priority >= 0),
-            created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL DEFAULT NOW(),
+            sorting_order SMALLINT NOT NULL DEFAULT 0,
+            created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL,
             updated_at TIMESTAMP(0) WITH TIME ZONE DEFAULT NULL,
             PRIMARY KEY(id)
         )');
 
-        $this->addSql('CREATE INDEX menu_priority_idx ON menu (priority ASC NULLS FIRST)');
+        $this->addSql('CREATE INDEX menu_sorting_order_idx ON menu (sorting_order)');
 
         $this->addSql('COMMENT ON COLUMN menu.id IS \'(DC2Type:App\\Domain\\Documentation\\MenuId)\'');
         $this->addSql('COMMENT ON COLUMN menu.created_at IS \'(DC2Type:datetimetz_immutable)\'');
@@ -34,7 +34,6 @@ final class Version20230731193008 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP INDEX menu_priority_idx');
         $this->addSql('DROP TABLE menu');
     }
 }

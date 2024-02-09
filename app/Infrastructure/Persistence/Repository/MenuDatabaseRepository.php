@@ -18,6 +18,6 @@ class MenuDatabaseRepository extends DatabaseRepository implements MenuRepositor
 
     public function findAll(): iterable
     {
-        return $this->findBy([], ['priority' => 'ASC']);
+        return $this->findBy([], ['order' => 'ASC']);
     }
 }

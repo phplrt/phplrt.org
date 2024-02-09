@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Presentation\Controller\Web\Documentation;
 
+use App\Domain\Documentation\Link;
 use App\Domain\Documentation\MenuRepositoryInterface;
-use App\Domain\Documentation\NotFound;
 use App\Domain\Documentation\PageRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,10 +24,14 @@ final readonly class ShowController
     {
         $page = $this->docs->findByPath($path);
 
+        if ($page instanceof Link) {
+            $page = null;
+        }
+
         $result = $this->view->render('page/docs.html.twig', [
-            'menu'    => $this->menu->findAll(),
+            'menu' => $this->menu->findAll(),
             'current' => $path,
-            'page'    => $page ?? new NotFound(),
+            'page'=> $page,
         ]);
 
         return new Response($result, $page ? 200 : 404);
