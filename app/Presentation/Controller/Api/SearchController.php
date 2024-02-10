@@ -21,7 +21,7 @@ final readonly class SearchController
 
     public function __invoke(#[Body] SearchRequestDTO $dto): array
     {
-        if (\strlen($dto->query) > 256) {
+        if (\strlen($dto->query) > 64) {
             throw new BadRequestHttpException('Request query is too long');
         }
 
