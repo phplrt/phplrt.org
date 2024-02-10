@@ -25,11 +25,11 @@ final readonly class MathController
     {
         $stream = $request->getContent(true);
 
-        $expression = \fread($stream, 1024);
+        $expression = \fread($stream, 256);
 
-        if (\is_string(\fread($stream, 1))) {
+        if (!\in_array(\fread($stream, 1), ['', false], true)) {
             $result = $this->view->render('page/home/highlight-error.html.twig', [
-                'message' => 'Request too looooooooong :3',
+                'message' => 'Wow! You have such a big request! 🙈',
             ]);
 
             return new Response($result, Response::HTTP_REQUEST_URI_TOO_LONG);
