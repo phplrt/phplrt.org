@@ -23,9 +23,21 @@ final readonly class MathController
 
     public function __invoke(MathParser $parser, AstDumper $dumper, Request $request): Response
     {
+        $stream = $request->getContent(true);
+
+        $expression = \fread($stream, 1024);
+
+        if (\is_string(\fread($stream, 1))) {
+            $result = $this->view->render('page/home/highlight-error.html.twig', [
+                'message' => 'Request too looooooooong :3',
+            ]);
+
+            return new Response($result, Response::HTTP_REQUEST_URI_TOO_LONG);
+        }
+
         try {
             /** @var Expression $ast */
-            $ast = $parser->parse((string) $request->getContent());
+            $ast = $parser->parse($expression);
 
             $result = $this->view->render('page/home/highlight.html.twig', [
                 'code' => $dumper->highlight($this->hl, $ast, 'Local\\MathParser'),
