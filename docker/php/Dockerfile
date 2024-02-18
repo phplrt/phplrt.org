@@ -5,8 +5,6 @@ WORKDIR "/home/phplrt/phplrt.org"
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update
-
 # ------------------------------------------------------------------------------
 # Install Dependencies
 # ------------------------------------------------------------------------------
