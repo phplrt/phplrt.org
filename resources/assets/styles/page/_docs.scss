@@ -190,7 +190,7 @@
           overflow: hidden;
           font-size: .9em;
           max-height: 0;
-          transition: max-height .1s ease-out;
+          transition: max-height .2s ease-out;
 
           a {
             padding-left: 10px;
@@ -209,7 +209,7 @@
           }
 
           &.visible {
-            max-height: 200px;
+            max-height: 300px;
           }
         }
       }
