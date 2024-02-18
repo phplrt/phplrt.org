@@ -8,7 +8,7 @@ export default class Application {
         for (let node of nodes) {
             let vm = require(`../vm/${node.getAttribute('data-vm')}.js`).default;
 
-            ko.applyBindings(new vm(), node);
+            ko.applyBindings(new vm(node), node);
         }
     }
 }

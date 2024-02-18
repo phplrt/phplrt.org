@@ -27,7 +27,7 @@
         <section class="documentation-content">
             {% include "partials/header.html.twig" with {'page': 'docs'} %}
 
-            <article class="documentation-content-text">
+            <article class="documentation-content-text" data-vm="ContentViewModel">
                 {% if page %}
                     {{ page.content | raw }}
                 {% else %}

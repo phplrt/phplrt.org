@@ -484,16 +484,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.8.1",
+            "version": "3.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "c9ea252cdce4da324ede3d6c5913dd89f769afd2"
+                "reference": "a19a1d05ca211f41089dffcc387733a6875196cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c9ea252cdce4da324ede3d6c5913dd89f769afd2",
-                "reference": "c9ea252cdce4da324ede3d6c5913dd89f769afd2",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/a19a1d05ca211f41089dffcc387733a6875196cb",
+                "reference": "a19a1d05ca211f41089dffcc387733a6875196cb",
                 "shasum": ""
             },
             "require": {
@@ -577,7 +577,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.8.1"
+                "source": "https://github.com/doctrine/dbal/tree/3.8.2"
             },
             "funding": [
                 {
@@ -593,7 +593,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-03T17:33:49+00:00"
+            "time": "2024-02-12T18:36:36+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -644,16 +644,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.11.2",
+            "version": "2.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "fb22c9320383caa2829c32dc3b84c1b5e0f1ceaf"
+                "reference": "492725310ae9a1b5b20d6ae09fb5ae6404616e68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/fb22c9320383caa2829c32dc3b84c1b5e0f1ceaf",
-                "reference": "fb22c9320383caa2829c32dc3b84c1b5e0f1ceaf",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/492725310ae9a1b5b20d6ae09fb5ae6404616e68",
+                "reference": "492725310ae9a1b5b20d6ae09fb5ae6404616e68",
                 "shasum": ""
             },
             "require": {
@@ -743,7 +743,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.11.2"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.11.3"
             },
             "funding": [
                 {
@@ -759,7 +759,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-06T15:41:25+00:00"
+            "time": "2024-02-10T20:56:20+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -2525,16 +2525,16 @@
         },
         {
             "name": "phplrt/phplrt",
-            "version": "3.5.2",
+            "version": "3.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phplrt/phplrt.git",
-                "reference": "34bd7ce01bba3caa13368e468b86baacb7745463"
+                "reference": "8264c08b91ad247c6eb995452f84b53fdd433072"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phplrt/phplrt/zipball/34bd7ce01bba3caa13368e468b86baacb7745463",
-                "reference": "34bd7ce01bba3caa13368e468b86baacb7745463",
+                "url": "https://api.github.com/repos/phplrt/phplrt/zipball/8264c08b91ad247c6eb995452f84b53fdd433072",
+                "reference": "8264c08b91ad247c6eb995452f84b53fdd433072",
                 "shasum": ""
             },
             "require": {
@@ -2542,16 +2542,16 @@
                 "ext-mbstring": "*",
                 "ext-pcre": "*",
                 "ext-spl": "*",
-                "laminas/laminas-code": "^4.0",
-                "php": "^8.1",
-                "symfony/deprecation-contracts": "^2.5|^3.0"
+                "php": "^7.4|^8.0",
+                "symfony/deprecation-contracts": "^2.5|^3.0",
+                "symfony/polyfill-php80": "^1.29"
             },
             "provide": {
-                "phplrt/exception-contracts-implementation": "^3.4",
-                "phplrt/lexer-contracts-implementation": "^3.4",
-                "phplrt/parser-contracts-implementation": "^3.4",
-                "phplrt/position-contracts-implementation": "^3.4",
-                "phplrt/source-contracts-implementation": "^3.4"
+                "phplrt/exception-contracts-implementation": "^3.6",
+                "phplrt/lexer-contracts-implementation": "^3.6",
+                "phplrt/parser-contracts-implementation": "^3.6",
+                "phplrt/position-contracts-implementation": "^3.6",
+                "phplrt/source-contracts-implementation": "^3.6"
             },
             "replace": {
                 "phplrt/ast-contracts": "*",
@@ -2574,15 +2574,15 @@
                 "phplrt/visitor": "*"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.30",
+                "friendsofphp/php-cs-fixer": "^3.49",
                 "jetbrains/phpstorm-attributes": "^1.0",
                 "laminas/laminas-diactoros": "^2.17",
-                "phpunit/phpunit": "^9.5.20",
+                "phpunit/phpunit": "^9.6|^10.0",
                 "psr/http-message": "^1.0",
-                "rector/rector": "^0.19",
-                "symfony/var-dumper": "^5.4|^6.0",
+                "rector/rector": "^1.0",
+                "symfony/var-dumper": "^5.4|^6.0|^7.0",
                 "symplify/monorepo-builder": "^11.2",
-                "vimeo/psalm": "^5.15"
+                "vimeo/psalm": "^5.22"
             },
             "type": "library",
             "extra": {
@@ -2630,7 +2630,7 @@
                 "issues": "https://github.com/phplrt/phplrt/issues",
                 "source": "https://github.com/phplrt/phplrt"
             },
-            "time": "2024-02-04T15:25:27+00:00"
+            "time": "2024-02-18T16:22:41+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -8496,16 +8496,16 @@
         },
         {
             "name": "fidry/cpu-core-counter",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theofidry/cpu-core-counter.git",
-                "reference": "85193c0b0cb5c47894b5eaec906e946f054e7077"
+                "reference": "f92996c4d5c1a696a6a970e20f7c4216200fcc42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theofidry/cpu-core-counter/zipball/85193c0b0cb5c47894b5eaec906e946f054e7077",
-                "reference": "85193c0b0cb5c47894b5eaec906e946f054e7077",
+                "url": "https://api.github.com/repos/theofidry/cpu-core-counter/zipball/f92996c4d5c1a696a6a970e20f7c4216200fcc42",
+                "reference": "f92996c4d5c1a696a6a970e20f7c4216200fcc42",
                 "shasum": ""
             },
             "require": {
@@ -8545,7 +8545,7 @@
             ],
             "support": {
                 "issues": "https://github.com/theofidry/cpu-core-counter/issues",
-                "source": "https://github.com/theofidry/cpu-core-counter/tree/1.0.0"
+                "source": "https://github.com/theofidry/cpu-core-counter/tree/1.1.0"
             },
             "funding": [
                 {
@@ -8553,7 +8553,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-17T21:38:23+00:00"
+            "time": "2024-02-07T09:43:46+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
@@ -10497,16 +10497,16 @@
         },
         {
             "name": "spatie/array-to-xml",
-            "version": "3.2.2",
+            "version": "3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/array-to-xml.git",
-                "reference": "96be97e664c87613121d073ea39af4c74e57a7f8"
+                "reference": "c95fd4db94ec199f798d4b5b4a81757bd20d88ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/96be97e664c87613121d073ea39af4c74e57a7f8",
-                "reference": "96be97e664c87613121d073ea39af4c74e57a7f8",
+                "url": "https://api.github.com/repos/spatie/array-to-xml/zipball/c95fd4db94ec199f798d4b5b4a81757bd20d88ab",
+                "reference": "c95fd4db94ec199f798d4b5b4a81757bd20d88ab",
                 "shasum": ""
             },
             "require": {
@@ -10544,7 +10544,7 @@
                 "xml"
             ],
             "support": {
-                "source": "https://github.com/spatie/array-to-xml/tree/3.2.2"
+                "source": "https://github.com/spatie/array-to-xml/tree/3.2.3"
             },
             "funding": [
                 {
@@ -10556,7 +10556,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-14T14:08:51+00:00"
+            "time": "2024-02-07T10:39:02+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -10899,44 +10899,44 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.53.0",
+            "version": "v1.54.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "8d2f3f96704766837548d177fe3ae39ae94822d9"
+                "reference": "a8523cf35d777bf2d8cf5703fa73f378fdc27125"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/8d2f3f96704766837548d177fe3ae39ae94822d9",
-                "reference": "8d2f3f96704766837548d177fe3ae39ae94822d9",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/a8523cf35d777bf2d8cf5703fa73f378fdc27125",
+                "reference": "a8523cf35d777bf2d8cf5703fa73f378fdc27125",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "^2.0",
                 "nikic/php-parser": "^4.18|^5.0",
                 "php": ">=8.1",
-                "symfony/config": "^6.3|^7.0",
-                "symfony/console": "^6.3|^7.0",
-                "symfony/dependency-injection": "^6.3|^7.0",
+                "symfony/config": "^6.4|^7.0",
+                "symfony/console": "^6.4|^7.0",
+                "symfony/dependency-injection": "^6.4|^7.0",
                 "symfony/deprecation-contracts": "^2.2|^3",
-                "symfony/filesystem": "^6.3|^7.0",
-                "symfony/finder": "^6.3|^7.0",
-                "symfony/framework-bundle": "^6.3|^7.0",
-                "symfony/http-kernel": "^6.3|^7.0",
-                "symfony/process": "^6.3|^7.0"
+                "symfony/filesystem": "^6.4|^7.0",
+                "symfony/finder": "^6.4|^7.0",
+                "symfony/framework-bundle": "^6.4|^7.0",
+                "symfony/http-kernel": "^6.4|^7.0",
+                "symfony/process": "^6.4|^7.0"
             },
             "conflict": {
-                "doctrine/doctrine-bundle": "<2.4",
-                "doctrine/orm": "<2.10"
+                "doctrine/doctrine-bundle": "<2.10",
+                "doctrine/orm": "<2.15"
             },
             "require-dev": {
                 "composer/semver": "^3.0",
                 "doctrine/doctrine-bundle": "^2.5.0",
-                "doctrine/orm": "^2.10.0",
-                "symfony/http-client": "^6.3|^7.0",
-                "symfony/phpunit-bridge": "^6.3|^7.0",
-                "symfony/security-core": "^6.3|^7.0",
-                "symfony/yaml": "^6.3|^7.0",
+                "doctrine/orm": "^2.15|^3",
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/phpunit-bridge": "^6.4.1|^7.0",
+                "symfony/security-core": "^6.4|^7.0",
+                "symfony/yaml": "^6.4|^7.0",
                 "twig/twig": "^3.0|^4.x-dev"
             },
             "type": "symfony-bundle",
@@ -10971,7 +10971,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.53.0"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.54.0"
             },
             "funding": [
                 {
@@ -10987,7 +10987,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-01T10:05:38+00:00"
+            "time": "2024-02-06T21:23:55+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -11189,16 +11189,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "5.21.1",
+            "version": "5.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "8c473e2437be8b6a8fd8f630f0f11a16b114c494"
+                "reference": "e9dad66e11274315dac27e08349c628c7d6a1a43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/8c473e2437be8b6a8fd8f630f0f11a16b114c494",
-                "reference": "8c473e2437be8b6a8fd8f630f0f11a16b114c494",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/e9dad66e11274315dac27e08349c628c7d6a1a43",
+                "reference": "e9dad66e11274315dac27e08349c628c7d6a1a43",
                 "shasum": ""
             },
             "require": {
@@ -11221,7 +11221,7 @@
                 "netresearch/jsonmapper": "^1.0 || ^2.0 || ^3.0 || ^4.0",
                 "nikic/php-parser": "^4.16",
                 "php": "^7.4 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0",
-                "sebastian/diff": "^4.0 || ^5.0",
+                "sebastian/diff": "^4.0 || ^5.0 || ^6.0",
                 "spatie/array-to-xml": "^2.17.0 || ^3.0",
                 "symfony/console": "^4.1.6 || ^5.0 || ^6.0 || ^7.0",
                 "symfony/filesystem": "^5.4 || ^6.0 || ^7.0"
@@ -11295,7 +11295,7 @@
                 "issues": "https://github.com/vimeo/psalm/issues",
                 "source": "https://github.com/vimeo/psalm"
             },
-            "time": "2024-02-01T01:04:32+00:00"
+            "time": "2024-02-15T22:52:31+00:00"
         },
         {
             "name": "webmozart/assert",

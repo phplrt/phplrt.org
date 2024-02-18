@@ -14,6 +14,7 @@
         "regenerator-runtime": "^0.13",
         "sass": "^1.62",
         "sass-loader": "^13.3",
+        "shiki": "^1.1.4",
         "webpack": "^5.74",
         "webpack-cli": "^4.10",
         "webpack-notifier": "^1.15"
