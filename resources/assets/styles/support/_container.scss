@@ -17,11 +17,7 @@
   padding: 0 32px;
 
   &-full {
-    @include full-section();
-
     display: block;
     box-sizing: border-box;
   }
 }
-
-

@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  max-width: 100vw;
 
   &-menu {
     width: 300px;
@@ -220,13 +221,13 @@
     min-height: 100vh;
 
     &-text {
-      min-width: 650px;
-      max-width: 1200px;
       margin: 50px auto 0 auto;
       padding: 25px 50px 50px 50px;
       line-height: 30px;
       font-size: 19px;
       min-height: calc(100vh - 220px);
+      box-sizing: content-box;
+      max-width: map-get($grid-breakpoints, xl);
 
       h1.not-found {
         text-align: center;
@@ -351,5 +352,33 @@
         }
       }
     }
+  }
+}
+
+
+@include media-breakpoint-down(lg) {
+  .documentation-menu {
+    position: fixed;
+    left: -260px;
+    padding-right: 60px;
+    box-shadow: 0 0 6px rgba($color-black, .7);
+    transition: .1s ease;
+
+    &:hover {
+      left: 0;
+      padding-right: 10px;
+      box-shadow: 0 0 6px rgba($color-black, .4);
+    }
+  }
+
+  .documentation-content {
+    display: block;
+    max-width: 100vw;
+    padding-left: 40px;
+  }
+
+  .documentation-content-text {
+    margin: 0 auto;
+    padding: 20px;
   }
 }
