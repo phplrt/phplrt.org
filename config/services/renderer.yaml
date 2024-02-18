@@ -18,5 +18,4 @@ services:
   Local\ContentRenderer\ContentRendererInterface:
     class: Local\ContentRenderer\DocumentationRenderer
     arguments:
-      $highlighter: '@Highlight\Highlighter'
       $slugger: '@App\Infrastructure\Slug\CaseInsensitiveSlugger'
