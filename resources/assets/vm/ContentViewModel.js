@@ -1,7 +1,7 @@
 
 import { getHighlighter } from 'shiki';
 
-const DEFAULT_THEME = 'material-theme-palenight';
+const DEFAULT_THEME = 'one-dark-pro';
 
 const PP2_LANGUAGE = {
     "displayName": "pp2",

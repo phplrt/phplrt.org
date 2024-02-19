@@ -3,7 +3,7 @@
     "app": {
       "js": [
         "/dist/836.e0a7ca8d.js",
-        "/dist/app.1130895f.js"
+        "/dist/app.cf7870b8.js"
       ],
       "css": [
         "/dist/app.bbb255d6.css"
@@ -12,7 +12,7 @@
   },
   "integrity": {
     "/dist/836.e0a7ca8d.js": "sha384-jgAE7hZLuI70xBfZ4e2+iMRYmhnPVwLlvl/yjrYNU9RE9cn1Q3emSlzsq+8nGDXp",
-    "/dist/app.1130895f.js": "sha384-wWdcLcsWY521mXUSM2XO7zDphn8eclX8ME2rELysLV6V+TjVSFtUWeH4wt+y7QFI",
+    "/dist/app.cf7870b8.js": "sha384-4YQhVVdfO5eTWsWFKksiT3BGR8+ASexip/MrN+h2gzUmfme0eHGZpXo/nOdBapZB",
     "/dist/app.bbb255d6.css": "sha384-xo6/dp0oZq4+ZM0R+TxIOBrpAKJpSrp9uz3kiWLLwyHepuwidAWs3Y6nn7iVtJGY"
   }
 }
