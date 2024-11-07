@@ -16,7 +16,7 @@ class MenuDatabaseRepository extends DatabaseRepository implements MenuRepositor
         parent::__construct($registry, Menu::class);
     }
 
-    public function findAll(): iterable
+    public function findAll(): array
     {
         return $this->findBy([], ['order' => 'ASC']);
     }

@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'menu')]
-#[ORM\Index(columns: ['sorting_order'], name: 'menu_sorting_order_idx')]
+#[ORM\Index(name: 'menu_sorting_order_idx', columns: ['sorting_order'])]
 class Menu implements
     IdentifiableInterface,
     CreatedDateProviderInterface,
@@ -40,8 +40,8 @@ class Menu implements
     /**
      * @var Collection<array-key, Document>
      */
-    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: Page::class, cascade: ['ALL'], fetch: 'EAGER')]
-    #[ORM\OrderBy(['sorting_order' => 'ASC'])]
+    #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'menu', cascade: ['ALL'], fetch: 'EAGER')]
+    #[ORM\OrderBy(['order' => 'ASC'])]
     private Collection $pages;
 
     /**

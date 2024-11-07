@@ -64,7 +64,10 @@ final readonly class Synchronizer
         $pathname = $this->directory . '/manifest.json';
 
         if (!\is_file($pathname)) {
-            throw new \InvalidArgumentException('Manifest file not found');
+            throw new \InvalidArgumentException(\sprintf(
+                'Manifest file "%s" not found',
+                $pathname,
+            ));
         }
 
         $contents = \file_get_contents($pathname);

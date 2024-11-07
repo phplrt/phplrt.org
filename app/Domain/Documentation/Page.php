@@ -17,8 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
     'document' => Document::class,
     'link' => Link::class,
 ])]
-#[ORM\Index(columns: ['url'], name: 'page_url_idx')]
-#[ORM\Index(columns: ['sorting_order'], name: 'page_sorting_order_idx')]
+#[ORM\Index(name: 'page_url_idx', columns: ['url'])]
+#[ORM\Index(name: 'page_sorting_order_idx', columns: ['sorting_order'])]
 abstract class Page implements
     IdentifiableInterface,
     CreatedDateProviderInterface,
