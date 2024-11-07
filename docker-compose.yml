@@ -1,7 +1,13 @@
-version: '3.8'
+x-environment: &environment
+  env_file:
+    - path: ./.env.example
+      required: true
+    - path: ./.env
+      required: false
 
 services:
   nginx:
+    <<: *environment
     image: nginx:alpine
     container_name: phplrt-nginx
     working_dir: /home/phplrt/phplrt.org
@@ -11,20 +17,27 @@ services:
       - ./docker/nginx/admin.phplrt.conf:/etc/nginx/conf.d/admin.conf
     ports:
       - "${APP_HTTP_PUBLIC_PORT:-81}:80"
+    depends_on:
+      - php
     networks:
-      - phplrt_org
+      - frontend
 
   php:
+    <<: *environment
     build: docker/php
     container_name: phplrt-php
     working_dir: /home/phplrt/phplrt.org
     volumes:
       - .:/home/phplrt/phplrt.org
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - postgres
     networks:
-      - phplrt_org
+      - frontend
+      - database
 
   postgres:
+    <<: *environment
     image: postgres:15.3
     container_name: phplrt-postgres
     volumes:
@@ -37,12 +50,13 @@ services:
     ports:
       - "${APP_DATABASE_PUBLIC_PORT:-5432}:5432"
     networks:
-      - phplrt_org
+      - database
 
 networks:
-  phplrt_org:
+  frontend:
     name: phplrt_org
     driver: bridge
+  database:
 
 volumes:
   postgres:
