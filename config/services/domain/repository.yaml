@@ -21,22 +21,3 @@ services:
 
   App\Domain\Documentation\PageRepositoryInterface:
     class: App\Infrastructure\Persistence\Repository\PageDatabaseRepository
-
-  #
-  # ----------------------------------------------------------------------------
-  #  Database Listeners
-  # ----------------------------------------------------------------------------
-  #
-
-  App\Infrastructure\Persistence\Doctrine\Listener\:
-    resource: '%kernel.project_dir%/app/Infrastructure/Persistence/Doctrine/Listener'
-
-  #
-  # ----------------------------------------------------------------------------
-  #  Database Subscribers
-  # ----------------------------------------------------------------------------
-  #
-
-  App\Infrastructure\Persistence\Doctrine\Subscriber\RenderPageSubscriber:
-    tags:
-      - { name: doctrine.event_subscriber }
