@@ -2,17 +2,17 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/dist/836.e0a7ca8d.js",
-        "/dist/app.cf7870b8.js"
+        "/dist/6054.5f53a357.js",
+        "/dist/app.fe68751f.js"
       ],
       "css": [
-        "/dist/app.bbb255d6.css"
+        "/dist/app.366d1d85.css"
       ]
     }
   },
   "integrity": {
-    "/dist/836.e0a7ca8d.js": "sha384-jgAE7hZLuI70xBfZ4e2+iMRYmhnPVwLlvl/yjrYNU9RE9cn1Q3emSlzsq+8nGDXp",
-    "/dist/app.cf7870b8.js": "sha384-4YQhVVdfO5eTWsWFKksiT3BGR8+ASexip/MrN+h2gzUmfme0eHGZpXo/nOdBapZB",
-    "/dist/app.bbb255d6.css": "sha384-xo6/dp0oZq4+ZM0R+TxIOBrpAKJpSrp9uz3kiWLLwyHepuwidAWs3Y6nn7iVtJGY"
+    "/dist/6054.5f53a357.js": "sha384-HquDfuJW4aG+ZM0+AP+fMC7nWy9r0OU45uNFKz/hand9mkHYFaPRW0q3zivAX9c/",
+    "/dist/app.fe68751f.js": "sha384-91SKjNOnpjrriegL+uPGlL8pdZVt48NEuLAAJ/ovAKEm2w+ZUQivsZRiV7mvQ7wL",
+    "/dist/app.366d1d85.css": "sha384-HQ0qBO5799FvN7hBAJkEdI7aM9SJrXVxrKBS3ZSxWyJOJ8I9SPfYf9gNk+d3hakl"
   }
 }

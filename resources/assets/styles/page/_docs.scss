@@ -57,6 +57,16 @@
           margin-top: -1px;
           box-shadow: 0 2px 8px rgba(#000, .2);
 
+          .documentation-search-error {
+            background: $color-main;
+            color: $color-white;
+            display: block;
+            padding: 9px 7px;
+            border-radius: 3px;
+            margin: 6px 5px 0 5px;
+            font-size: .8em;
+          }
+
           .documentation-search-item {
             display: block;
             padding: 10px 15px;

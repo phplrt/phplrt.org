@@ -9,6 +9,11 @@ export default class MenuViewModel {
         .extend({ throttle: 300 });
 
     /**
+     * @type {KnockoutObservable<string>}
+     */
+    error = ko.observable('');
+
+    /**
      * @type {KnockoutObservable<boolean>}
      */
     shown = ko.observable(false)
@@ -26,9 +31,10 @@ export default class MenuViewModel {
 
     constructor() {
         this.query.subscribe(async value => {
+            this.error('');
+
             if (value.length < 2) {
                 this.results([]);
-
                 return;
             }
 
@@ -46,6 +52,10 @@ export default class MenuViewModel {
 
                 let result = await response.json();
 
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
                 for (let entry of result.data) {
                     for (let query of entry.found) {
                         entry.title = entry.title
@@ -56,6 +66,7 @@ export default class MenuViewModel {
                 this.results(result.data);
             } catch (e) {
                 this.results([]);
+                this.error(e);
                 console.error(e);
             }
         });

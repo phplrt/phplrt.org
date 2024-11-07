@@ -9,11 +9,20 @@
 </label>
 
 <!--ko if: results().length > 0 && shown()-->
-<div class="documentation-search-results" style="display: none"
+<div class="documentation-search-results"
+     style="display: none"
      data-bind="foreach: results, style: {display: 'block'}">
     <a href="#" data-bind="attr: {href: url}" class="documentation-search-item">
         <span class="documentation-search-item-title" data-bind="html: title"></span>
         <span class="documentation-search-item-page" data-bind="text: page"></span>
     </a>
+</div>
+<!--/ko-->
+
+<!--ko if: error()-->
+<div class="documentation-search-results"
+     style="display: none"
+     data-bind="style: {display: 'block'}">
+    <span class="documentation-search-error" data-bind="text: error">&nbsp;</span>
 </div>
 <!--/ko-->
