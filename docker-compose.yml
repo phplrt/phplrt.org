@@ -14,7 +14,6 @@ services:
     volumes:
       - .:/home/phplrt/phplrt.org
       - ./docker/nginx/phplrt.conf:/etc/nginx/conf.d/default.conf
-      - ./docker/nginx/admin.phplrt.conf:/etc/nginx/conf.d/admin.conf
     ports:
       - "${APP_HTTP_PUBLIC_PORT:-81}:80"
     depends_on:
