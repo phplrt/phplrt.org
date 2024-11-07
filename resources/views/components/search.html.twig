@@ -26,3 +26,11 @@
     <span class="documentation-search-error" data-bind="text: error">&nbsp;</span>
 </div>
 <!--/ko-->
+
+<!--ko if: notice()-->
+<div class="documentation-search-results"
+     style="display: none"
+     data-bind="style: {display: 'block'}">
+    <span class="documentation-search-notice" data-bind="text: notice">&nbsp;</span>
+</div>
+<!--/ko-->

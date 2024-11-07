@@ -14,6 +14,11 @@ export default class MenuViewModel {
     error = ko.observable('');
 
     /**
+     * @type {KnockoutObservable<string>}
+     */
+    notice = ko.observable('');
+
+    /**
      * @type {KnockoutObservable<boolean>}
      */
     shown = ko.observable(false)
@@ -32,6 +37,7 @@ export default class MenuViewModel {
     constructor() {
         this.query.subscribe(async value => {
             this.error('');
+            this.notice('');
 
             if (value.length < 2) {
                 this.results([]);
@@ -54,6 +60,11 @@ export default class MenuViewModel {
 
                 if (result.error) {
                     throw new Error(result.error);
+                }
+
+                if (result.data.length === 0) {
+                    this.notice('Nothing found for the given search query');
+                    return;
                 }
 
                 for (let entry of result.data) {

@@ -57,7 +57,8 @@
           margin-top: -1px;
           box-shadow: 0 2px 8px rgba(#000, .2);
 
-          .documentation-search-error {
+          .documentation-search-error,
+          .documentation-search-notice {
             background: $color-main;
             color: $color-white;
             display: block;
@@ -65,6 +66,10 @@
             border-radius: 3px;
             margin: 6px 5px 0 5px;
             font-size: .8em;
+          }
+
+          .documentation-search-notice {
+            background: $color-black;
           }
 
           .documentation-search-item {
