@@ -8,6 +8,7 @@ parameters:
 doctrine:
   dbal:
     default_connection: default
+    #use_savepoints: true
     connections:
       default:
         dbname: '%env(string:DB_DATABASE)%'
@@ -37,6 +38,8 @@ doctrine:
     auto_mapping: true
     report_fields_where_declared: true
     enable_lazy_ghost_objects: true
+    controller_resolver:
+      auto_mapping: false
     mappings:
       App:
         is_bundle: false
