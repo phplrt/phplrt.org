@@ -12,8 +12,8 @@ services:
     container_name: phplrt-nginx
     working_dir: /home/phplrt/phplrt.org
     volumes:
-      - .:/home/phplrt/phplrt.org
-      - ./docker/nginx/phplrt.conf:/etc/nginx/conf.d/default.conf
+      - .:/home/phplrt/phplrt.org:ro
+      - ./docker/nginx/phplrt.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "${APP_HTTP_PUBLIC_PORT:-81}:80"
     depends_on:
@@ -23,12 +23,13 @@ services:
 
   php:
     build: docker/php
+    user: '1000:1000'
     container_name: phplrt-php
     working_dir: /home/phplrt/phplrt.org
     volumes:
-      - composer:/home/phplrt/.composer
-      - .:/home/phplrt/phplrt.org
-      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+      - composer:/home/phplrt/.composer:rw
+      - .:/home/phplrt/phplrt.org:rw
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini:ro
     depends_on:
       - postgres
     networks:
@@ -60,3 +61,5 @@ networks:
 volumes:
   postgres:
   composer:
+    driver_opts:
+      o: "uid=${UID:-1000}"

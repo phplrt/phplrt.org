@@ -65,4 +65,5 @@ RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/
     && ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 RUN useradd -u 1000 -m phplrt
+
 USER phplrt
