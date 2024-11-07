@@ -13,9 +13,9 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.49",
+        "friendsofphp/php-cs-fixer": "^3.64",
         "phpunit/phpunit": "^10.5|^11.0",
-        "vimeo/psalm": "^5.21"
+        "vimeo/psalm": "^5.26"
     },
     "autoload-dev": {
         "psr-4": {
