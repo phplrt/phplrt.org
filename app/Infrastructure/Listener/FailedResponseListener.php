@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Response\Listener;
+namespace App\Infrastructure\Listener;
 
+use App\Infrastructure\Listener\Exception\StatusCodeConverter;
 use App\Presentation\Response\Exception\ErrorInfo;
 use App\Presentation\Response\Exception\PresentationException;
-use App\Presentation\Response\Listener\Exception\StatusCodeConverter;
 use App\Presentation\Response\Transformer\ErrorResponseTransformer;
 use Local\HttpFactory\ResponseEncoderFactoryInterface;
 use Local\Hydrator\ExtractorInterface;

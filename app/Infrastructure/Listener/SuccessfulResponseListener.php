@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Response\Listener;
+namespace App\Infrastructure\Listener;
 
 use App\Presentation\Response\DTO\SuccessResponseDTO;
 use Local\HttpFactory\ResponseEncoderFactoryInterface;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Request\ValueResolver;
+namespace App\Infrastructure\ValueResolver;
 
-use App\Presentation\Request\Attribute\RequestDTOAttribute;
+use App\Presentation\Request\Attribute\MapRequestPayloadAttribute;
 use Local\Hydrator\Exception\HydratorExceptionInterface;
 use Local\Hydrator\Exception\MappingExceptionInterface;
 use Local\Hydrator\HydratorInterface;
@@ -45,7 +45,7 @@ abstract class DTOResolver implements ValueResolverInterface
     /**
      * @throws HydratorExceptionInterface
      */
-    protected function hydrate(object|array $data, ArgumentMetadata $argument, RequestDTOAttribute $attribute): object
+    protected function hydrate(object|array $data, ArgumentMetadata $argument, MapRequestPayloadAttribute $attribute): object
     {
         /** @var class-string $type */
         $type = $attribute->as ?? $argument->getType() ?? 'object';

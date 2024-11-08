@@ -7,7 +7,7 @@ namespace App\Presentation\Controller\Api;
 use App\Domain\Documentation\Search;
 use App\Presentation\Controller\Api\Search\SearchResponseTransformer;
 use App\Presentation\Controller\Api\Search\SearchRequestDTO;
-use App\Presentation\Request\Attribute\Body;
+use App\Presentation\Request\Attribute\MapBody;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -19,7 +19,7 @@ final readonly class SearchController
         private Search $search,
     ) {}
 
-    public function __invoke(#[Body] SearchRequestDTO $dto): array
+    public function __invoke(#[MapBody] SearchRequestDTO $dto): array
     {
         return $this->transformer->transform(
             $this->search->findAllByQuery($dto->query),

@@ -12,24 +12,24 @@ services:
   #  Value Resolvers
   # ----------------------------------------------------------------------------
 
-  App\Presentation\Request\ValueResolver\QueryDTOResolver: ~
+  App\Infrastructure\ValueResolver\QueryDTOResolver: ~
 
-  App\Presentation\Request\ValueResolver\BodyDTOResolver:
+  App\Infrastructure\ValueResolver\BodyDTOResolver:
     arguments:
       $default: '@Local\HttpFactory\Driver\JsonDriver'
 
   app.request.query_dto_resolver:
-    class: App\Presentation\Request\ValueResolver\ValidatorAwareDTOResolver
+    class: App\Infrastructure\ValueResolver\ValidatorAwareDTOResolver
     arguments:
-      $resolver: '@App\Presentation\Request\ValueResolver\QueryDTOResolver'
+      $resolver: '@App\Infrastructure\ValueResolver\QueryDTOResolver'
     tags:
       - controller.argument_value_resolver:
           priority: 150
 
   app.request.body_dto_resolver:
-    class: App\Presentation\Request\ValueResolver\ValidatorAwareDTOResolver
+    class: App\Infrastructure\ValueResolver\ValidatorAwareDTOResolver
     arguments:
-      $resolver: '@App\Presentation\Request\ValueResolver\BodyDTOResolver'
+      $resolver: '@App\Infrastructure\ValueResolver\BodyDTOResolver'
     tags:
       - controller.argument_value_resolver:
           priority: 150

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Presentation\Request\Attribute;
 
-abstract class RequestDTOAttribute
+/**
+ * @internal this is an internal library class, please do not use it in your code.
+ * @psalm-internal App\Presentation\Request\Attribute
+ */
+abstract class MapRequestPayloadAttribute
 {
     /**
      * In the case that this parameter is not {@see null}, then the target entry

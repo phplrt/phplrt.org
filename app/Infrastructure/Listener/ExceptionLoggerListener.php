@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Response\Listener;
+namespace App\Infrastructure\Listener;
 
-use App\Presentation\Response\Listener\Exception\StatusCodeConverter;
+use App\Infrastructure\Listener\Exception\StatusCodeConverter;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;

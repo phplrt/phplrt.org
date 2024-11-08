@@ -26,6 +26,12 @@ services:
     arguments:
       $debug: '%kernel.debug%'
 
+  #
+  # --------------------------------------------------------------------------
+  #   Local (Controller) Transformers
+  # --------------------------------------------------------------------------
+  #
+
   App\Presentation\Controller\Api\Search\SearchItemResponseTransformer:
     arguments:
       $slugger: '@App\Infrastructure\Slug\CaseInsensitiveSlugger'

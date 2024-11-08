@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Request\ValueResolver;
+namespace App\Infrastructure\ValueResolver;
 
-use App\Presentation\Request\Attribute\Query;
+use App\Presentation\Request\Attribute\MapQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -21,7 +21,7 @@ final class QueryDTOResolver extends DTOResolver
 
         $attribute = $this->findBodyAttribute($argument);
 
-        if (!$attribute instanceof Query) {
+        if (!$attribute instanceof MapQuery) {
             return null;
         }
 
@@ -41,10 +41,10 @@ final class QueryDTOResolver extends DTOResolver
         }
     }
 
-    protected function findBodyAttribute(ArgumentMetadata $argument): ?Query
+    protected function findBodyAttribute(ArgumentMetadata $argument): ?MapQuery
     {
-        foreach ($argument->getAttributes(Query::class, ArgumentMetadata::IS_INSTANCEOF) as $attribute) {
-            /** @var Query */
+        foreach ($argument->getAttributes(MapQuery::class, ArgumentMetadata::IS_INSTANCEOF) as $attribute) {
+            /** @var MapQuery */
             return $attribute;
         }
 

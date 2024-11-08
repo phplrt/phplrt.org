@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Request\ValueResolver;
+namespace App\Infrastructure\ValueResolver;
 
-use App\Presentation\Request\Attribute\Body;
+use App\Presentation\Request\Attribute\MapBody;
 use Local\HttpFactory\RequestDecoderFactoryInterface;
 use Local\HttpFactory\RequestDecoderInterface;
 use Local\Hydrator\HydratorInterface;
@@ -32,7 +32,7 @@ final class BodyDTOResolver extends DTOResolver
 
         $attribute = $this->findBodyAttribute($argument);
 
-        if (!$attribute instanceof Body) {
+        if (!$attribute instanceof MapBody) {
             return null;
         }
 
@@ -54,10 +54,10 @@ final class BodyDTOResolver extends DTOResolver
         }
     }
 
-    protected function findBodyAttribute(ArgumentMetadata $argument): ?Body
+    protected function findBodyAttribute(ArgumentMetadata $argument): ?MapBody
     {
-        foreach ($argument->getAttributes(Body::class, ArgumentMetadata::IS_INSTANCEOF) as $attribute) {
-            /** @var Body */
+        foreach ($argument->getAttributes(MapBody::class, ArgumentMetadata::IS_INSTANCEOF) as $attribute) {
+            /** @var MapBody */
             return $attribute;
         }
 
