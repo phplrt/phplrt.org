@@ -1,0 +1,19 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  #
+  # --------------------------------------------------------------------------
+  #   Console Commands
+  # --------------------------------------------------------------------------
+  #
+
+  App\Presentation\Command\DocsUpdateCommand:
+    tags:
+      - { name: 'console.command' }
+
+  Local\MathParser\Command\CompileGrammarCommand:
+    tags:
+      - { name: 'console.command' }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Response\DTO\Documentation;
+namespace App\Presentation\Controller\Api\Search;
 
 final readonly class SearchItemResponseDTO
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Request\DTO\Documentation;
+namespace App\Presentation\Controller\Api\Search;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

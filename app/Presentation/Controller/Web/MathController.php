@@ -10,10 +10,11 @@ use Local\MathParser\MathParser;
 use PhpParser\Node\Stmt\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-#[Route(path: '/math/parse', methods: ['POST'])]
+#[AsController, Route(path: '/math/parse', methods: ['POST'])]
 final readonly class MathController
 {
     public function __construct(

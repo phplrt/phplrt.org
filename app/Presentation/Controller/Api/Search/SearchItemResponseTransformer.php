@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Response\Transformer\Search;
+namespace App\Presentation\Controller\Api\Search;
 
-use App\Presentation\Response\DTO\Documentation\SearchItemResponseDTO;
 use App\Domain\Documentation\Page;
 use App\Domain\Documentation\Search\Index;
 use App\Presentation\Response\Transformer\ResponseTransformer;
@@ -14,7 +13,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 /**
  * @template-extends ResponseTransformer<Index, SearchItemResponseDTO>
  */
-final readonly class SearchItemTransformer extends ResponseTransformer
+final readonly class SearchItemResponseTransformer extends ResponseTransformer
 {
     public function __construct(
         private UrlGeneratorInterface $generator,

@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Response\Transformer\Search;
+namespace App\Presentation\Controller\Api\Search;
 
-use App\Presentation\Response\DTO\Documentation\SearchItemResponseDTO;
 use App\Domain\Documentation\Search\Result;
 use App\Presentation\Response\Transformer\ResponseTransformer;
 
 /**
  * @template-extends ResponseTransformer<iterable<Result>, list<SearchItemResponseDTO>>
  */
-final readonly class SearchItemListTransformer extends ResponseTransformer
+final readonly class SearchResponseTransformer extends ResponseTransformer
 {
     public function __construct(
-        private SearchItemTransformer $compiler,
+        private SearchItemResponseTransformer $compiler,
     ) {}
 
     public function transform(mixed $entry): array

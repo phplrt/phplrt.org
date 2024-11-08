@@ -1,0 +1,17 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  #
+  # --------------------------------------------------------------------------
+  #   Controllers
+  # --------------------------------------------------------------------------
+  #
+  # Controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class.
+  #
+
+  App\Presentation\Controller\:
+    resource: '%kernel.project_dir%/app/Presentation/Controller/'

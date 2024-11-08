@@ -8,10 +8,11 @@ use App\Domain\Documentation\Link;
 use App\Domain\Documentation\MenuRepositoryInterface;
 use App\Domain\Documentation\PageRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-#[Route(path: '/docs/{path}', name: 'docs.show', requirements: ['path' => '[\w\-\d/\.]+'], priority: -1)]
+#[AsController, Route(path: '/docs/{path}', name: 'docs.show', requirements: ['path' => '[\w\-\d/\.]+'], priority: -1)]
 final readonly class ShowController
 {
     public function __construct(

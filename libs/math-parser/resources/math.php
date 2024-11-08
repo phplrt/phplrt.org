@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\MathParser\Ast;
+use Local\MathParser\Ast;
 
 /**
  * @var array{
