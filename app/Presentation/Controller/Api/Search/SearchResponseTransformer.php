@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\Controller\Api\Search;
 
 use App\Domain\Documentation\Search\Result;
-use App\Presentation\Response\Transformer\ResponseTransformer;
+use App\Shared\Presentation\Response\Transformer\ResponseTransformer;
 
 /**
  * @template-extends ResponseTransformer<iterable<Result>, list<SearchItemResponseDTO>>

@@ -6,13 +6,10 @@ namespace Local\HttpFactory\Driver;
 
 final readonly class JsonDriver extends Driver
 {
-    /**
-     * @var int
-     */
     public const DEFAULT_JSON_ENCODE_FLAGS = \JSON_HEX_TAG
-                                           | \JSON_HEX_APOS
-                                           | \JSON_HEX_AMP
-                                           | \JSON_HEX_QUOT;
+        | \JSON_HEX_APOS
+        | \JSON_HEX_AMP
+        | \JSON_HEX_QUOT;
 
     /**
      * A constant containing valid content-types that are
@@ -56,7 +53,7 @@ final readonly class JsonDriver extends Driver
     protected function fromString(string $data): array
     {
         try {
-            return (array)\json_decode($data, true, depth: 32, flags: \JSON_THROW_ON_ERROR);
+            return (array) \json_decode($data, true, depth: 32, flags: \JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             $message = 'An error occurred while parsing request json payload: ' . $e->getMessage();
             throw new \InvalidArgumentException($message, $e->getCode());
@@ -66,7 +63,7 @@ final readonly class JsonDriver extends Driver
     /**
      * @throws \JsonException
      */
-    protected function toString(object|array $data): string
+    protected function toString(mixed $data): string
     {
         $flags = self::DEFAULT_JSON_ENCODE_FLAGS;
 

@@ -1,10 +1,10 @@
 {
     "name": "local/http-factory-bundle",
+    "description": "HTTP factory for decoding request and encoding responses with Symfony integration",
     "type": "symfony-bundle",
     "require": {
-        "php": "^8.2",
-        "symfony/yaml": "^5.4|^6.0|^7.0",
-        "symfony/http-foundation": "^5.4|^6.0|^7.0"
+        "php": "^8.3",
+        "symfony/http-foundation": "^7.0"
     },
     "autoload": {
         "psr-4": {
@@ -12,20 +12,19 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.64",
-        "phpunit/phpunit": "^10.5|^11.0",
-        "vimeo/psalm": "^5.26"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Local\\HttpFactory\\Tests\\": "tests"
-        }
+        "symfony/yaml": "^7.0",
+        "rybakit/msgpack": "^0.9|^1.0",
+        "symfony/config": "^7.0",
+        "symfony/dependency-injection": "^7.0",
+        "symfony/http-kernel": "^7.0"
     },
     "suggest": {
         "ext-json": "Adds JSON decoder and encoder",
         "symfony/yaml": "Adds YAML decoder and encoder",
         "rybakit/msgpack": "Adds MSGPACK decoder and encoder",
-        "symfony/http-kernel": "Adds Symfony bundle support (Local\\HttpFactory\\HttpFactoryBundle)"
+        "symfony/http-kernel": "For Symfony Bundle support",
+        "symfony/config": "For Symfony Bundle support",
+        "symfony/dependency-injection": "For Symfony Bundle support"
     },
     "extra": {
         "branch-alias": {
@@ -34,7 +33,13 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform-check": true,
+        "bin-compat": "full",
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

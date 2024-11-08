@@ -6,7 +6,7 @@ namespace App\Presentation\Controller\Api\Search;
 
 use App\Domain\Documentation\Page;
 use App\Domain\Documentation\Search\Index;
-use App\Presentation\Response\Transformer\ResponseTransformer;
+use App\Shared\Presentation\Response\Transformer\ResponseTransformer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 

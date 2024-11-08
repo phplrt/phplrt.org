@@ -7,7 +7,7 @@ namespace App\Presentation\Controller\Api;
 use App\Domain\Documentation\Search;
 use App\Presentation\Controller\Api\Search\SearchResponseTransformer;
 use App\Presentation\Controller\Api\Search\SearchRequestDTO;
-use App\Presentation\Request\Attribute\MapBody;
+use Local\HttpData\Attribute\MapBody;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 

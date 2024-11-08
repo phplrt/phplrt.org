@@ -4,34 +4,6 @@ services:
     autowire: true
     autoconfigure: true
 
-  #
-  # --------------------------------------------------------------------------
-  #   Request Transformers
-  # --------------------------------------------------------------------------
-  #
-
-  # App\Presentation\Request\Transformer\:
-  #   resource: '%kernel.project_dir%/app/Presentation/Request/Transformer'
-
-  #
-  # --------------------------------------------------------------------------
-  #   Response Transformers
-  # --------------------------------------------------------------------------
-  #
-
-  App\Presentation\Response\Transformer\:
-    resource: '%kernel.project_dir%/app/Presentation/Response/Transformer'
-
-  App\Presentation\Response\Transformer\ErrorResponseTransformer:
-    arguments:
-      $debug: '%kernel.debug%'
-
-  #
-  # --------------------------------------------------------------------------
-  #   Local (Controller) Transformers
-  # --------------------------------------------------------------------------
-  #
-
   App\Presentation\Controller\Api\Search\SearchItemResponseTransformer:
     arguments:
       $slugger: '@App\Infrastructure\Slug\CaseInsensitiveSlugger'

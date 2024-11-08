@@ -53,18 +53,19 @@ final readonly class YamlDriver extends Driver
             $result = Yaml::parse($data, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
         } catch (\Throwable $e) {
             $message = 'An error occurred while parsing request yaml payload: ' . $e->getMessage();
-            throw new \InvalidArgumentException($message, (int)$e->getCode());
+            throw new \InvalidArgumentException($message, (int) $e->getCode());
         }
 
         if (\is_object($result) || \is_array($result)) {
             return $result;
         }
 
-        return (array)$result;
+        return (array) $result;
     }
 
-    protected function toString(object|array $data): string
+    protected function toString(mixed $data): string
     {
+        /** @var string */
         return Yaml::dump($data, 4, 2);
     }
 }

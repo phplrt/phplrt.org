@@ -49,17 +49,18 @@ final readonly class MessagePackDriver extends Driver
             $result = MessagePack::unpack($data);
         } catch (\Throwable $e) {
             $message = 'An error occurred while parsing request msgpack payload: ' . $e->getMessage();
-            throw new \InvalidArgumentException($message, (int)$e->getCode());
+            throw new \InvalidArgumentException($message, (int) $e->getCode());
         }
 
         if (\is_object($result) || \is_array($result)) {
+            /** @var array|object */
             return $result;
         }
 
-        return (array)$result;
+        return (array) $result;
     }
 
-    protected function toString(object|array $data): string
+    protected function toString(mixed $data): string
     {
         return MessagePack::pack($data);
     }

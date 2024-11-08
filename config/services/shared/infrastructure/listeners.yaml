@@ -1,0 +1,20 @@
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\Shared\Infrastructure\Listener\:
+    resource: '%kernel.project_dir%/app/Shared/Infrastructure/Listener'
+
+  App\Shared\Infrastructure\Listener\SuccessfulResponseListener:
+    arguments:
+      $api: !service_locator
+        v1: '@App\Shared\Presentation\Response\Transformer\ApiV1\SuccessfulResponseTransformer'
+      $default: '@App\Shared\Presentation\Response\Transformer\ApiV1\SuccessfulResponseTransformer'
+
+  App\Shared\Infrastructure\Listener\FailureResponseListener:
+    arguments:
+      $api: !service_locator
+        v1: '@App\Shared\Presentation\Response\Transformer\ApiV1\FailureResponseTransformer'
+      $default: '@App\Shared\Presentation\Response\Transformer\ApiV1\FailureResponseTransformer'

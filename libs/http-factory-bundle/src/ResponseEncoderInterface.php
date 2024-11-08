@@ -16,5 +16,5 @@ interface ResponseEncoderInterface
     /**
      * @param int<100, 599> $code
      */
-    public function encode(array|object $data, int $code = self::DEFAULT_HTTP_CODE): Response;
+    public function encode(mixed $data, int $code = self::DEFAULT_HTTP_CODE): Response;
 }

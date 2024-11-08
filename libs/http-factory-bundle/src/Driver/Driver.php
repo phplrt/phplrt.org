@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract readonly class Driver implements RequestMatcherInterface, ResponseMatcherInterface
 {
-    public function encode(object|array $data, int $code = self::DEFAULT_HTTP_CODE): Response
+    public function encode(mixed $data, int $code = self::DEFAULT_HTTP_CODE): Response
     {
         $response = new Response($this->toString($data));
         $response->setStatusCode($code);
@@ -119,10 +119,12 @@ abstract readonly class Driver implements RequestMatcherInterface, ResponseMatch
     /**
      * Transforms variant payload to response body string.
      */
-    abstract protected function toString(object|array $data): string;
+    abstract protected function toString(mixed $data): string;
 
     /**
      * Transforms request's body string to variant response payload.
+     *
+     * @return array<array-key, list<mixed>|scalar|object>
      */
     abstract protected function fromString(string $data): array|object;
 }
