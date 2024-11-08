@@ -39,7 +39,7 @@ class CompileGrammarCommand extends Command
         $compiled = (new Compiler())
             ->load(File::fromPathname($grammar))
             ->build()
-            ->withClassUsage('App\\MathParser\\Ast');
+            ->withClassReference('Local\\MathParser\\Ast');
 
         $io->info('Compilation ' . $grammar);
 

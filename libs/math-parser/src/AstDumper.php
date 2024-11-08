@@ -10,9 +10,6 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 class AstDumper
 {
-    /**
-     * @var CliDumper
-     */
     private CliDumper $dumper;
 
     public function __construct()
@@ -20,9 +17,6 @@ class AstDumper
         $this->dumper = $this->createCliDumper();
     }
 
-    /**
-     * @return CliDumper
-     */
     private function createCliDumper(): CliDumper
     {
         $dumper = new CliDumper();
@@ -34,13 +28,7 @@ class AstDumper
         return $dumper;
     }
 
-    /**
-     * @param mixed $value
-     * @param string $namespace
-     * @return string
-     * @throws \ErrorException
-     */
-    public function dump($value, string $namespace = ''): string
+    public function dump(mixed $value, string $namespace = ''): string
     {
         if (\is_array($value)) {
             return $this->dump($value[0], $namespace);
@@ -50,37 +38,33 @@ class AstDumper
             ->cloneVar($value)
             ->withRefHandles(false);
 
-        return $this->replace($this->dumper->dump($data, true), $namespace);
+        return $this->dumper->dump($data, true);
     }
 
-    /**
-     * @param Highlighter $hl
-     * @param $value
-     * @param string $namespace
-     * @return string
-     * @throws \ErrorException
-     */
-    public function highlight(Highlighter $hl, $value, string $namespace = ''): string
+    public function highlight(Highlighter $hl, mixed $value, string $namespace = ''): string
     {
         $result = $this->dump($value, $namespace);
 
-        return $hl->highlight('ast', $result)->value;
+        $result = $hl->highlight('ast', $result)->value;
+
+        return $this->replace($result, $namespace);
     }
 
-    /**
-     * @param string $output
-     * @param string $namespace
-     * @return string
-     */
     private function replace(string $output, string $namespace): string
     {
         $replacements = [
             \trim($namespace, '\\') . '\\' => '',
-
             '"integer"' => 'integer',
             '"float"'   => 'float',
+            '+a' => 'a',
+            '+b' => 'b',
+            '-value' => 'value',
         ];
 
-        return \str_replace(\array_keys($replacements), \array_values($replacements), $output);
+        return \str_replace(
+            search: \array_keys($replacements),
+            replace: \array_values($replacements),
+            subject: $output,
+        );
     }
 }
