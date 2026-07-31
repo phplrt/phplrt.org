@@ -13,7 +13,7 @@ final readonly class CaseInsensitiveSlugger implements SluggerInterface
         private SluggerInterface $slugger,
     ) {}
 
-    public function slug(string $string, string $separator = '-', string $locale = null): AbstractUnicodeString
+    public function slug(string $string, string $separator = '-', ?string $locale = null): AbstractUnicodeString
     {
         $result = $this->slugger->slug($string, $separator, $locale);
 
