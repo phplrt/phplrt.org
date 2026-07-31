@@ -23,8 +23,7 @@ class HighlightTokenParser extends AbstractTokenParser
      */
     public function __construct(
         private readonly Highlighter $hl
-    ) {
-    }
+    ) {}
 
     /**
      * @param Token $token

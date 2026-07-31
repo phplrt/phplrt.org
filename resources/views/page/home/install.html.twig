@@ -49,10 +49,11 @@
                     <div class="pkg"><code>phplrt/source</code><span>files, strings, streams — with names</span></div>
                     <div class="pkg"><code>phplrt/lexer</code><span>text into tokens</span></div>
                     <div class="pkg"><code>phplrt/parser</code><span>tokens into your result</span></div>
-                    <div class="pkg"><code>phplrt/exception</code><span>offsets into snippets</span></div>
+                    <div class="pkg"><code>· 3 contracts</code><span>the source, lexer and parser interfaces the three are written against</span></div>
+                    <div class="pkg pkg--extra"><code>phplrt/exception</code><span>offsets into snippets — a separate package, add it if you print errors</span></div>
                 </div>
 
-                <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/runtime</span>
+                <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/runtime</span> <span class="c-cm"># the three above and their contracts</span>
 
 <span class="c-cm"># or the pieces, or just the interfaces:</span>
 <span class="c-op">$</span> composer require <span class="c-str">phplrt/parser-contracts</span></pre>

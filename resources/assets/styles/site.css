@@ -1346,6 +1346,10 @@ a:hover { color: var(--brand); }
 .pkg code { color: var(--ink); font-size: 13px; font-weight: 500; }
 .pkg span { color: var(--ink-3); font-size: 13.5px; }
 
+/* Not part of the metapackage — the same row, drawn as an outline so the
+   list reads as "these, and this one only if you want it". */
+.pkg--extra { background: none; box-shadow: inset 0 0 0 var(--bd) var(--line); }
+
 .lane .code--paper {
     margin-top: auto;
     border-radius: var(--r-3);

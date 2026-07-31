@@ -22,10 +22,15 @@
                         content and what to call itself when an error has to say <em>where</em>.
                     </p>
                 </div>
-                <pre class="code code--paper code--sm"><span class="c-kw">new</span> <span class="c-cls">VirtualFile</span>(
-    <span class="c-str">'config.txt'</span>,
-    <span class="c-var">$text</span>,
-);</pre>
+                <pre class="code code--paper code--sm">{% code %}
+new File(__DIR__ . '/example.txt');
+
+new VirtualFile('config.txt', $text);
+
+new Source('2 + 2');
+
+new Stream($resource);
+{% endcode %}</pre>
             </div>
 
             <div class="panel">
@@ -50,11 +55,12 @@
             </div>
 
             <div class="panel">
-                <div class="panel__bar"><b>3 · parser</b><span class="push">PEG</span></div>
+                <div class="panel__bar"><b>3 · parser</b><span class="push">backtracking PEG</span></div>
                 <div class="panel__body">
                     <p>
-                        Recognition writes a flat trace; the reducers run once, afterwards,
-                        bottom-up. A branch that fails is simply truncated.
+                        Rules live in a table, not in a call graph, and each one knows the
+                        tokens it may start with. Recognition writes a flat trace; the reducers
+                        run once, afterwards, bottom-up. A branch that fails is simply truncated.
                     </p>
                 </div>
                 <pre class="code code--paper code--sm"><span class="c-rule">Config</span>
@@ -88,6 +94,13 @@
                 </p>
             </div>
         </div>
+
+        <!-- The parser in the words its own documentation uses, for the reader
+             who wants to know what kind of PEG this is before reading further. -->
+        <p class="note rise" style="margin-top: 18px;">
+            <span>backtracking PEG recognizer · table-driven recursive descent · FIRST-set prediction · deferred tree construction</span>
+            <a class="more" href="/docs/parser#how-it-reads">how the parser works</a>
+        </p>
     </div>
 
     <!-- Into the graph-paper band -->
