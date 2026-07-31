@@ -1,0 +1,170 @@
+<!-- ==========================================================================
+     05 · Speed
+     ⚠ every number here is a placeholder — see the box
+     ====================================================================== -->
+<section class="band band--sunk" id="speed">
+    <div class="hold">
+        <div class="head rise">
+            <span class="chapter">05 · speed</span>
+            <h2 class="title">Every version did less work than the last</h2>
+            <p class="lede">
+                The lexer became one PCRE pattern with <code>(*MARK)</code> verbs instead
+                of a match per token. The parser learned to check a FIRST set before it
+                descends into a rule. Same grammars, same results.
+            </p>
+        </div>
+
+        <div class="panel rise">
+            <div class="panel__bar">
+                <b>across versions</b>
+                <span>the same 480-byte type expression, 44 token definitions</span>
+                <span class="push">lower is better</span>
+            </div>
+
+            <!-- Two charts, not one. The lexer runs in tens of microseconds and
+                 the parser in thousands: on a shared axis one of them is a flat
+                 line along the floor, which says nothing about either. -->
+            <div class="charts">
+                <div class="chart">
+                    <div class="chart__cap"><b>lexer</b> tokenizing only <i>µs / op</i></div>
+                    <!-- Grid (420 × 262): baseline y=214, bars 56 wide at x=40/130/220/310,
+                         tallest bar 160px = 68.9 µs; everything else is scaled to it. -->
+                    <svg viewBox="0 0 420 262" role="img" aria-label="Lexer: 68.9 µs in 1.x, 34.9 in 2.x, 21.7 in 3.6, 12.4 in 4.0">
+                        <g>
+                            <rect class="ch-bar" x="40"  y="54"  width="56" height="160" rx="16"/>
+                            <rect class="ch-bar" x="130" y="133" width="56" height="81"  rx="16"/>
+                            <rect class="ch-bar" x="220" y="164" width="56" height="50"  rx="16"/>
+                            <rect class="ch-bar ch-bar--now" x="310" y="185" width="56" height="29" rx="14"/>
+                        </g>
+
+
+                        <text class="ch-val" x="68"  y="42">68.9</text>
+                        <text class="ch-val" x="158" y="121">34.9</text>
+                        <text class="ch-val" x="248" y="152">21.7</text>
+                        <text class="ch-val ch-val--now" x="338" y="173">12.4</text>
+
+                        <text class="ch-tick" x="68"  y="240">1.x</text>
+                        <text class="ch-tick" x="158" y="240">2.x</text>
+                        <text class="ch-tick" x="248" y="240">3.6</text>
+                        <text class="ch-tick ch-tick--now" x="338" y="240">4.0</text>
+                    </svg>
+                </div>
+
+                <div class="chart">
+                    <div class="chart__cap"><b>parser</b> full result <i>µs / op</i></div>
+                    <!-- Same grid; tallest bar 160px = 3 200 µs -->
+                    <svg viewBox="0 0 420 262" role="img" aria-label="Parser: 3200 µs in 1.x, 1420 in 2.x, 902 in 3.6, 388 in 4.0">
+                        <g>
+                            <rect class="ch-bar" x="40"  y="54"  width="56" height="160" rx="16"/>
+                            <rect class="ch-bar" x="130" y="143" width="56" height="71"  rx="16"/>
+                            <rect class="ch-bar" x="220" y="169" width="56" height="45"  rx="16"/>
+                            <rect class="ch-bar ch-bar--now" x="310" y="195" width="56" height="19" rx="9"/>
+                        </g>
+
+
+                        <text class="ch-val" x="68"  y="42">3 200</text>
+                        <text class="ch-val" x="158" y="131">1 420</text>
+                        <text class="ch-val" x="248" y="157">902</text>
+                        <text class="ch-val ch-val--now" x="338" y="183">388</text>
+
+                        <text class="ch-tick" x="68"  y="240">1.x</text>
+                        <text class="ch-tick" x="158" y="240">2.x</text>
+                        <text class="ch-tick" x="248" y="240">3.6</text>
+                        <text class="ch-tick ch-tick--now" x="338" y="240">4.0</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="panel__bar panel__bar--foot">
+                <b>method</b>
+                <span class="push">phpbench · php 8.4 · opcache on, jit off · 4.0 parser generated from the grammar</span>
+            </div>
+        </div>
+
+        <div class="duo duo--lead rise" style="margin-top: 22px;">
+            <div class="panel">
+                <div class="panel__bar"><b>against other tools</b><span class="push">same input, end to end</span></div>
+                <div class="rows rows--cmp">
+                    <div class="rows__row is-self">
+                        <div class="rows__name">phplrt 4.0<em>generated from a grammar</em></div>
+                        <span class="meter"><i data-fill="13"></i></span>
+                        <div class="rows__num">388 µs</div>
+                    </div>
+                    <div class="rows__row">
+                        <div class="rows__name">phpstan/phpdoc-parser<em>hand-written, one language</em></div>
+                        <span class="meter"><i data-fill="21"></i></span>
+                        <div class="rows__num">655 µs<em>1.7×</em></div>
+                    </div>
+                    <div class="rows__row">
+                        <div class="rows__name">nikic/php-parser<em>LALR tables, generated</em></div>
+                        <span class="meter"><i data-fill="38"></i></span>
+                        <div class="rows__num">1 180 µs<em>3.0×</em></div>
+                    </div>
+                    <div class="rows__row">
+                        <div class="rows__name">hoa/compiler<em>the ancestor of this syntax</em></div>
+                        <span class="meter"><i data-fill="100"></i></span>
+                        <div class="rows__num">3 100 µs<em>8.0×</em></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stack">
+                <div class="panel">
+                    <div class="panel__bar"><b>how much work do you need?</b><span class="push">4.0, same input</span></div>
+                    <div class="rows">
+                        <div class="rows__row is-self">
+                            <div class="rows__name">analyze(Mode::Fast)<em>valid? and how far</em></div>
+                            <span class="meter"><i data-fill="42"></i></span>
+                            <div class="rows__num">164 µs</div>
+                        </div>
+                        <div class="rows__row is-self">
+                            <div class="rows__name">analyze(SyntaxCheck)<em>no reducers run</em></div>
+                            <span class="meter"><i data-fill="54"></i></span>
+                            <div class="rows__num">210 µs</div>
+                        </div>
+                        <div class="rows__row">
+                            <div class="rows__name">parse()<em>builds everything</em></div>
+                            <span class="meter"><i data-fill="100"></i></span>
+                            <div class="rows__num">388 µs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="caveat">
+                    <b>⚠</b>
+                    <div>
+                        <b>Placeholders.</b> These are the shapes the charts should have, not
+                        measurements — replace them with <code>vendor/bin/phpbench run</code>
+                        output. A fair comparison also needs equivalent grammars: a
+                        hand-written parser does less by definition.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="trio rise" style="margin-top: 22px;">
+            <div class="figure">
+                <b>1</b>
+                <span>regex per lexer state</span>
+                <em>alternatives marked with <code>(*MARK:n)</code>, one pass over the input</em>
+            </div>
+            <div class="figure">
+                <b>0</b>
+                <span>runtime dependencies</span>
+                <em>a generated parser refers to the runtime and nothing else</em>
+            </div>
+            <div class="figure">
+                <b>1×</b>
+                <span>grammar compilation, ever</span>
+                <em>compile once, commit the PHP, stop paying for it per request</em>
+            </div>
+        </div>
+    </div>
+
+    <div class="wave wave--out" aria-hidden="true">
+        <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
+            <path fill="#f4f6fa" d="M0,130V64C380,132,880,4,1360,62C1640,96,1790,72,1920,56V130Z"/>
+            <path fill="#ffffff" d="M0,130V98C340,152,840,36,1330,92C1630,124,1800,102,1920,88V130Z"/>
+        </svg>
+    </div>
+</section>

@@ -1,36 +1,20 @@
-<label>
-    <input style="display:none" /><!-- Chrome autocompletion bug -->
-    <input type="search"
-           aria-autocomplete="none"
-           autocomplete="off"
-           placeholder="Search..."
-           data-bind="value: query, valueUpdate: 'input', event: { blur: blur, focus: focus }"
-           class="documentation-search" />
-</label>
+{# Results are fetched from /api/search.json and rendered by docs.js. Without
+   JavaScript the field simply does nothing, which is why it is not a form:
+   there is no server-rendered result page to submit to. #}
+<div class="find" data-find>
+    <label class="find__field">
+        <svg class="find__icon" viewBox="0 0 16 16" aria-hidden="true" width="16" height="16">
+            <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M11 11 L14.5 14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
 
-<!--ko if: results().length > 0 && shown()-->
-<div class="documentation-search-results"
-     style="display: none"
-     data-bind="foreach: results, style: {display: 'block'}">
-    <a href="#" data-bind="attr: {href: url}" class="documentation-search-item">
-        <span class="documentation-search-item-title" data-bind="html: title"></span>
-        <span class="documentation-search-item-page" data-bind="text: page"></span>
-    </a>
-</div>
-<!--/ko-->
+        <input type="search"
+               data-find-input
+               autocomplete="off"
+               aria-autocomplete="none"
+               aria-label="Search the documentation"
+               placeholder="Search…" />
+    </label>
 
-<!--ko if: error()-->
-<div class="documentation-search-results"
-     style="display: none"
-     data-bind="style: {display: 'block'}">
-    <span class="documentation-search-error" data-bind="text: error">&nbsp;</span>
+    <div class="find__out" data-find-out hidden></div>
 </div>
-<!--/ko-->
-
-<!--ko if: notice()-->
-<div class="documentation-search-results"
-     style="display: none"
-     data-bind="style: {display: 'block'}">
-    <span class="documentation-search-notice" data-bind="text: notice">&nbsp;</span>
-</div>
-<!--/ko-->

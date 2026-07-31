@@ -9,33 +9,37 @@
 {% endapply %}{% endblock %}
 
 {% block content %}
-    <main class="documentation">
-        <aside class="documentation-menu" data-vm="MenuViewModel">
-            <section class="documentation-menu-sticky">
-                <div class="documentation-menu-nav">
-                    <a href="/" class="documentation-menu-title documentation-menu-home">Home</a>
-                </div>
-                <div class="documentation-search">
+    {% include "partials/header.html.twig" with {'page': 'docs'} %}
+
+    <main class="docs">
+        <div class="hold docs__in">
+            {# The sidebar is a dialog on narrow screens and a column on wide
+               ones; one element, two behaviours, so the markup stays single. #}
+            <aside class="docs__side" id="docs-side">
+                <div class="docs__side-in">
                     {% include "components/search.html.twig" %}
+                    {% include "components/menu.html.twig" with {menu: menu, current: current|default('')} %}
                 </div>
-                <div class="documentation-menu-nav">
-                    {% include "components/menu.html.twig" with {menu: menu} %}
-                </div>
-            </section>
-        </aside>
+            </aside>
 
-        <section class="documentation-content">
-            {% include "partials/header.html.twig" with {'page': 'docs'} %}
-
-            <article class="documentation-content-text">
+            <article class="docs__body prose">
                 {% if page %}
                     {{ page.content | raw }}
                 {% else %}
-                    <h1 class="not-found">Page Not Found</h1>
+                    <h1>Page not found</h1>
+                    <p>
+                        This page has moved or never existed. The chapters on the left are
+                        the whole of the documentation — or start from
+                        <a href="/docs/guide/introduction">the introduction</a>.
+                    </p>
                 {% endif %}
             </article>
-
-            {% include "partials/footer.html.twig" %}
-        </section>
+        </div>
     </main>
+
+    <button class="docs__toggle" type="button" data-docs-toggle aria-controls="docs-side" aria-expanded="false">
+        <span>contents</span>
+    </button>
+
+    {% include "partials/footer.html.twig" %}
 {% endblock %}

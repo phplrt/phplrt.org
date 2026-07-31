@@ -1,0 +1,103 @@
+<!-- ==========================================================================
+     06 · New in 4
+     ====================================================================== -->
+<section class="band band--paper" id="four">
+    <div class="hold">
+        <div class="head rise">
+            <span class="chapter">06 · new in 4</span>
+            <h2 class="title">A rewrite that kept your grammar files</h2>
+            <p class="lede">
+                Almost every public API changed — property hooks, asymmetric visibility
+                and <code>new</code> in initializers are used throughout, which is why so
+                much of it looks different. Grammar files mostly compile unchanged.
+            </p>
+        </div>
+
+        <!-- Full width. Two columns of mono at 300px was the reason this looked
+             torn apart in #5; the pairing is what matters, so the arrow joins
+             the sides instead of a rule dividing them. -->
+        <div class="mig rise">
+            <div class="mig__head">
+                <span>3.x</span>
+                <span></span>
+                <span>4.0</span>
+            </div>
+
+            <div class="mig__row">
+                <div class="mig__was">$token-&gt;getName(), $token-&gt;getBytes()</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now">$token-&gt;<b>name</b>, $token-&gt;<b>size</b></div>
+            </div>
+            <div class="mig__row">
+                <div class="mig__was">$source-&gt;getContents()</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now">$source-&gt;<b>content</b></div>
+            </div>
+            <div class="mig__row">
+                <div class="mig__was">$token-&gt;getName() === 'T_DIGIT'</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now">$token-&gt;id === <b>Parser::T_DIGIT</b></div>
+            </div>
+            <div class="mig__row">
+                <div class="mig__was">new Lexer($tokens, ['T_WHITESPACE'])</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now">$builder-&gt;addPattern('\s++')-&gt;<b>hide()</b></div>
+            </div>
+            <div class="mig__row">
+                <div class="mig__was">$parser-&gt;check($source)</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now">$parser-&gt;<b>analyze</b>($source, Mode::Fast)</div>
+            </div>
+            <div class="mig__row">
+                <div class="mig__was">new Parser($lexer, $rules, [...$handlers])</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now">new AppParser() <span class="c-cm">// generated</span></div>
+            </div>
+            <div class="mig__row mig__row--gone">
+                <div class="mig__was">phplrt/buffer · phplrt/position · phplrt/visitor</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now">removed — 4.x prescribes no node shape</div>
+            </div>
+        </div>
+
+        <div class="trio rise" style="margin-top: 22px;">
+            <div class="fact">
+                <span class="fact__tag">requires</span>
+                <h3>PHP 8.4</h3>
+                <p>
+                    The API is built on features that only exist there, which is also what
+                    made the lookahead tables and the code generation practical.
+                </p>
+            </div>
+            <div class="fact">
+                <span class="fact__tag">back</span>
+                <h3>Code generation</h3>
+                <p>
+                    A generated parser is a real class again — the lexer, the token
+                    constants and the reducers as methods. Commit it and the compiler stays
+                    a dev dependency.
+                </p>
+            </div>
+            <div class="fact">
+                <span class="fact__tag">safer</span>
+                <h3>Nothing is kept on the parser</h3>
+                <p>
+                    No execution context between calls, so one parser is safe to share and
+                    to call from several places at once.
+                </p>
+            </div>
+        </div>
+
+        <p class="note rise" style="margin-top: 20px;">
+            <span>grammar files carry over · the constructors do not</span>
+            <a class="more" href="/docs/upgrade">upgrade guide</a>
+        </p>
+    </div>
+
+    <div class="wave wave--out" aria-hidden="true">
+        <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
+            <path fill="#e8edf4" d="M0,130V60C360,0,860,114,1350,58C1630,26,1790,50,1920,66V130Z"/>
+            <path fill="#f4f6fa" d="M0,130V94C340,30,830,140,1320,86C1620,54,1800,78,1920,94V130Z"/>
+        </svg>
+    </div>
+</section>

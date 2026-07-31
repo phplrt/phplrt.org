@@ -1,18 +1,17 @@
-{% if page is not defined %}
-    {% set page = '' %}
-{% endif %}
-
-{% if page != "docs" %}
-<header class="header" data-vm="HeaderViewModel" data-bind="css: { sticky: sticky }">
-    <section class="container">
-        <a href="/" class="logo">
-            <h1>PHP Language Recognition Tool</h1>
+{# The masthead carries destinations only. The landing's own chapters are
+   reachable from the gutter rail, so repeating them here as anchors made a
+   page-position marker look exactly like a link to another page. #}
+<header class="top">
+    <div class="hold top__in">
+        <a class="brand" href="/">
+            <img src="/favicon/x128.png" alt="" width="32" height="32" />
+            phplrt
+            <b>4.0</b>
         </a>
 
         <nav class="menu">
-            <a href="/docs" {% if page == 'docs' %}class="active"{% endif %}>Docs</a>
-            <a href="https://github.com/phplrt/phplrt" target="_blank" rel="nofollow">Source</a>
+            <a class="act act--quiet act--sm{% if page is defined and page == 'docs' %} is-here{% endif %}" href="/docs">Docs</a>
+            <a class="act act--brand act--sm" href="https://github.com/phplrt/phplrt" rel="noopener">GitHub</a>
         </nav>
-    </section>
+    </div>
 </header>
-{% endif %}

@@ -1,0 +1,138 @@
+<!-- ==========================================================================
+     Hero — two columns of comparable weight, closed by a full-width pill
+     ====================================================================== -->
+<section class="hero">
+    <div class="hold">
+        <div class="hero__in">
+            <div>
+                <a class="hero__badge" href="/docs/upgrade">
+                    <b>4.0</b> new lexer · analyze() · generated parsers
+                </a>
+
+                <h1>Read anything<br />that has <em>rules</em> in it.</h1>
+
+                <p class="hero__lede">
+                    A lexer, a PEG parser, a grammar compiler and an error printer for PHP.
+                    Describe your format once — in a file that reads like the language it
+                    describes — and get tokens, a tree, and errors that point at the
+                    character.
+                </p>
+
+                <div class="cmd">
+                    <code id="cmd-hero">composer require phplrt/phplrt</code>
+                    <button type="button" data-copy="#cmd-hero"><span>copy</span></button>
+                </div>
+
+                <div class="hero__acts">
+                    <a class="act act--brand" href="/docs/guide/quick-start">Quick start</a>
+                    <a class="act act--quiet" href="#grammars">Read a grammar</a>
+                </div>
+            </div>
+
+            <!-- One rule, twice: as source and as a picture. Two cards rather
+                 than one, because the source is dark and the diagram is light
+                 and a card is not allowed to be both. -->
+            <div class="stack stack--tight rise">
+                <div class="panel panel--night">
+                    <div class="panel__bar">
+                        <b>sum.pp3</b>
+                        <span class="push">the grammar</span>
+                    </div>
+
+                    <pre class="code"><span class="c-cm">// the words</span>
+<span class="c-dir">%skip</span>  <span class="c-tok">T_WHITESPACE</span>  <span class="c-re">\s++</span>
+<span class="c-dir">%token</span> <span class="c-tok">T_DIGIT</span>       <span class="c-re">\d++</span>
+<span class="c-dir">%token</span> <span class="c-tok">T_PLUS</span>        <span class="c-re">\+</span>
+
+<span class="c-cm">// the sentences, and what to build out of them</span>
+<span class="c-rule">Sum</span> <span class="c-op">-&gt;</span> { <span class="c-kw">return</span> <span class="c-fn">\array_sum</span>(<span class="c-var">$children</span>); }
+  <span class="c-op">:</span> <span class="c-rule">Number</span>() (<span class="c-cap">::T_PLUS::</span> <span class="c-rule">Number</span>())<span class="c-op">*</span>
+  <span class="c-op">;</span></pre>
+                </div>
+
+                <div class="panel">
+                    <div class="panel__bar">
+                        <b>Sum</b>
+                        <span class="push">the same rule, drawn</span>
+                    </div>
+
+                    <div class="rr">
+                        <!--
+                          Grid (620 × 152), main line y = 56, node height 44 (y 34…78):
+
+                            dot 14 · line 19→44
+                            Number()    44…162
+                            line      162→214
+                            ::T_PLUS:: 214…338
+                            line      338→372
+                            Number()  372…490
+                            line      490→592 · dot 600
+
+                          The repetition leaves the main line at x=530 (inside the
+                          490…592 gap) and re-joins it at x=196 (inside the 162…214
+                          gap). With a corner radius of 20 the loop reaches x=176 at
+                          its leftmost — 14px clear of Number()'s right edge — and
+                          x=550 at its rightmost. It never touches a node.
+                        -->
+                        <svg viewBox="0 0 620 152" role="img" aria-label="Sum: Number, then zero or more times a discarded plus followed by Number">
+                            <circle class="rr-dot" cx="14" cy="56" r="5"/>
+                            <path class="rr-line rr-line--draw" d="M19,56 H44"/>
+
+                            <g class="rr-node rr-node--rule">
+                                <rect x="44" y="34" width="118" height="44" rx="22"/>
+                                <text x="103" y="57">Number()</text>
+                            </g>
+
+                            <path class="rr-line rr-line--draw" d="M162,56 H214"/>
+
+                            <g class="rr-node rr-node--skip">
+                                <rect x="214" y="34" width="124" height="44" rx="22"/>
+                                <text x="276" y="57">::T_PLUS::</text>
+                            </g>
+
+                            <path class="rr-line rr-line--draw" d="M338,56 H372"/>
+
+                            <g class="rr-node rr-node--rule">
+                                <rect x="372" y="34" width="118" height="44" rx="22"/>
+                                <text x="431" y="57">Number()</text>
+                            </g>
+
+                            <path class="rr-line rr-line--draw" d="M490,56 H592"/>
+                            <circle class="rr-dot" cx="600" cy="56" r="5"/>
+
+                            <path class="rr-line rr-line--loop" d="M530,56 q20,0 20,20 v14 q0,20 -20,20 H196 q-20,0 -20,-20 v-14 q0,-20 20,-20"/>
+                            <polygon class="rr-dot" points="368,104 356,110 368,116"/>
+                            <text class="rr-cap" x="363" y="140">zero or more times</text>
+                        </svg>
+                    </div>
+
+                    <div class="legend">
+                        <span><i class="i-rule"></i>rule</span>
+                        <span><i class="i-token"></i>token, kept</span>
+                        <span><i class="i-skip"></i>token, discarded</span>
+                    </div>
+
+                    <div class="panel__bar panel__bar--foot">
+                        <b>result</b>
+                        <span class="push"><code>parse('2 + 3 + 4')</code> → <b>9</b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="specs">
+            <div><i></i>PHP 8.4+</div>
+            <div><i></i>no runtime dependencies</div>
+            <div><i></i>PEG · FIRST-prediction</div>
+            <div><i></i>MIT</div>
+        </div>
+    </div>
+
+    <!-- White rises into the hero -->
+    <div class="wave wave--out" aria-hidden="true">
+        <svg viewBox="0 0 1920 150" preserveAspectRatio="none">
+            <path fill="#e8edf4" d="M0,150V70C380,0,880,120,1360,66C1640,34,1790,58,1920,74V150Z"/>
+            <path fill="#ffffff" d="M0,150V104C340,34,840,150,1330,96C1630,62,1800,86,1920,102V150Z"/>
+        </svg>
+    </div>
+</section>

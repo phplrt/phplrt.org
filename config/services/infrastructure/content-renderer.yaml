@@ -3,14 +3,28 @@ services:
     autowire: true
     autoconfigure: true
 
-  # Note: "php", "json", "bash", "graphql" and other common languages are
-  #       bundled with tempest/highlight and need no registration.
   #
-  # TODO: The "pp2" (phplrt grammar) and "ast" languages are not ported yet,
-  #       so they currently fall back to plain text. They have to be
-  #       implemented as Tempest\Highlight\Language classes and added here
-  #       via "addLanguage" calls.
-  Tempest\Highlight\Highlighter: ~
+  # ----------------------------------------------------------------------------
+  #  Syntax Highlighting
+  # ----------------------------------------------------------------------------
+  #
+
+  App\Infrastructure\Highlight\ConceptTheme: ~
+
+  # Note: "php", "json", "bash", "graphql" and other common languages ship with
+  #       tempest/highlight and need no registration. The grammar languages
+  #       ("pp2", "pp3") are not among them, so those blocks are rendered as
+  #       plain text until a Tempest\Highlight\Language is written for them
+  #       from the actual grammar — and added here via "addLanguage".
+  Tempest\Highlight\Highlighter:
+    arguments:
+      $theme: '@App\Infrastructure\Highlight\ConceptTheme'
+
+  #
+  # ----------------------------------------------------------------------------
+  #  Content Rendering
+  # ----------------------------------------------------------------------------
+  #
 
   Local\ContentRenderer\ContentRendererInterface:
     class: Local\ContentRenderer\DocumentationRenderer

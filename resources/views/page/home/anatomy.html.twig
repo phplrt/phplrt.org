@@ -1,0 +1,121 @@
+<!-- ==========================================================================
+     02 · Anatomy
+     ====================================================================== -->
+<section class="band band--soft" id="anatomy">
+    <div class="hold">
+        <div class="head rise">
+            <span class="chapter">02 · anatomy</span>
+            <h2 class="title">Two kinds of line, and that is the whole syntax</h2>
+            <p class="lede">
+                A grammar file says what the words are and what order they may come in.
+                Everything else — states, channels, reducers — is an optional suffix on
+                one of these two lines.
+            </p>
+        </div>
+
+        <div class="stack rise">
+            <div class="panel panel--night">
+                <div class="panel__bar"><b>a word</b><span class="push">%token · one line, read by a lexer of its own</span></div>
+                <div class="anatomy">
+                    <div class="anatomy__line">
+                        <span class="part">
+                            <span class="part__text"><span class="c-dir">%token</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">declares a token. <span class="c-dir">%skip</span> is the same one, hidden from the parser</span>
+                        </span>
+                        <span class="part part--mark">
+                            <span class="part__text"><span class="c-cap">string:</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">the state it belongs to. <code>*:</code> means every state</span>
+                        </span>
+                        <span class="part">
+                            <span class="part__text"><span class="c-tok">T_QUOTE</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">the name — for you and for error messages. The parser compares ids</span>
+                        </span>
+                        <span class="part">
+                            <span class="part__text"><span class="c-re">"</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">the expression. No literal spaces: write <code>\x20</code></span>
+                        </span>
+                        <span class="part part--mark part--wide">
+                            <span class="part__text"><span class="c-op">-&gt;</span> <span class="c-fn">state</span>(strings), <span class="c-fn">channel</span>(quotes)</span>
+                            <span class="part__leg"></span>
+                            <span class="anno">what the token does besides being read: hand the reading over to another lexer, and put itself on a channel of its own</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel--night">
+                <div class="panel__bar"><b>a sentence</b><span class="push">a rule · name, an optional reducer, a body</span></div>
+                <div class="anatomy">
+                    <div class="anatomy__line">
+                        <span class="part">
+                            <span class="part__text"><span class="c-rule">Field</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">the name. Referred to as <code>Field()</code></span>
+                        </span>
+                        <span class="part part--mark part--wide">
+                            <span class="part__text"><span class="c-op">-&gt;</span> { <span class="c-kw">return</span> <span class="c-kw">new</span> <span class="c-cls">Node</span>(<span class="c-var">$offset</span>, <span class="c-var">$children</span>); }</span>
+                            <span class="part__leg"></span>
+                            <span class="anno">the reducer. Gets whatever the body matched and returns whatever you want — a number, a node, an array. Omit it and the tokens come through as they are</span>
+                        </span>
+                        <span class="part">
+                            <span class="part__text"><span class="c-op">:</span> <span class="c-cap">&lt;T_NAME&gt;</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">a token, kept</span>
+                        </span>
+                        <span class="part">
+                            <span class="part__text"><span class="c-cap">::T_COLON::</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">a token, discarded</span>
+                        </span>
+                        <span class="part">
+                            <span class="part__text"><span class="c-rule">Value</span>()<span class="c-op">?</span> <span class="c-op">;</span></span>
+                            <span class="part__leg"></span>
+                            <span class="anno">another rule, optional. Also <code>*</code>, <code>+</code>, <code>{2,5}</code>, and <code>&amp;e</code> / <code>!e</code> to look ahead without reading</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="trio rise" style="margin-top: 22px;">
+            <div class="fact">
+                <span class="fact__tag">01</span>
+                <h3>First match, not longest</h3>
+                <p>
+                    The lexer takes the first pattern that matches. Declare <code>**</code>
+                    before <code>*</code>, and keywords before the identifier pattern — or
+                    <code>if</code> becomes a name.
+                </p>
+            </div>
+            <div class="fact">
+                <span class="fact__tag">02</span>
+                <h3>No left recursion</h3>
+                <p>
+                    <code>Expr : Expr() "+" Number()</code> is refused while building, not at
+                    runtime. Write it as a repetition — which is what the diagram in the hero
+                    shows anyway.
+                </p>
+            </div>
+            <div class="fact">
+                <span class="fact__tag">03</span>
+                <h3>Punctuation declares itself</h3>
+                <p>
+                    <code>"="</code> inside a rule declares its own token, and such a token is
+                    always discarded. <code>/and|or/</code> does the same with a regular
+                    expression.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="wave wave--out" aria-hidden="true">
+        <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
+            <path fill="#e8edf4" d="M0,130V64C380,132,880,4,1360,62C1640,96,1790,72,1920,56V130Z"/>
+            <path fill="#ffffff" d="M0,130V98C340,152,840,36,1330,92C1630,124,1800,102,1920,88V130Z"/>
+        </svg>
+    </div>
+</section>

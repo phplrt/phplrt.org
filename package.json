@@ -18,9 +18,5 @@
         "webpack-cli": "^4.10",
         "webpack-notifier": "^1.15"
     },
-    "dependencies": {
-        "knockout": "^3.5",
-        "knockout-inview": "^2.5.0",
-        "reset-scss": "^1.0"
-    }
+    "dependencies": {}
 }

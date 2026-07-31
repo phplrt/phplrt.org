@@ -1,0 +1,1566 @@
+/**
+ * phplrt.org — landing, concept #6 ("re-read")
+ *
+ * Concept #5 re-thought. Same skeleton — numbered chapters, the gutter rail
+ * and the graph-paper ground from #3, the wavy band joints and the generous
+ * radii from #2 — with the colour and surface rules rewritten, because that
+ * is what was actually broken.
+ *
+ * THE FOUR RULES OF THIS SHEET
+ *
+ *   1. A LINE ONLY EVER SEPARATES TWO SURFACES OF THE SAME FAMILY.
+ *      White → grey line → black is the antipattern that made #5's panels
+ *      look assembled by accident. So: a light card has a light bar over a
+ *      light body; a card holding dark code is dark all the way through,
+ *      bar included. Light and dark meet along a card edge or a wave — never
+ *      along an internal hairline.
+ *
+ *   2. THE ACCENT IS SATURATED OR IT IS ABSENT.
+ *      #f4645f against cool grey is the brand and it sings. Its pale
+ *      derivative (#ffeceb) beside a cool grey border is warm-on-cool mud,
+ *      and that mud was in five places in #5. So the accent appears as
+ *      text, as a 2px rule, as a solid pill, as a bar fill — and as a
+ *      surface only when EVERY line touching that surface is also tinted
+ *      (the rule nodes in the railroad diagrams, and nothing else).
+ *      To say "this row is ours", use a marker, not a wash.
+ *
+ *   3. INLINE CODE IS NOT A BOX.
+ *      No border, no card. A faint tint of the surrounding ink and a
+ *      smaller size. Forty bordered chips per section is visual noise.
+ *
+ *   4. NOTHING ENDS ON AN OPEN EDGE.
+ *      Every strip, bar and table is a closed rounded shape. #5's hero
+ *      strip was a top border with text hanging off it — a stub.
+ *
+ * Kept from #5: no gradients (the graph paper is a flat SVG dot), no
+ * shadows (2px outlines and flat colour do the separating), and no dense
+ * block parked beside an empty one.
+ *
+ * Refactor notes:
+ *   - .panel is still the only card; --night is now a whole-card modifier,
+ *     never a partial one;
+ *   - the railroad diagrams are hand-plotted against a written coordinate
+ *     plan (see the comments in the markup) — the compiler holds the rule
+ *     tree, so these could be generated later;
+ *   - .wave stays one component with two modifiers; the SVG lives in the
+ *     markup so its fills can follow the two bands it joins.
+ */
+
+/* ---------------------------------------------------------------------------
+ *  1 · Tokens
+ * ------------------------------------------------------------------------ */
+
+:root {
+    --brand: #f4645f;
+    --brand-ink: #c8514c;
+    --brand-deep: #a8403c;
+
+    /* Tinted surface + the line that is allowed to touch it. Used together
+       or not at all — see rule 2. */
+    --brand-tint: #ffeceb;
+    --brand-line: #f3b6b3;
+
+    --ink: #16202c;
+    --ink-2: #3c4a5b;
+    --ink-3: #6c7d92;
+    --ink-4: #95a5b8;
+
+    --paper: #fff;
+    --paper-2: #f4f6fa;
+    --paper-3: #e8edf4;
+
+    --night: #16202c;
+    --night-2: #1c2733;
+    --night-3: #24303e;
+    --night-line: rgba(255, 255, 255, .12);
+    --night-line-2: rgba(255, 255, 255, .2);
+    --on-night: #cbd7e3;
+    --on-night-2: #8496ab;
+    --on-night-brand: #f88b87;
+
+    --line: #dbe2ec;
+    --line-2: #b8c5d4;
+
+    --ok: #7fa63f;
+    --warn: #d9992f;
+    --warn-ink: #7a5a14;
+    --warn-face: #fdf6e7;
+    --warn-line: #edd6a3;
+
+    /* Outlines: crisp, not chunky */
+    --bd: 2px;
+    --bd-lead: 3px;
+
+    /* Corners: the family trait */
+    --r-1: 10px;
+    --r-2: 16px;
+    --r-3: 24px;
+    --r-4: 32px;
+    --r-5: 40px;
+    --pill: 999px;
+
+    --sans: 'Nunito', 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono: 'JetBrains Mono', Menlo, Consolas, monospace;
+
+    --ease: cubic-bezier(.22, 1, .36, 1);
+
+    --col: 1180px;
+    --pad: 24px;
+
+    /* Graph paper — a flat SVG dot, because a gradient would be cheating */
+    --grid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='1.5' cy='1.5' r='1.5' fill='%2316202c' fill-opacity='.085'/%3E%3C/svg%3E");
+    --grid-night: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='1.5' cy='1.5' r='1.5' fill='%23ffffff' fill-opacity='.06'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------------------------------------
+ *  2 · Base
+ * ------------------------------------------------------------------------ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+}
+
+body {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.62;
+    color: var(--ink-2);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: -.022em;
+}
+
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img, svg { display: block; max-width: 100%; }
+pre { margin: 0; }
+
+code, pre, kbd {
+    font-family: var(--mono);
+    /* a grammar page must not turn "<=" into a single glyph */
+    font-variant-ligatures: none;
+    font-feature-settings: 'liga' 0, 'calt' 0;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+a {
+    color: var(--brand-ink);
+    text-decoration: none;
+    transition: color .18s var(--ease);
+}
+
+a:hover { color: var(--brand); }
+
+::selection { background: var(--brand); color: #fff; }
+
+:focus-visible {
+    outline: var(--bd) solid var(--brand);
+    outline-offset: 3px;
+    border-radius: var(--r-1);
+}
+
+/* Rule 3 — inline code is a tint, not a box.
+   One declaration for the whole page: no borders, anywhere, ever. */
+:where(p, li, .lede, .anno, .panel__bar, .note, .rows__name, .figure em, .caveat div) code {
+    padding: .12em .4em;
+    border-radius: 7px;
+    background: rgba(22, 32, 44, .06);
+    color: var(--ink);
+    font-size: .86em;
+}
+
+.band--night :where(p, li, .lede, .anno, .panel__bar, .note) code,
+.panel--night :where(p, li, .anno, .panel__bar) code,
+.console :where(p, li) code {
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+}
+
+/* ---------------------------------------------------------------------------
+ *  3 · Layout
+ * ------------------------------------------------------------------------ */
+
+.hold {
+    width: 100%;
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0 var(--pad);
+}
+
+/* A band is a full-width strip of one flat colour. Bands never touch along
+   a straight edge — a .wave sits between them. The bottom padding leaves
+   room for the wave leaving the band, the top padding for the one arriving,
+   so content never runs into a curve. */
+.band {
+    position: relative;
+    padding: 96px 0 150px;
+}
+
+.band--night { padding-top: 150px; }
+
+.band--paper { background: var(--paper); }
+.band--soft  { background: var(--paper-2); background-image: var(--grid); }
+.band--sunk  { background: var(--paper-3); }
+
+.band--night {
+    background: var(--night);
+    background-image: var(--grid-night);
+    color: var(--on-night);
+}
+
+.band--night h2,
+.band--night h3 { color: #fff; }
+
+/* Waves ------------------------------------------------------------------ */
+
+.wave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    line-height: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.wave svg { width: 100%; height: auto; display: block; }
+
+/* --in sits at the top of a band: the previous colour pours downwards.
+   --out sits at the bottom: the next colour rises into this one. */
+.wave--in  { top: -1px; }
+.wave--out { bottom: -1px; }
+
+.band > .hold { position: relative; z-index: 2; }
+
+/* Chapter heading -------------------------------------------------------- */
+
+.chapter {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: var(--brand-ink);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.chapter::before {
+    content: '';
+    width: 26px;
+    height: var(--bd);
+    border-radius: var(--pill);
+    background: var(--brand);
+}
+
+.band--night .chapter { color: var(--on-night-brand); }
+
+.head { max-width: 720px; margin-bottom: 44px; }
+.head--mid { margin-left: auto; margin-right: auto; text-align: center; }
+.head--mid .chapter::before { display: none; }
+
+.title { font-size: clamp(30px, 3.8vw, 44px); }
+
+.lede {
+    max-width: 62ch;
+    margin-top: 14px;
+    font-size: 18px;
+}
+
+.band--night .lede { color: var(--on-night-2); }
+
+.head--mid .lede { margin-left: auto; margin-right: auto; }
+
+.note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-3);
+}
+
+.band--night .note { color: var(--on-night-2); }
+
+/* Grids ------------------------------------------------------------------- */
+
+.duo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 22px;
+    align-items: stretch;   /* nothing tall parked next to something short */
+}
+
+.duo--lead { grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr); }
+.duo--trail { grid-template-columns: minmax(0, 1fr) minmax(0, 1.32fr); }
+
+.trio {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+/* The explicit minmax(0, 1fr) matters: an implicit "auto" column is sized to
+   max-content, so a <pre> that does not wrap would push the whole column past
+   the container instead of scrolling inside its own box. */
+.stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-content: start; }
+.stack--tight { gap: 14px; }
+
+@media (max-width: 960px) {
+    .duo, .duo--lead, .duo--trail, .trio { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------------------------------------------------------------------------
+ *  4 · Gutter rail (chapter navigation)
+ * ------------------------------------------------------------------------ */
+
+.rail {
+    position: fixed;
+    top: 50%;
+    left: 22px;
+    z-index: 60;
+    transform: translateY(-50%);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+}
+
+@media (min-width: 1420px) { .rail { display: flex; } }
+
+.rail a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 0;
+    color: var(--ink-4);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    transition: color .2s var(--ease);
+}
+
+.rail a::before {
+    content: '';
+    width: 16px;
+    height: var(--bd);
+    border-radius: var(--pill);
+    background: var(--line-2);
+    transition: width .25s var(--ease), background-color .25s var(--ease);
+}
+
+.rail a span { opacity: 0; transition: opacity .2s var(--ease); }
+.rail:hover a span { opacity: 1; }
+
+.rail a:hover { color: var(--ink-2); }
+
+.rail a.is-here { color: var(--brand-ink); }
+.rail a.is-here span { opacity: 1; }
+.rail a.is-here::before { width: 32px; background: var(--brand); }
+
+/* Over a dark band the rail has to invert */
+.rail.on-night a { color: var(--on-night-2); }
+.rail.on-night a::before { background: var(--on-night-2); }
+.rail.on-night a.is-here { color: #fff; }
+.rail.on-night a.is-here::before { background: var(--brand); }
+
+/* ---------------------------------------------------------------------------
+ *  5 · Masthead
+ * ------------------------------------------------------------------------ */
+
+.top {
+    position: sticky;
+    top: 0;
+    z-index: 70;
+    background: var(--paper);
+    border-bottom: var(--bd) solid transparent;
+    transition: border-color .2s var(--ease);
+}
+
+.top.is-off { border-bottom-color: var(--line); }
+
+.top__in {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    height: 76px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-right: auto;
+    color: var(--ink);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.brand img { width: 32px; height: 32px; }
+
+.brand b {
+    padding: 2px 10px;
+    border-radius: var(--pill);
+    background: var(--brand);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.brand:hover { color: var(--brand-ink); }
+
+/* Destinations, not chapter anchors — so they are buttons, and they stay on
+   at every width: the documentation is the one link that must never vanish. */
+.menu { display: flex; align-items: center; gap: 10px; }
+
+/* The page you are already on is stated, not offered */
+.menu .act.is-here {
+    border-color: var(--brand);
+    color: var(--brand-ink);
+}
+
+/* Hovers the same way as every other pill — the ring goes dark. The accent
+   ink stays, because that is what marks it as the page you are on. */
+.menu .act.is-here:hover {
+    background: var(--paper);
+    border-color: var(--night);
+    color: var(--brand-ink);
+}
+
+@media (max-width: 560px) {
+    .top__in { gap: 12px; }
+    .menu { gap: 8px; }
+    .menu .act { height: 36px; padding: 0 14px; font-size: 13.5px; line-height: 32px; }
+    .brand { font-size: 17px; gap: 8px; }
+    .brand img { width: 26px; height: 26px; }
+}
+
+/* ---------------------------------------------------------------------------
+ *  6 · Buttons
+ * ------------------------------------------------------------------------ */
+
+.act {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    height: 50px;
+    padding: 0 26px;
+    border: var(--bd) solid var(--ink);
+    border-radius: var(--pill);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 800;
+    /* The label is a bare text node, so it becomes an anonymous item that
+       align-items does not reach — it stretches and the text rides at the
+       top. Leading equal to the content box (height minus the two borders)
+       centres it without relying on flex alignment at all. */
+    line-height: 46px;
+    white-space: nowrap;
+    transition: background-color .18s var(--ease), color .18s var(--ease),
+                border-color .18s var(--ease);
+}
+
+/* No lift on hover, anywhere. A 1px rise moves the button out from under a
+   cursor resting near its edge, which drops the hover, drops the transform
+   and puts the button back — a loop that reads as a shake. Colour alone
+   carries the state. */
+.act:hover { background: var(--ink); color: #fff; }
+
+.act--brand {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #fff;
+}
+
+/* The solid pill keeps its fill on hover and gains a dark ring instead:
+   with no lift left to signal the state, the outline is what changes. */
+.act--brand:hover { background: var(--brand); border-color: var(--night); color: #fff; }
+
+/* The outlined pill answers the same way the solid one does: the ring goes
+   dark and nothing else moves. It keeps its own surface and its own ink —
+   inverting to a black fill made it read as a different, heavier button. */
+.act--quiet { border-color: var(--line-2); }
+
+.act--quiet:hover {
+    background: var(--paper);
+    border-color: var(--night);
+    color: var(--ink);
+}
+
+.act--sm { height: 40px; padding: 0 18px; font-size: 14.5px; line-height: 36px; }
+
+.band--night .act {
+    border-color: var(--night-line-2);
+    background: transparent;
+    color: #fff;
+}
+
+.band--night .act:hover { background: #fff; color: var(--ink); border-color: #fff; }
+.band--night .act--brand { border-color: var(--brand); background: var(--brand); }
+.band--night .act--brand:hover { background: #fff; color: var(--ink); }
+
+.more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 500;
+}
+
+.more::after { content: '→'; transition: transform .18s var(--ease); }
+.more:hover::after { transform: translateX(3px); }
+
+.band--night .more { color: var(--on-night-brand); }
+
+/* ---------------------------------------------------------------------------
+ *  7 · Panels — the one card
+ *
+ *  Rule 1 lives here. A panel is light throughout or dark throughout; the
+ *  bar always sits on the same family of surface as the body beneath it,
+ *  so no hairline ever has to bridge white and black.
+ * ------------------------------------------------------------------------ */
+
+.panel {
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-4);
+    background: var(--paper);
+    overflow: hidden;
+}
+
+.panel--soft { background: var(--paper-2); border-color: var(--line); }
+
+/* The dark card: bar, body and code all in the night family. */
+.panel--night {
+    border-color: var(--night);
+    background: var(--night-2);
+    color: var(--on-night);
+}
+
+.band--night .panel--night { border-color: var(--night-line); }
+
+.panel__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    padding: 14px 22px;
+    border-bottom: var(--bd) solid var(--line);
+    background: var(--paper);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-3);
+}
+
+.panel__bar b { color: var(--ink); font-weight: 700; }
+.panel__bar .push { margin-left: auto; }
+.panel__bar--foot { border-bottom: 0; border-top: var(--bd) solid var(--line); }
+
+.panel--soft > .panel__bar { background: var(--paper-2); }
+
+/* dark bar over dark body — the divider stays inside the night family */
+.panel--night > .panel__bar {
+    background: var(--night-2);
+    border-bottom-color: var(--night-line);
+    color: var(--on-night-2);
+}
+
+.panel--night > .panel__bar b { color: #fff; }
+.panel--night > .panel__bar--foot { border-top-color: var(--night-line); }
+
+.panel__body { padding: 24px 26px; }
+
+.panel h3 { font-size: 18px; margin-bottom: 8px; }
+.panel p { font-size: 15.5px; }
+.panel--night p { color: var(--on-night-2); }
+
+/* Panels in a row are stretched to the tallest one. Let the last code block
+   (or the row list) take the slack, so no card ends in a strip of blank
+   paper next to a full one. */
+.trio > .panel,
+.duo > .panel,
+.duo--lead > .panel,
+.duo--trail > .panel,
+.stack > .panel { display: flex; flex-direction: column; }
+
+.panel > .code:last-child { flex: 1; }
+.panel > .rows { flex: 1; align-content: stretch; }
+
+.band--night .panel p { color: var(--on-night-2); }
+
+/* A small stated fact, used in rows of two or three */
+.fact {
+    padding: 22px 24px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-3);
+    background: var(--paper);
+}
+
+.fact--flat { background: var(--paper-2); border-color: transparent; }
+
+.fact__tag {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--brand-ink);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+}
+
+.fact h3 { font-size: 17px; margin-bottom: 6px; }
+.fact p { font-size: 15px; }
+
+/* On the dark band a fact keeps the outline and drops the fill — a white
+   card would swallow its own white heading */
+.band--night .fact {
+    border-color: var(--night-line);
+    background: rgba(255, 255, 255, .045);
+}
+
+.band--night .fact--flat { border-color: transparent; background: rgba(255, 255, 255, .045); }
+.band--night .fact p { color: var(--on-night-2); }
+.band--night .fact__tag { color: var(--on-night-brand); }
+
+/* ---------------------------------------------------------------------------
+ *  8 · Code
+ *
+ *  Highlighted in the markup — the page needs no JavaScript to read right.
+ * ------------------------------------------------------------------------ */
+
+.code {
+    display: block;
+    padding: 22px 24px;
+    overflow-x: auto;
+    background: var(--night);
+    color: var(--on-night);
+    font-size: 13.4px;
+    line-height: 1.78;
+    white-space: pre;
+    tab-size: 4;
+}
+
+.code--sm { padding: 18px 20px; font-size: 12.8px; }
+.code--fill { height: 100%; }
+
+/* The light variant: a flat slab, no border — it never meets a dark
+   surface, so it needs no line to defend itself */
+.code--paper {
+    background: var(--paper-2);
+    color: var(--ink);
+}
+
+.panel--soft .code--paper { background: var(--paper-3); }
+
+.code::-webkit-scrollbar { height: 8px; }
+.code::-webkit-scrollbar-thumb { border-radius: var(--pill); background: rgba(255, 255, 255, .18); }
+.code--paper::-webkit-scrollbar-thumb { background: var(--line-2); }
+
+.c-cm   { color: #61758a; font-style: italic; }
+.c-dir  { color: #f4645f; font-weight: 700; }
+.c-tok  { color: #e5b06b; }
+.c-cap  { color: #7fb6ea; }
+.c-rule { color: #63cbbd; font-weight: 700; }
+.c-str  { color: #a4c97a; }
+.c-var  { color: #d3a4ea; }
+.c-kw   { color: #f4645f; }
+.c-cls  { color: #7fb6ea; }
+.c-fn   { color: #e6cf76; }
+.c-num  { color: #e4956f; }
+.c-op   { color: #8ba0b6; }
+.c-re   { color: #b8c6d6; }
+
+.code--paper .c-cm   { color: #7d8a99; }
+.code--paper .c-op   { color: #5c6b7c; }
+.code--paper .c-str  { color: #43701f; }
+.code--paper .c-cap  { color: #22608f; }
+.code--paper .c-rule { color: #0f7768; }
+.code--paper .c-num  { color: #a8551f; }
+.code--paper .c-kw   { color: var(--brand-ink); }
+.code--paper .c-dir  { color: var(--brand-ink); }
+
+/* ---------------------------------------------------------------------------
+ *  9 · Anatomy — an annotated line of grammar
+ *
+ *  The device from concept #3. A mono line broken into parts, each with a
+ *  rounded leader dropping to its own call-out; the call-out sets the width
+ *  of the part, so two of them can never collide. Always inside a dark
+ *  card, bar included (rule 1).
+ * ------------------------------------------------------------------------ */
+
+.anatomy {
+    padding: 30px 26px 26px;
+    overflow-x: auto;
+    background: var(--night);
+    color: var(--on-night);
+}
+
+.anatomy__line {
+    display: flex;
+    font-family: var(--mono);
+    font-size: 16px;
+    white-space: pre;
+}
+
+.part { display: flex; flex-direction: column; align-items: flex-start; }
+
+.part__text { padding-bottom: 6px; }
+
+.part__leg {
+    width: 100%;
+    height: 16px;
+    border-left: var(--bd) solid var(--night-line-2);
+    border-bottom: var(--bd) solid var(--night-line-2);
+    border-bottom-left-radius: 10px;
+}
+
+.part--mark .part__leg { border-color: rgba(244, 100, 95, .6); }
+
+.anno {
+    width: 158px;
+    padding-top: 8px;
+    padding-right: 14px;
+    color: var(--on-night-2);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    white-space: normal;
+}
+
+.part--mark .anno { color: var(--on-night-brand); }
+.part--wide .anno { width: 300px; }
+
+/* ---------------------------------------------------------------------------
+ *  10 · Railroad diagrams
+ *
+ *  Every diagram is plotted on a written grid — see the comment above each
+ *  <svg>. The one law: a connector may only meet a node on the node's own
+ *  edge, at the node's own centre line. #5 broke it twice.
+ * ------------------------------------------------------------------------ */
+
+.rr { padding: 16px 0 10px; overflow-x: auto; }
+
+/* Low enough that a diagram fits inside a half-width panel without being
+   cut off; anything narrower scrolls inside the .rr box */
+.rr svg { min-width: 460px; }
+
+.rr-line {
+    fill: none;
+    stroke: var(--line-2);
+    stroke-width: var(--bd);
+    stroke-linecap: round;
+}
+
+.rr-line--loop { stroke-dasharray: 4 7; }
+
+.rr-dot { fill: var(--line-2); }
+
+.rr-node rect { stroke-width: var(--bd); }
+
+.rr-node--token rect { fill: var(--paper-2); stroke: var(--line-2); }
+.rr-node--token text { fill: var(--ink); }
+
+/* The one tinted surface on the page — and every line touching it is
+   tinted too (rule 2) */
+.rr-node--rule rect { fill: var(--brand-tint); stroke: var(--brand); }
+.rr-node--rule text { fill: var(--brand-deep); }
+
+.rr-node--skip rect { fill: var(--paper); stroke: var(--line-2); stroke-dasharray: 6 5; }
+.rr-node--skip text { fill: var(--ink-3); }
+
+.rr-node text {
+    font-family: var(--mono);
+    font-size: 14px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+.rr-cap {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    fill: var(--ink-4);
+    text-anchor: middle;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding: 4px 24px 20px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-3);
+}
+
+.legend i {
+    display: inline-block;
+    width: 18px;
+    height: 11px;
+    margin-right: 7px;
+    border-radius: 6px;
+    vertical-align: -1px;
+}
+
+.legend .i-rule  { background: var(--brand-tint); border: var(--bd) solid var(--brand); }
+.legend .i-token { background: var(--paper-2); border: var(--bd) solid var(--line-2); }
+.legend .i-skip  { background: var(--paper); border: var(--bd) dashed var(--line-2); }
+
+/* ---------------------------------------------------------------------------
+ *  11 · Token chips
+ * ------------------------------------------------------------------------ */
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+
+.chip {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 14px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-2);
+    background: var(--paper);
+}
+
+.chip b { color: var(--ink); font-family: var(--mono); font-size: 15px; font-weight: 500; }
+.chip span { color: var(--ink-4); font-family: var(--mono); font-size: 10.5px; }
+
+.chip--hidden { border-style: dashed; background: transparent; }
+.chip--hidden b { color: var(--ink-4); }
+
+.chip--nest { align-items: stretch; padding: 8px 8px 10px; border-color: var(--line-2); }
+
+.chip__inner {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    padding: 7px 8px;
+    border-radius: var(--r-1);
+    background: var(--paper-2);
+}
+
+.chip__inner em {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 9px;
+    background: var(--paper);
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+}
+
+.chip__inner em i { font-style: normal; font-size: 9.5px; color: var(--ink-4); }
+
+/* ---------------------------------------------------------------------------
+ *  12 · Switchers
+ * ------------------------------------------------------------------------ */
+
+.tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+
+.tab {
+    padding: 10px 20px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--pill);
+    background: var(--paper);
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    transition: border-color .18s var(--ease), background-color .18s var(--ease),
+                color .18s var(--ease);
+}
+
+.tab:hover { border-color: var(--line-2); color: var(--ink); }
+
+/* saturated, not pale (rule 2) */
+.tab.is-on {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #fff;
+}
+
+.band--night .tab {
+    border-color: var(--night-line);
+    background: transparent;
+    color: var(--on-night-2);
+}
+
+.band--night .tab:hover { color: #fff; border-color: var(--night-line-2); }
+.band--night .tab.is-on { border-color: var(--brand); background: var(--brand); color: #fff; }
+
+[data-view][hidden] { display: none !important; }
+
+/* Stage list, used by the diagnostics section */
+.stages { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-content: start; }
+
+/* The grid lives on an inner element, not on the <button> itself: a button
+   wraps its children in an anonymous box, so they would arrive at the grid
+   as a single item and pile up in the 34px column. */
+.stage {
+    display: block;
+    padding: 15px 18px;
+    border: var(--bd) solid var(--night-line);
+    border-radius: var(--r-2);
+    background: transparent;
+    color: var(--on-night);
+    text-align: left;
+    transition: border-color .18s var(--ease), background-color .18s var(--ease);
+}
+
+.stage:hover { border-color: var(--night-line-2); background: rgba(255, 255, 255, .035); }
+
+/* brand fill inside a brand border — never grey against pink */
+.stage.is-on { border-color: var(--brand); background: rgba(244, 100, 95, .14); }
+
+.stage__in {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+}
+
+/* Same story as .act: the digits are a bare text node, so they become an
+   anonymous item that neither place-items nor align-items reaches, and they
+   settle in the top-left corner. Centring is done with text-align and with
+   leading equal to the content box (34px less the two borders). */
+.stage__no {
+    display: block;
+    text-align: center;
+    line-height: 30px;
+    width: 34px;
+    height: 34px;
+    border: var(--bd) solid var(--night-line);
+    border-radius: 50%;
+    color: var(--on-night-2);
+    font-family: var(--mono);
+    font-size: 12.5px;
+}
+
+.stage.is-on .stage__no { border-color: var(--brand); background: var(--brand); color: #fff; }
+
+.stage strong { display: block; color: #fff; font-size: 15.5px; }
+.stage span { display: block; color: var(--on-night-2); font-size: 14px; }
+
+/* ---------------------------------------------------------------------------
+ *  13 · Console
+ * ------------------------------------------------------------------------ */
+
+.console {
+    border: var(--bd) solid var(--night-line);
+    border-radius: var(--r-3);
+    background: var(--night-2);
+    overflow: hidden;
+}
+
+.console__bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-bottom: var(--bd) solid var(--night-line);
+    color: var(--on-night-2);
+    font-family: var(--mono);
+    font-size: 12px;
+}
+
+.console__bar::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ok);
+}
+
+.console__out {
+    display: block;
+    padding: 20px 22px;
+    overflow-x: auto;
+    color: var(--on-night);
+    font-size: 13.2px;
+    line-height: 1.85;
+    white-space: pre;
+}
+
+.d-err  { color: var(--brand); font-weight: 700; }
+.d-warn { color: #dfa03a; font-weight: 700; }
+.d-note { color: #63a4dd; font-weight: 700; }
+.d-msg  { color: #fff; font-weight: 700; }
+.d-bar  { color: #4d6076; }
+.d-file { color: #7fb6ea; }
+.d-src  { color: #bccadb; }
+.d-hit  { color: var(--brand); font-weight: 700; }
+.d-hit-warn { color: #dfa03a; font-weight: 700; }
+.d-dim  { color: #728799; font-style: italic; }
+.d-ok   { color: #93bd4f; font-weight: 700; }
+
+/* ---------------------------------------------------------------------------
+ *  14 · Benchmarks
+ *
+ *  Two series with two orders of magnitude between them cannot share an
+ *  axis and still mean anything — so they are two charts, each with its own
+ *  scale, and each says so.
+ * ------------------------------------------------------------------------ */
+
+.charts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.charts > div + div { border-left: var(--bd) solid var(--line); }
+
+@media (max-width: 780px) {
+    .charts { grid-template-columns: minmax(0, 1fr); }
+    .charts > div + div { border-left: 0; border-top: var(--bd) solid var(--line); }
+}
+
+.chart { padding: 22px 24px 18px; }
+
+.chart__cap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+    margin-bottom: 6px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink-3);
+}
+
+.chart__cap b { color: var(--ink); font-size: 13.5px; }
+.chart__cap i { font-style: normal; margin-left: auto; color: var(--ink-4); font-size: 11.5px; }
+
+.chart svg { width: 100%; height: auto; overflow: visible; }
+
+
+.ch-bar { fill: var(--line-2); }
+.ch-bar--now { fill: var(--brand); }
+
+.ch-val {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+    fill: var(--ink-2);
+    text-anchor: middle;
+}
+
+.ch-val--now { fill: var(--brand-ink); }
+
+.ch-tick {
+    font-family: var(--mono);
+    font-size: 13px;
+    fill: var(--ink-3);
+    text-anchor: middle;
+}
+
+.ch-tick--now { fill: var(--ink); font-weight: 700; }
+
+/* Comparison rows — the row that is ours is marked, not washed (rule 2) */
+.rows { display: grid; grid-template-columns: minmax(0, 1fr); }
+
+.rows__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .95fr) auto;
+    gap: 18px;
+    align-items: center;
+    padding: 15px 22px 15px 32px;
+}
+
+/* Every row is its own grid, so an "auto" last column is measured per row:
+   in the comparison table a row without a "×" factor, or with a three-digit
+   figure instead of a four-digit one, ends up narrower and drags its meter
+   out of line with the rest. A floor on the figure cell makes every row
+   measure the same without pinning a width on tables that do not need one —
+   the second table holds one uniform column of figures in half the space,
+   and a fixed width there would squeeze its names into the meters. */
+.rows--cmp .rows__num { min-width: 116px; }
+
+.rows__row + .rows__row { border-top: var(--bd) solid var(--line); }
+
+.rows__row.is-self::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    bottom: 16px;
+    width: 4px;
+    border-radius: var(--pill);
+    background: var(--brand);
+}
+
+/* "analyze(Mode::Fast)" has nowhere to break on its own — without this it
+   runs out of its track and over the meter next to it. */
+.rows__name { font-family: var(--mono); font-size: 14px; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+
+.rows__name em {
+    display: block;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-style: normal;
+    color: var(--ink-3);
+}
+
+.is-self .rows__name { color: var(--brand-ink); font-weight: 700; }
+
+.meter {
+    display: block;
+    height: 12px;
+    border-radius: var(--pill);
+    background: var(--paper-3);
+    overflow: hidden;
+}
+
+.panel--soft .meter { background: var(--paper-3); }
+
+.meter i {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: var(--pill);
+    background: var(--line-2);
+    transition: width .8s var(--ease);
+}
+
+.is-self .meter i { background: var(--brand); }
+
+.rows__num { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; text-align: right; }
+.is-self .rows__num { color: var(--brand-ink); }
+
+.rows__num em {
+    display: inline-block;
+    margin-left: 8px;
+    color: var(--ink-4);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+@media (max-width: 720px) {
+    .rows__row { grid-template-columns: minmax(0, 1fr) auto; }
+    .rows__row .meter { display: none; }
+}
+
+.caveat {
+    display: flex;
+    gap: 14px;
+    padding: 18px 22px;
+    border: var(--bd) solid var(--warn-line);
+    border-radius: var(--r-3);
+    background: var(--warn-face);
+    color: var(--warn-ink);
+    font-size: 15px;
+}
+
+.caveat b { color: #5e4310; }
+.caveat > b:first-child { color: var(--warn); font-size: 18px; line-height: 1.4; }
+.caveat code { background: rgba(122, 90, 20, .1); color: var(--warn-ink); }
+
+/* Numbers stated plainly */
+.figure {
+    padding: 24px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-3);
+    background: var(--paper);
+    text-align: center;
+}
+
+.figure b {
+    display: block;
+    color: var(--brand);
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.2;
+}
+
+.figure span { display: block; color: var(--ink); font-weight: 800; font-size: 14.5px; }
+.figure em { display: block; margin-top: 6px; color: var(--ink-3); font-size: 13px; font-style: normal; }
+
+/* ---------------------------------------------------------------------------
+ *  15 · Migration list (what version 4 changed)
+ *
+ *  #5 put this in a narrow column and called it a table; at 300px a column
+ *  of mono API calls is a pile of wrapped fragments. It is full width now,
+ *  and the two sides are joined by an arrow instead of divided by a rule —
+ *  what matters is the pairing, not the grid.
+ * ------------------------------------------------------------------------ */
+
+.mig {
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-4);
+    background: var(--paper);
+    overflow: hidden;
+}
+
+.mig__head,
+.mig__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr);
+    align-items: center;
+    gap: 0;
+}
+
+.mig__head {
+    padding: 14px 26px;
+    background: var(--paper-2);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.mig__head span:last-child { color: var(--brand-ink); }
+
+.mig__row { padding: 6px 26px; }
+.mig__row + .mig__row,
+.mig__head + .mig__row { border-top: var(--bd) solid var(--line); }
+
+.mig__row > * { padding: 12px 0; }
+
+.mig__was {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--ink-3);
+    overflow-wrap: anywhere;
+}
+
+.mig__to {
+    justify-self: center;
+    color: var(--line-2);
+    font-family: var(--mono);
+    font-size: 15px;
+}
+
+.mig__now {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--ink);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.mig__now b { color: var(--brand-ink); font-weight: 700; }
+
+.mig__row--gone .mig__now { color: var(--ink-3); font-family: var(--sans); font-size: 14.5px; }
+
+@media (max-width: 820px) {
+    .mig__head { display: none; }
+    .mig__row { grid-template-columns: minmax(0, 1fr); padding: 10px 22px; }
+    .mig__row > * { padding: 4px 0; }
+    .mig__to { justify-self: start; transform: rotate(90deg); }
+}
+
+/* ---------------------------------------------------------------------------
+ *  16 · Install lanes
+ *
+ *  Two lanes of the same paper. What tells them apart is the rule over the
+ *  heading — dashed for the half that never ships, solid brand for the half
+ *  that does — not a wash behind one of them.
+ * ------------------------------------------------------------------------ */
+
+.lanes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-4);
+    background: var(--paper);
+    overflow: hidden;
+}
+
+.lane { display: flex; flex-direction: column; padding: 28px; }
+.lane + .lane { border-left: var(--bd) solid var(--line); }
+
+@media (max-width: 860px) {
+    .lanes { grid-template-columns: minmax(0, 1fr); }
+    .lane + .lane { border-left: 0; border-top: var(--bd) solid var(--line); }
+}
+
+.lane__tag {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    color: var(--ink-3);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.lane__tag::after {
+    content: '';
+    flex: 1;
+    height: 0;
+    border-top: var(--bd) dashed var(--line-2);
+}
+
+.lane--ships .lane__tag { color: var(--brand-ink); }
+
+.lane--ships .lane__tag::after {
+    border-top: var(--bd) solid var(--brand);
+    border-radius: var(--pill);
+}
+
+.lane h3 { font-size: 20px; margin-bottom: 8px; }
+.lane > p { font-size: 15.5px; }
+
+.pkgs { margin: 18px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+
+.pkg {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+    padding: 10px 16px;
+    border-radius: var(--r-2);
+    background: var(--paper-2);
+}
+
+.pkg code { color: var(--ink); font-size: 13px; font-weight: 500; }
+.pkg span { color: var(--ink-3); font-size: 13.5px; }
+
+.lane .code--paper {
+    margin-top: auto;
+    border-radius: var(--r-3);
+    padding: 18px 20px;
+}
+
+/* ---------------------------------------------------------------------------
+ *  17 · Hero
+ * ------------------------------------------------------------------------ */
+
+.hero {
+    position: relative;
+    padding: 70px 0 130px;
+    background: var(--paper-2);
+    background-image: var(--grid);
+}
+
+.hero__in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 44px;
+    align-items: center;
+}
+
+@media (max-width: 1000px) {
+    .hero { padding: 54px 0 110px; }
+    .hero__in { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+}
+
+.hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding: 5px 16px 5px 6px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--pill);
+    background: var(--paper);
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    transition: border-color .18s var(--ease), color .18s var(--ease);
+}
+
+.hero__badge:hover { border-color: var(--brand); color: var(--ink); }
+
+.hero__badge b {
+    padding: 2px 11px;
+    border-radius: var(--pill);
+    background: var(--brand);
+    color: #fff;
+    font-size: 11.5px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 5.2vw, 62px);
+    line-height: 1.04;
+    letter-spacing: -.035em;
+}
+
+.hero h1 em { font-style: normal; color: var(--brand); }
+
+.hero__lede { max-width: 48ch; margin-top: 20px; font-size: 18.5px; }
+
+.hero__acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+/* Install command */
+.cmd {
+    display: flex;
+    align-items: stretch;
+    max-width: 460px;
+    margin-top: 22px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--pill);
+    background: var(--paper);
+    overflow: hidden;
+}
+
+.cmd code {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 12px 22px;
+    overflow-x: auto;
+    color: var(--ink);
+    font-size: 14.5px;
+    white-space: nowrap;
+}
+
+.cmd button {
+    padding: 0 20px;
+    border-left: var(--bd) solid var(--line);
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 13px;
+    transition: background-color .18s var(--ease), color .18s var(--ease);
+}
+
+.cmd button:hover { background: var(--ink); color: #fff; }
+.cmd button.is-done { background: var(--ok); color: #fff; }
+
+/* Solid, not transparent: the graph-paper dots of the band behind must not
+   show through the inside of a code pill. */
+.band--night .cmd { border-color: var(--night-line-2); background: var(--night); }
+.band--night .cmd code { color: #fff; }
+.band--night .cmd button { border-left-color: var(--night-line-2); color: var(--on-night); }
+.band--night .cmd button:hover { background: #fff; color: var(--ink); }
+
+/* Rule 4 — a closed shape, not a top border with text hanging off it */
+.specs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 52px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--pill);
+    background: var(--paper);
+    overflow: hidden;
+}
+
+.specs div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 16px 18px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--ink-2);
+    text-align: center;
+}
+
+.specs div + div { border-left: var(--bd) solid var(--line); }
+
+.specs i {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--brand);
+}
+
+@media (max-width: 860px) {
+    .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); border-radius: var(--r-4); }
+    .specs div:nth-child(3) { border-left: 0; border-top: var(--bd) solid var(--line); }
+    .specs div:nth-child(4) { border-top: var(--bd) solid var(--line); }
+}
+
+@media (max-width: 460px) {
+    .specs { grid-template-columns: minmax(0, 1fr); }
+    .specs div + div { border-left: 0; border-top: var(--bd) solid var(--line); }
+}
+
+/* ---------------------------------------------------------------------------
+ *  18 · Closing
+ * ------------------------------------------------------------------------ */
+
+.closing {
+    position: relative;
+    padding: 160px 0 96px;
+    background: var(--night);
+    background-image: var(--grid-night);
+    color: var(--on-night);
+    text-align: center;
+}
+
+.closing h2 { max-width: 20ch; margin: 0 auto; color: #fff; font-size: clamp(30px, 4vw, 46px); }
+.closing p { max-width: 56ch; margin: 16px auto 0; color: var(--on-night-2); font-size: 18px; }
+.closing .cmd { margin: 30px auto 0; }
+.closing__acts { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+
+.foot { padding: 32px 0; background: var(--night-2); color: var(--on-night-2); font-size: 14.5px; }
+
+.foot__in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 26px;
+}
+
+.foot nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.foot a { color: var(--on-night); font-family: var(--mono); font-size: 13px; }
+.foot a:hover { color: var(--brand); }
+
+/* ---------------------------------------------------------------------------
+ *  19 · Motion
+ * ------------------------------------------------------------------------ */
+
+.rise {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .5s var(--ease), transform .5s var(--ease);
+}
+
+.rise.is-in { opacity: 1; transform: none; }
+
+.rr-line--draw { stroke-dasharray: 1400; stroke-dashoffset: 1400; }
+.is-in .rr-line--draw { transition: stroke-dashoffset 1.2s var(--ease); stroke-dashoffset: 0; }
+
+.ch-bar { transform-box: fill-box; transform-origin: bottom; transform: scaleY(0); }
+.is-in .ch-bar { transition: transform .7s var(--ease); transform: scaleY(1); }
+.is-in .ch-bar:nth-of-type(2) { transition-delay: .07s; }
+.is-in .ch-bar:nth-of-type(3) { transition-delay: .14s; }
+.is-in .ch-bar:nth-of-type(4) { transition-delay: .21s; }
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+    .rise { opacity: 1; transform: none; }
+    .rr-line--draw { stroke-dashoffset: 0; }
+    .ch-bar { transform: none; }
+}
+
+@media (max-width: 720px) {
+    :root { --pad: 18px; }
+    .band { padding: 70px 0 110px; }
+    .panel__body { padding: 20px; }
+    .lane { padding: 22px; }
+}

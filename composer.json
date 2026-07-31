@@ -17,7 +17,6 @@
         "local/content-renderer": "*",
         "local/http-data-bundle": "*",
         "local/http-factory-bundle": "*",
-        "local/math-parser": "*",
         "local/twig-highlight-extension": "*",
         "ramsey/uuid": "^4.7",
         "symfony/asset": "7.1.*",

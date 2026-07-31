@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ac39382caad0b87f3a95c57e2c34958",
+    "content-hash": "df15accfe43bf6c66bbb02c215e46aed",
     "packages": [
         {
             "name": "brick/math",
@@ -2073,47 +2073,6 @@
             }
         },
         {
-            "name": "local/math-parser",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "libs/math-parser",
-                "reference": "ceaf120110c36638c9bf0583a56aec5b130c7910"
-            },
-            "require": {
-                "php": "^8.4",
-                "phplrt/runtime": "^3.7",
-                "symfony/var-dumper": "^5.4|^6.0|^7.0",
-                "tempest/highlight": "^2.27"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.64",
-                "phplrt/phplrt": "^3.7",
-                "phpunit/phpunit": "^10.5|^11.0",
-                "vimeo/psalm": "^5.26"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-main": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Local\\MathParser\\": "src"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Local\\MathParser\\Tests\\": "tests"
-                }
-            },
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
             "name": "local/twig-highlight-extension",
             "version": "dev-master",
             "dist": {
@@ -2400,116 +2359,6 @@
                 "source": "https://github.com/nette/utils/tree/v4.0.5"
             },
             "time": "2024-08-07T15:39:19+00:00"
-        },
-        {
-            "name": "phplrt/phplrt",
-            "version": "3.7.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phplrt/phplrt.git",
-                "reference": "0d2f15328f76e6689d79ee69c49e5c269a400924"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phplrt/phplrt/zipball/0d2f15328f76e6689d79ee69c49e5c269a400924",
-                "reference": "0d2f15328f76e6689d79ee69c49e5c269a400924",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-pcre": "*",
-                "ext-spl": "*",
-                "php": "^8.1",
-                "symfony/deprecation-contracts": "^2.5|^3.0"
-            },
-            "provide": {
-                "phplrt/exception-contracts-implementation": "^3.7",
-                "phplrt/lexer-contracts-implementation": "^3.7",
-                "phplrt/parser-contracts-implementation": "^3.7",
-                "phplrt/position-contracts-implementation": "^3.7",
-                "phplrt/source-contracts-implementation": "^3.7"
-            },
-            "replace": {
-                "phplrt/ast-contracts": "*",
-                "phplrt/buffer": "*",
-                "phplrt/compiler": "*",
-                "phplrt/contracts": "*",
-                "phplrt/exception": "*",
-                "phplrt/exception-contracts": "*",
-                "phplrt/grammar": "*",
-                "phplrt/grammar-contracts": "*",
-                "phplrt/lexer": "*",
-                "phplrt/lexer-contracts": "*",
-                "phplrt/parser": "*",
-                "phplrt/parser-contracts": "*",
-                "phplrt/position": "*",
-                "phplrt/position-contracts": "*",
-                "phplrt/runtime": "*",
-                "phplrt/source": "*",
-                "phplrt/source-contracts": "*",
-                "phplrt/visitor": "*"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.62",
-                "httpsoft/http-message": "^1.1",
-                "jetbrains/phpstorm-attributes": "^1.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^1.11",
-                "phpstan/phpstan-strict-rules": "^1.6",
-                "phpunit/phpunit": "^10.5|^11.0",
-                "psr/http-message": "^1.0|^2.0",
-                "rector/rector": "^1.2",
-                "symfony/var-dumper": "^5.4|^6.0|^7.0",
-                "symplify/monorepo-builder": "^11.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev",
-                    "dev-main": "3.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "libs/contracts/lexer/src/polyfill.php",
-                    "libs/lexer/src/polyfill.php",
-                    "libs/parser/src/polyfill.php"
-                ],
-                "psr-4": {
-                    "Phplrt\\Lexer\\": "libs/lexer/src",
-                    "Phplrt\\Buffer\\": "libs/buffer/src",
-                    "Phplrt\\Parser\\": "libs/parser/src",
-                    "Phplrt\\Source\\": "libs/source/src",
-                    "Phplrt\\Visitor\\": "libs/visitor/src",
-                    "Phplrt\\Compiler\\": "libs/compiler/src",
-                    "Phplrt\\Position\\": "libs/position/src",
-                    "Phplrt\\Exception\\": "libs/exception/src",
-                    "Phplrt\\Contracts\\Ast\\": "libs/contracts/ast/src",
-                    "Phplrt\\Contracts\\Lexer\\": "libs/contracts/lexer/src",
-                    "Phplrt\\Contracts\\Parser\\": "libs/contracts/parser/src",
-                    "Phplrt\\Contracts\\Source\\": "libs/contracts/source/src",
-                    "Phplrt\\Contracts\\Position\\": "libs/contracts/position/src",
-                    "Phplrt\\Contracts\\Exception\\": "libs/contracts/exception/src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kirill Nesmeyanov",
-                    "email": "nesk@xakep.ru"
-                }
-            ],
-            "description": "PHP Language Recognition Tool",
-            "homepage": "https://phplrt.org",
-            "support": {
-                "issues": "https://github.com/phplrt/phplrt/issues",
-                "source": "https://github.com/phplrt/phplrt"
-            },
-            "time": "2024-11-06T20:35:21+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -10185,6 +10034,116 @@
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.12.0"
             },
             "time": "2025-11-21T15:09:14+00:00"
+        },
+        {
+            "name": "phplrt/phplrt",
+            "version": "3.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phplrt/phplrt.git",
+                "reference": "0d2f15328f76e6689d79ee69c49e5c269a400924"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phplrt/phplrt/zipball/0d2f15328f76e6689d79ee69c49e5c269a400924",
+                "reference": "0d2f15328f76e6689d79ee69c49e5c269a400924",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-pcre": "*",
+                "ext-spl": "*",
+                "php": "^8.1",
+                "symfony/deprecation-contracts": "^2.5|^3.0"
+            },
+            "provide": {
+                "phplrt/exception-contracts-implementation": "^3.7",
+                "phplrt/lexer-contracts-implementation": "^3.7",
+                "phplrt/parser-contracts-implementation": "^3.7",
+                "phplrt/position-contracts-implementation": "^3.7",
+                "phplrt/source-contracts-implementation": "^3.7"
+            },
+            "replace": {
+                "phplrt/ast-contracts": "*",
+                "phplrt/buffer": "*",
+                "phplrt/compiler": "*",
+                "phplrt/contracts": "*",
+                "phplrt/exception": "*",
+                "phplrt/exception-contracts": "*",
+                "phplrt/grammar": "*",
+                "phplrt/grammar-contracts": "*",
+                "phplrt/lexer": "*",
+                "phplrt/lexer-contracts": "*",
+                "phplrt/parser": "*",
+                "phplrt/parser-contracts": "*",
+                "phplrt/position": "*",
+                "phplrt/position-contracts": "*",
+                "phplrt/runtime": "*",
+                "phplrt/source": "*",
+                "phplrt/source-contracts": "*",
+                "phplrt/visitor": "*"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.62",
+                "httpsoft/http-message": "^1.1",
+                "jetbrains/phpstorm-attributes": "^1.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^1.11",
+                "phpstan/phpstan-strict-rules": "^1.6",
+                "phpunit/phpunit": "^10.5|^11.0",
+                "psr/http-message": "^1.0|^2.0",
+                "rector/rector": "^1.2",
+                "symfony/var-dumper": "^5.4|^6.0|^7.0",
+                "symplify/monorepo-builder": "^11.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev",
+                    "dev-main": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "libs/contracts/lexer/src/polyfill.php",
+                    "libs/lexer/src/polyfill.php",
+                    "libs/parser/src/polyfill.php"
+                ],
+                "psr-4": {
+                    "Phplrt\\Lexer\\": "libs/lexer/src",
+                    "Phplrt\\Buffer\\": "libs/buffer/src",
+                    "Phplrt\\Parser\\": "libs/parser/src",
+                    "Phplrt\\Source\\": "libs/source/src",
+                    "Phplrt\\Visitor\\": "libs/visitor/src",
+                    "Phplrt\\Compiler\\": "libs/compiler/src",
+                    "Phplrt\\Position\\": "libs/position/src",
+                    "Phplrt\\Exception\\": "libs/exception/src",
+                    "Phplrt\\Contracts\\Ast\\": "libs/contracts/ast/src",
+                    "Phplrt\\Contracts\\Lexer\\": "libs/contracts/lexer/src",
+                    "Phplrt\\Contracts\\Parser\\": "libs/contracts/parser/src",
+                    "Phplrt\\Contracts\\Source\\": "libs/contracts/source/src",
+                    "Phplrt\\Contracts\\Position\\": "libs/contracts/position/src",
+                    "Phplrt\\Contracts\\Exception\\": "libs/contracts/exception/src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kirill Nesmeyanov",
+                    "email": "nesk@xakep.ru"
+                }
+            ],
+            "description": "PHP Language Recognition Tool",
+            "homepage": "https://phplrt.org",
+            "support": {
+                "issues": "https://github.com/phplrt/phplrt/issues",
+                "source": "https://github.com/phplrt/phplrt"
+            },
+            "time": "2024-11-06T20:35:21+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

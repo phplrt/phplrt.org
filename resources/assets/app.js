@@ -1,12 +1,8 @@
+// The landing sheet and its behaviour are taken from the concept as they were
+// authored. Everything documentation-specific lives beside them and is written
+// against the same tokens and the same plain-JS style.
+import "./styles/site.css";
+import "./styles/docs.css";
 
-import "./styles/app.scss";
-import Application from "./core/Application";
-
-if (!String.prototype.replaceAt) {
-    String.prototype.replaceAt = function (index, replacement) {
-        return this.substr(0, index) + replacement + this.substr(index + replacement.length);
-    };
-}
-
-const app = new Application();
-app.boot();
+import "./site.js";
+import "./docs.js";

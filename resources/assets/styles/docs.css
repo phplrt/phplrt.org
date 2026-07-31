@@ -1,0 +1,499 @@
+/**
+ * phplrt.org — documentation pages
+ *
+ * The concept sheet covers the landing only. These pages are assembled from
+ * its vocabulary and written against its tokens, under the same four rules:
+ *
+ *   1. a line only ever separates two surfaces of the same family;
+ *   2. the accent is saturated or it is absent — a marker, never a wash;
+ *   3. inline code is a tint, not a box;
+ *   4. nothing ends on an open edge.
+ *
+ * Layout: the masthead is shared with the landing, so the page starts below
+ * it. The sidebar is a sticky column on wide screens and a sheet that slides
+ * in on narrow ones — one element, two behaviours.
+ */
+
+/* ---------------------------------------------------------------------------
+ *  1 · Shell
+ * ------------------------------------------------------------------------ */
+
+.docs {
+    --side: 268px;
+    --gap: 56px;
+
+    /* The masthead is sticky at the top of the viewport: 76px of bar plus its
+       2px bottom border. The sidebar sticks directly underneath it. */
+    --head: 78px;
+    --lead: 40px;
+
+    background: var(--paper);
+}
+
+/* No align-items:start here. The aside must stretch to the full height of
+   the row, or its sticky child has nowhere to travel: it would come unstuck
+   as soon as the page scrolls past the height of the menu itself. */
+.docs__in {
+    display: grid;
+    grid-template-columns: var(--side) minmax(0, 1fr);
+    gap: var(--gap);
+    max-width: 1360px;
+    padding-top: var(--lead);
+    padding-bottom: 96px;
+}
+
+/* The sidebar sticks under the masthead and never scrolls as a whole: the
+   search field stays put and only the chapter list moves, so the field is
+   reachable however far down the list you are.
+   The offset equals where the column already sits at rest (masthead + the
+   lead-in above the content), so it locks on the first pixel of scroll —
+   any other value makes it drift for the difference and then snap. */
+.docs__side-in {
+    position: sticky;
+    top: calc(var(--head) + var(--lead));
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - var(--head) - var(--lead) - 24px);
+}
+
+.docs__side-in > .find { flex: none; }
+
+.docs__side-in > .nav {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 8px;
+}
+
+.docs__side-in > .nav::-webkit-scrollbar { width: 8px; }
+.docs__side-in > .nav::-webkit-scrollbar-thumb {
+    border-radius: var(--pill);
+    background: var(--line);
+}
+.docs__side-in > .nav::-webkit-scrollbar-thumb:hover { background: var(--line-2); }
+
+.docs__body { min-width: 0; }
+
+/* ---------------------------------------------------------------------------
+ *  2 · Search
+ * ------------------------------------------------------------------------ */
+
+.find { position: relative; margin-bottom: 26px; }
+
+.find__field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-2);
+    background: var(--paper-2);
+    transition: border-color .18s var(--ease), background-color .18s var(--ease);
+}
+
+.find__field:focus-within {
+    border-color: var(--brand);
+    background: var(--paper);
+}
+
+.find__icon { flex: none; color: var(--ink-4); }
+.find__field:focus-within .find__icon { color: var(--brand-ink); }
+
+.find__field input {
+    width: 100%;
+    padding: 11px 0;
+    border: 0;
+    outline: 0;
+    background: none;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 13px;
+}
+
+.find__field input::placeholder { color: var(--ink-4); }
+.find__field input::-webkit-search-cancel-button { display: none; }
+
+/* The dropdown is a closed card (rule 4) that overlays the menu below it */
+.find__out {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 40;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 6px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-2);
+    background: var(--paper);
+}
+
+.find__hit {
+    display: block;
+    padding: 9px 11px;
+    border-radius: var(--r-1);
+    color: var(--ink-2);
+}
+
+.find__hit:hover,
+.find__hit:focus-visible {
+    background: var(--paper-2);
+    color: var(--ink);
+}
+
+.find__hit b {
+    display: block;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 14.5px;
+    line-height: 1.4;
+}
+
+/* The matched fragment — a marker, not a wash (rule 2) */
+.find__hit b span {
+    color: var(--brand-ink);
+    background: none;
+}
+
+.find__hit i {
+    display: block;
+    margin-top: 2px;
+    color: var(--ink-4);
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 11.5px;
+}
+
+.find__note {
+    padding: 12px;
+    color: var(--ink-3);
+    font-size: 14px;
+    text-align: center;
+}
+
+.find__note--bad { color: var(--brand-ink); }
+
+/* ---------------------------------------------------------------------------
+ *  3 · Chapter menu
+ * ------------------------------------------------------------------------ */
+
+.nav__group + .nav__group { margin-top: 4px; }
+
+.nav__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 0;
+    color: var(--ink-4);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    text-transform: lowercase;
+    letter-spacing: .04em;
+    transition: color .18s var(--ease);
+}
+
+.nav__title:hover { color: var(--ink-2); }
+
+.nav__title::after {
+    content: '';
+    flex: none;
+    width: 7px;
+    height: 7px;
+    margin-left: auto;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform .2s var(--ease);
+}
+
+.nav__title[aria-expanded="false"]::after {
+    transform: rotate(-45deg) translate(-1px, 1px);
+}
+
+.nav__list { overflow: hidden; }
+.nav__group.is-shut .nav__list { display: none; }
+
+.nav__list a {
+    position: relative;
+    display: block;
+    padding: 6px 0 6px 16px;
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.45;
+    transition: color .18s var(--ease);
+}
+
+/* The rail's marker, re-used: the accent is a bar, never a background */
+.nav__list a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: var(--bd);
+    height: 15px;
+    margin-top: -7.5px;
+    border-radius: var(--pill);
+    background: var(--line);
+    transition: background-color .2s var(--ease), height .2s var(--ease);
+}
+
+.nav__list a:hover { color: var(--ink); }
+.nav__list a:hover::before { background: var(--line-2); }
+
+.nav__list a.is-here {
+    color: var(--brand-ink);
+    font-weight: 700;
+}
+
+.nav__list a.is-here::before {
+    height: 22px;
+    margin-top: -11px;
+    background: var(--brand);
+}
+
+.nav__out::after {
+    content: '↗';
+    margin-left: 5px;
+    color: var(--ink-4);
+    font-size: .85em;
+}
+
+/* ---------------------------------------------------------------------------
+ *  4 · Prose
+ *
+ *  Everything below styles what the markdown renderer emits. The code blocks
+ *  arrive already highlighted, as <pre class="code">, so section 8 of the
+ *  landing sheet does the colouring and only the shape is set here.
+ * ------------------------------------------------------------------------ */
+
+.prose {
+    color: var(--ink-2);
+    font-size: 16.5px;
+    line-height: 1.72;
+}
+
+.prose > :first-child { margin-top: 0; }
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+    color: var(--ink);
+    font-weight: 800;
+    line-height: 1.16;
+    letter-spacing: -.022em;
+    scroll-margin-top: 96px;
+}
+
+.prose h1 {
+    margin: 0 0 18px;
+    font-size: clamp(30px, 4vw, 40px);
+}
+
+.prose h2 {
+    margin: 56px 0 16px;
+    padding-top: 26px;
+    border-top: var(--bd) solid var(--line);
+    font-size: clamp(23px, 2.6vw, 28px);
+}
+
+.prose h3 { margin: 38px 0 12px; font-size: 19px; }
+.prose h4 { margin: 28px 0 10px; font-size: 16.5px; }
+
+.prose p { margin: 0 0 18px; }
+
+.prose a {
+    color: var(--brand-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--brand-line);
+}
+
+.prose a:hover {
+    color: var(--brand);
+    text-decoration-color: currentColor;
+}
+
+.prose strong { color: var(--ink); font-weight: 700; }
+
+.prose ul,
+.prose ol {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    list-style: disc;
+}
+
+.prose ol { list-style: decimal; }
+.prose li { margin: 7px 0; }
+.prose li::marker { color: var(--ink-4); }
+
+.prose img {
+    margin: 26px 0;
+    border-radius: var(--r-2);
+}
+
+.prose hr {
+    height: var(--bd);
+    margin: 46px 0;
+    border: 0;
+    border-radius: var(--pill);
+    background: var(--line);
+}
+
+/* Anchors on headings.
+   The renderer emits an empty <a class="documentation-anchor"> before the
+   heading text — it is the scroll target, so it carries the offset — and the
+   "#" it shows on hover lives in the left gutter, out of the text's way. */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 { position: relative; }
+
+.documentation-anchor {
+    position: absolute;
+    bottom: 0;
+    left: -.85em;
+    scroll-margin-top: 110px;
+    text-decoration: none;
+}
+
+.documentation-anchor::before {
+    content: '#';
+    color: var(--brand);
+    font-weight: 400;
+    opacity: 0;
+    transition: opacity .18s var(--ease);
+}
+
+.prose h1:hover .documentation-anchor::before,
+.prose h2:hover .documentation-anchor::before,
+.prose h3:hover .documentation-anchor::before,
+.prose h4:hover .documentation-anchor::before,
+.documentation-anchor:focus-visible::before { opacity: 1; }
+
+/* Code ------------------------------------------------------------------- */
+
+.prose .code {
+    margin: 0 0 22px;
+    border-radius: var(--r-2);
+}
+
+/* Blockquote — a rule in the accent, not a tinted box (rule 2) */
+.prose blockquote {
+    margin: 0 0 22px;
+    padding: 2px 0 2px 20px;
+    border-left: var(--bd-lead) solid var(--brand);
+    color: var(--ink-3);
+}
+
+.prose blockquote p:last-child { margin-bottom: 0; }
+
+/* Tables — closed, rounded, and scrollable on their own (rule 4) */
+.prose table {
+    width: 100%;
+    margin: 0 0 22px;
+    border: var(--bd) solid var(--line);
+    border-radius: var(--r-2);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+.prose thead { background: var(--paper-2); }
+
+.prose th {
+    padding: 11px 16px;
+    color: var(--ink);
+    font-weight: 700;
+    text-align: left;
+}
+
+.prose td {
+    padding: 11px 16px;
+    border-top: var(--bd) solid var(--line);
+    vertical-align: top;
+}
+
+/* ---------------------------------------------------------------------------
+ *  5 · Narrow screens
+ *
+ *  Below 1000px the sidebar leaves the flow and becomes a sheet. The concept
+ *  hides its own masthead menu at 720px and has no drawer of any kind, so
+ *  this is the one component here without a counterpart on the landing.
+ * ------------------------------------------------------------------------ */
+
+.docs__toggle {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 70;
+    display: none;
+    padding: 12px 20px;
+    border-radius: var(--pill);
+    background: var(--brand);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 6px 22px rgba(22, 32, 44, .22);
+}
+
+.docs__toggle[aria-expanded="true"] { background: var(--ink); }
+
+@media (max-width: 1000px) {
+    .docs__in {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .docs__toggle { display: block; }
+
+    .docs__side {
+        position: fixed;
+        inset: 0 auto 0 0;
+        z-index: 65;
+        width: min(320px, 86vw);
+        padding: 20px;
+        background: var(--paper);
+        border-right: var(--bd) solid var(--line);
+        transform: translateX(-102%);
+        transition: transform .28s var(--ease);
+        visibility: hidden;
+    }
+
+    .docs__side.is-open {
+        transform: none;
+        visibility: visible;
+    }
+
+    /* As a sheet the sidebar is already the full height of the screen, so it
+       stops being sticky — but it still has to scroll, or the chapters below
+       the fold cannot be reached at all. */
+    .docs__side-in {
+        position: static;
+        max-height: 100%;
+        height: 100%;
+    }
+
+    /* Room for the floating toggle, which sits over the bottom of the sheet */
+    .docs__side-in > .nav { padding-bottom: 76px; }
+}
+
+@media (max-width: 620px) {
+    .docs__in { padding-top: 26px; }
+    .prose { font-size: 16px; }
+    .prose h2 { margin-top: 42px; }
+
+    /* Single column leaves no gutter for the "#" to sit in */
+    .documentation-anchor::before { content: none; }
+
+    /* A table that cannot fit scrolls instead of squeezing the page */
+    .prose table { display: block; overflow-x: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .docs__side { transition: none; }
+}

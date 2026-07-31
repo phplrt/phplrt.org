@@ -1,0 +1,67 @@
+<!-- ==========================================================================
+     07 · Install
+     ====================================================================== -->
+<section class="band band--soft" id="install">
+    <div class="hold">
+        <div class="head rise">
+            <span class="chapter">07 · install</span>
+            <h2 class="title">One half never reaches production</h2>
+            <p class="lede">
+                The compiler reads <em>your grammar</em> and writes a parser — a
+                development job. The runtime reads <em>your users' text</em>. Keep them
+                apart and production carries very little.
+            </p>
+        </div>
+
+        <!-- Both lanes are the same paper. The rule over the heading tells them
+             apart: dashed for the half that is thrown away, solid brand for the
+             half that ships. -->
+        <div class="lanes rise">
+            <div class="lane">
+                <div class="lane__tag">while developing</div>
+                <h3>Describe and compile</h3>
+                <p>
+                    Read the grammar, generate the parser, commit the result. Re-run it when
+                    the grammar changes — which, at the start, is every five minutes.
+                </p>
+
+                <div class="pkgs">
+                    <div class="pkg"><code>phplrt/compiler</code><span>reads .pp3 / .pp2, resolves %include, writes PHP</span></div>
+                    <div class="pkg"><code>phplrt/lexer-builder</code><span>a lexer described in PHP</span></div>
+                    <div class="pkg"><code>phplrt/parser-builder</code><span>a grammar described in PHP</span></div>
+                </div>
+
+                <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/compiler</span> --dev
+
+<span class="c-op">$</span> vendor/bin/phplrt compile grammar.pp3 src/Parser.php \
+      --namespace=<span class="c-str">'App\Routing'</span> --class=RouteParser</pre>
+            </div>
+
+            <div class="lane lane--ships">
+                <div class="lane__tag">what ships</div>
+                <h3>Read and report</h3>
+                <p>
+                    The generated parser is plain PHP referring to the runtime — no grammar
+                    file, no compilation, nothing to warm up.
+                </p>
+
+                <div class="pkgs">
+                    <div class="pkg"><code>phplrt/source</code><span>files, strings, streams — with names</span></div>
+                    <div class="pkg"><code>phplrt/lexer</code><span>text into tokens</span></div>
+                    <div class="pkg"><code>phplrt/parser</code><span>tokens into your result</span></div>
+                    <div class="pkg"><code>phplrt/exception</code><span>offsets into snippets</span></div>
+                </div>
+
+                <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/runtime</span>
+
+<span class="c-cm"># or the pieces, or just the interfaces:</span>
+<span class="c-op">$</span> composer require <span class="c-str">phplrt/parser-contracts</span></pre>
+            </div>
+        </div>
+
+        <p class="note rise" style="margin-top: 18px;">
+            <span>php 8.4+ · pcre · mbstring recommended · mit</span>
+            <a class="more" href="/docs/installation">installation guide</a>
+        </p>
+    </div>
+</section>

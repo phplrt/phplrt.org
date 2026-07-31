@@ -13,7 +13,3 @@ services:
   App\Presentation\Command\DocsUpdateCommand:
     tags:
       - { name: 'console.command' }
-
-  Local\MathParser\Command\CompileGrammarCommand:
-    tags:
-      - { name: 'console.command' }

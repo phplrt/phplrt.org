@@ -1,25 +1,28 @@
-{% for category in menu %}
-    <a href="#" data-bind="
-        click: function() { toggle('{{ category.id }}') },
-        css: { active: menu('{{ category.id }}') }
-    " class="documentation-menu-title active">
-        {{ category.title }}
-    </a>
-    <ul class="documentation-menu-child visible" style="opacity: 0" data-bind="
-        css: { visible: menu('{{ category.id }}') },
-        style: { opacity: 1 }
-    ">
-        {% for page in category.pages %}
-            {% if page.type == "document" %}
-                <li>
-                    <a href="/docs/{{ page.url }}"
-                       class="{% if page.url == current %}active{% endif %}">{{ page.title }}</a>
-                </li>
-            {% else %}
-                <li>
-                    <a href="{{ page.url }}" target="_blank" rel="nofollow">{{ page.title }}</a>
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-{% endfor %}
+{# Categories collapse. The open/closed state is kept per category in
+   localStorage under the same "menu-shown-{id}" keys the previous menu used,
+   so nobody's sidebar resets on deploy. Everything starts open, which is also
+   what a visitor without JavaScript gets. #}
+<nav class="nav" aria-label="Documentation">
+    {% for category in menu %}
+        <div class="nav__group" data-nav-group="{{ category.id }}">
+            <button class="nav__title" type="button" data-nav-toggle aria-expanded="true">
+                <span>{{ category.title }}</span>
+            </button>
+
+            <ul class="nav__list">
+                {% for page in category.pages %}
+                    {% if page.type == "document" %}
+                        <li>
+                            <a href="/docs/{{ page.url }}"
+                               {% if page.url == current %}class="is-here" aria-current="page"{% endif %}>{{ page.title }}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ page.url }}" class="nav__out" target="_blank" rel="nofollow noopener">{{ page.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</nav>

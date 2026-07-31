@@ -1,0 +1,100 @@
+<!-- ==========================================================================
+     01 · Reading
+     ====================================================================== -->
+<section class="band band--paper" id="reading">
+    <div class="hold">
+        <div class="head rise">
+            <span class="chapter">01 · reading</span>
+            <h2 class="title">Two halves: one cuts, one arranges</h2>
+            <p class="lede">
+                The lexer turns characters into tokens. The parser checks that those
+                tokens appear in an order the grammar allows, and builds whatever you
+                asked for. Nothing else happens in between.
+            </p>
+        </div>
+
+        <div class="trio rise">
+            <div class="panel">
+                <div class="panel__bar"><b>1 · source</b><span class="push">named</span></div>
+                <div class="panel__body">
+                    <p>
+                        A string, a file or a stream — wrapped in an object that knows its
+                        content and what to call itself when an error has to say <em>where</em>.
+                    </p>
+                </div>
+                <pre class="code code--paper code--sm"><span class="c-kw">new</span> <span class="c-cls">VirtualFile</span>(
+    <span class="c-str">'config.txt'</span>,
+    <span class="c-var">$text</span>,
+);</pre>
+            </div>
+
+            <div class="panel">
+                <div class="panel__bar"><b>2 · lexer</b><span class="push">one regex, one pass</span></div>
+                <div class="panel__body">
+                    <div class="chips">
+                        <span class="chip"><b>name</b><span>T_NAME</span></span>
+                        <span class="chip chip--hidden"><b>␣</b><span>Hidden</span></span>
+                        <span class="chip"><b>=</b><span>T_EQ</span></span>
+                        <span class="chip"><b>"phplrt"</b><span>T_STRING</span></span>
+                        <span class="chip chip--hidden"><b>⏎</b><span>Hidden</span></span>
+                        <span class="chip"><b>version</b><span>T_NAME</span></span>
+                        <span class="chip"><b>=</b><span>T_EQ</span></span>
+                        <span class="chip"><b>4</b><span>T_NUMBER</span></span>
+                    </div>
+                    <p style="margin-top: 16px;">
+                        Every token carries <code>id</code>, <code>name</code>,
+                        <code>value</code>, <code>offset</code> and <code>size</code> — offsets
+                        in bytes, which is what makes snippets possible later.
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel__bar"><b>3 · parser</b><span class="push">PEG</span></div>
+                <div class="panel__body">
+                    <p>
+                        Recognition writes a flat trace; the reducers run once, afterwards,
+                        bottom-up. A branch that fails is simply truncated.
+                    </p>
+                </div>
+                <pre class="code code--paper code--sm"><span class="c-rule">Config</span>
+<span class="c-op">├──</span> <span class="c-rule">Pair</span>
+<span class="c-op">│   ├──</span> <span class="c-tok">T_NAME</span>   <span class="c-str">"name"</span>
+<span class="c-op">│   └──</span> <span class="c-tok">T_STRING</span> <span class="c-str">"phplrt"</span>
+<span class="c-op">└──</span> <span class="c-rule">Pair</span>
+    <span class="c-op">├──</span> <span class="c-tok">T_NAME</span>   <span class="c-str">"version"</span>
+    <span class="c-op">└──</span> <span class="c-tok">T_NUMBER</span> <span class="c-str">"4"</span></pre>
+            </div>
+        </div>
+
+        <div class="duo rise" style="margin-top: 22px;">
+            <div class="fact fact--flat">
+                <span class="fact__tag">channels</span>
+                <h3>Nothing is thrown away</h3>
+                <p>
+                    Whitespace and comments are <em>hidden</em>, not skipped: the parser does
+                    not see them, a documentation generator can. Unrecognized text becomes an
+                    <code>Unknown</code> token instead of an exception, so a linter reports a
+                    whole file rather than its first problem.
+                </p>
+            </div>
+            <div class="fact fact--flat">
+                <span class="fact__tag">ordered choice</span>
+                <h3>There is only one reading</h3>
+                <p>
+                    Alternatives are tried top to bottom and the first match wins, so a
+                    grammar is never ambiguous. The flip side: <code>"a" | "ab"</code> never
+                    reads <code>ab</code> — put the longer one first.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Into the graph-paper band -->
+    <div class="wave wave--out" aria-hidden="true">
+        <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
+            <path fill="#e8edf4" d="M0,130V62C360,0,860,116,1350,60C1630,28,1790,52,1920,68V130Z"/>
+            <path fill="#f4f6fa" d="M0,130V96C340,32,830,142,1320,88C1620,56,1800,80,1920,96V130Z"/>
+        </svg>
+    </div>
+</section>
