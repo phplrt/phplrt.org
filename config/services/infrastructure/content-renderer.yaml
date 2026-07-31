@@ -16,3 +16,4 @@ services:
     class: Local\ContentRenderer\DocumentationRenderer
     arguments:
       $slugger: '@App\Infrastructure\Slug\CaseInsensitiveSlugger'
+      $highlighter: '@Tempest\Highlight\Highlighter'

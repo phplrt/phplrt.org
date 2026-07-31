@@ -308,6 +308,11 @@
         text-shadow: 0 1px 0 #fff;
       }
 
+      // Code blocks are highlighted server-side by tempest/highlight, which
+      // renders the tokens straight into "<pre data-lang=...>" without a
+      // nested <code>. The "pre > code" selector is kept for any markup that
+      // still uses the older shape.
+      pre[data-lang],
       pre > code {
         color: $color-extra-light-gray;
         padding: 15px 20px;

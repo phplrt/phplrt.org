@@ -13,15 +13,22 @@ use League\CommonMark\Util\HtmlFilter;
 use Local\ContentRenderer\Extension\ShortQuotesFormatter;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Tempest\Highlight\CommonMark\HighlightExtension;
+use Tempest\Highlight\Highlighter;
 
 class DocumentationRenderer extends Renderer
 {
     public function __construct(
         SluggerInterface $slugger = new AsciiSlugger(),
+        Highlighter $highlighter = new Highlighter(),
     ) {
         parent::__construct([
             'html_input' => HtmlFilter::ALLOW,
         ]);
+
+        // Fenced and inline code blocks are highlighted while the markdown is
+        // converted, so the stored HTML is ready to be served as is.
+        $this->env->addExtension(new HighlightExtension($highlighter));
 
         $this->env->addExtension(new ImportHeaderClasses($slugger));
         $this->env->addExtension(new ShortQuotesFormatter());

@@ -6,7 +6,10 @@
 // class names are mapped onto the (smaller) tempest token vocabulary.
 //
 
-pre[data-lang] > code,
+// The CommonMark integration emits "<pre data-lang=...>" with the tokens
+// directly inside it (no nested <code>), while the "{% code %}" Twig tag
+// wraps its output into "<code data-language=...>".
+pre[data-lang],
 code[data-language] {
   display: block;
   overflow-x: auto;
