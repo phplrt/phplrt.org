@@ -5,7 +5,7 @@
         {"type": "path", "url": "libs/*"}
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -15,8 +15,8 @@
         "doctrine/orm": "^3.3",
         "jms/serializer-bundle": "^5.4",
         "local/content-renderer": "*",
-        "local/http-factory-bundle": "*",
         "local/http-data-bundle": "*",
+        "local/http-factory-bundle": "*",
         "local/math-parser": "*",
         "local/twig-highlight-extension": "*",
         "ramsey/uuid": "^4.7",
@@ -40,6 +40,7 @@
         "symfony/validator": "7.1.*",
         "symfony/webpack-encore-bundle": "^2.2",
         "symfony/yaml": "7.1.*",
+        "tempest/highlight": "^2.27",
         "twig/extra-bundle": "^3.13",
         "twig/twig": "^3.14"
     },
@@ -56,7 +57,7 @@
         "symfony/stopwatch": "7.1.*",
         "symfony/var-dumper": "7.1.*",
         "symfony/web-profiler-bundle": "7.1.*",
-        "vimeo/psalm": "^5.26"
+        "vimeo/psalm": "^6.0"
     },
     "config": {
         "optimize-autoloader": true,

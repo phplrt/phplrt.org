@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Local\Twig\HighlightExtension\Internal;
 
-use Highlight\Highlighter;
+use Tempest\Highlight\Highlighter;
 use Twig\Error\SyntaxError;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Node;

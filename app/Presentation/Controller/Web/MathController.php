@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Controller\Web;
 
-use Highlight\Highlighter;
+use Tempest\Highlight\Highlighter;
 use Local\MathParser\AstDumper;
 use Local\MathParser\MathParser;
 use PhpParser\Node\Stmt\Expression;

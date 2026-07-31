@@ -12,9 +12,7 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     Local\HttpFactory\HttpFactoryBundle::class => ['all' => true],
     Local\HttpData\HttpDataBundle::class => ['all' => true],
-    // Dev
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
-    // Dev + Test
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],

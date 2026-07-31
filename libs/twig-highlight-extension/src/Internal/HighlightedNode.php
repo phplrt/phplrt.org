@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Local\Twig\HighlightExtension\Internal;
 
-use Highlight\Highlighter;
+use Tempest\Highlight\Highlighter;
 use Twig\Compiler;
 use Twig\Node\Node;
 use Twig\Node\TextNode;
@@ -61,10 +61,14 @@ final class HighlightedNode extends Node
      */
     private function render(string $lang, string $code): string
     {
-        $highlighted = $this->hl->highlight($lang, $code);
+        $highlighted = $this->hl->parse($code, $lang);
 
-        return '<code data-language="' . $highlighted->language . '">' .
-            \trim($highlighted->value) .
+        // The highlighter falls back to a default language when the requested
+        // one is not registered, so the actually applied name is read back.
+        $applied = $this->hl->getCurrentLanguage()?->getName() ?? $lang;
+
+        return '<code data-language="' . \htmlspecialchars($applied, \ENT_QUOTES) . '">' .
+            \trim($highlighted) .
         '</code>';
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Local\MathParser;
 
-use Highlight\Highlighter;
+use Tempest\Highlight\Highlighter;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
@@ -45,7 +45,7 @@ class AstDumper
     {
         $result = $this->dump($value, $namespace);
 
-        $result = $hl->highlight('ast', $result)->value;
+        $result = $hl->parse($result, 'ast');
 
         return $this->replace($result, $namespace);
     }

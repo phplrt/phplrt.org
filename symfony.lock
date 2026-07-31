@@ -126,11 +126,23 @@
     "illuminate/support": {
         "version": "v8.35.1"
     },
+    "jms/serializer-bundle": {
+        "version": "5.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "cc04e10cf7171525b50c18b36004edf64cb478be"
+        }
+    },
     "laminas/laminas-code": {
         "version": "4.0.0"
     },
     "league/commonmark": {
         "version": "1.5.7"
+    },
+    "local/http-data-bundle": {
+        "version": "dev-master"
     },
     "local/http-factory": {
         "version": "dev-master"
@@ -211,9 +223,6 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
-    },
-    "scrivo/highlight.php": {
-        "version": "v9.18.1.6"
     },
     "symfony/asset": {
         "version": "v5.2.3"

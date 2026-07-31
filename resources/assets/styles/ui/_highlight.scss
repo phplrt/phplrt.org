@@ -1,84 +1,105 @@
-.hljs {
+//
+// Token classes emitted by tempest/highlight (Tempest\Highlight\Themes\CssTheme).
+//
+// The previous "hljs-*" rules came from scrivo/highlight.php and are gone
+// together with it. The palette below is carried over unchanged; only the
+// class names are mapped onto the (smaller) tempest token vocabulary.
+//
+
+pre[data-lang] > code,
+code[data-language] {
   display: block;
   overflow-x: auto;
 }
 
-.hljs-comment,
-.hljs-quote {
+// hljs: comment, quote
+.hl-comment {
   color: $color-silver;
   font-style: italic;
   text-shadow: 0 0 2px rgba($color-silver, .2);
 }
 
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-section,
-.hljs-title,
-.hljs-name {
+// hljs: keyword, selector-tag, section, name
+.hl-keyword {
   color: $color-main;
 }
 
-.hljs-variable,
-.hljs-template-variable {
+// hljs: variable, template-variable
+.hl-variable {
   color: $color-text;
 }
 
-.hljs-string,
-.hljs-selector-attr,
-.hljs-selector-pseudo,
-.hljs-regexp {
+// hljs: string, selector-attr, selector-pseudo, regexp
+.hl-value {
   color: #badf8f;
 }
 
-.hljs-literal,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-meta,
-.hljs-number,
-.hljs-link {
+// hljs: literal, symbol, bullet, meta, number, link
+.hl-literal,
+.hl-number {
   color: #b18dd0;
   font-weight: bold;
   font-style: italic;
 }
 
-.hljs-title {
+// hljs: title
+.hl-type {
   color: #b57cf2;
 }
 
-.hljs-doctag,
-.hljs-type,
-.hljs-attr,
-.hljs-built_in,
-.hljs-builtin-name {
+// hljs: doctag, type, attr, built_in, builtin-name
+.hl-property,
+.hl-attribute {
   color: #ceb870;
+  font-weight: bold;
 }
 
-.hljs-formula {
-  background-color: #eee;
-  font-style: italic;
-}
-
-.hljs-subst,
-.hljs-attribute,
-.hljs-selector-id,
-.hljs-selector-class {
+// hljs: subst, attribute, selector-id, selector-class
+.hl-generic,
+.hl-injection {
   color: #d9a910;
   font-weight: bold;
 }
 
-.hljs-addition {
+.hl-operator {
+  color: $color-text;
+}
+
+//
+// Markup produced by the built-in injections (```{+ +}```, ```{- -}```,
+// ```{~ ~}```, ```{* *}``` and the optional line-number gutter).
+//
+
+.hl-addition {
   background-color: #517c51;
 }
 
-.hljs-deletion {
+.hl-deletion {
   background-color: #ec3515;
 }
 
-.hljs-doctag,
-.hljs-strong {
+.hl-strong {
   font-weight: bold;
 }
 
-.hljs-emphasis {
+.hl-em {
   font-style: italic;
+}
+
+.hl-blur {
+  filter: blur(2px);
+  transition: filter .2s ease-in-out;
+
+  &:hover {
+    filter: none;
+  }
+}
+
+.hl-gutter {
+  display: inline-block;
+  min-width: 2.5em;
+  margin-right: 1em;
+  color: $color-silver;
+  text-align: right;
+  user-select: none;
 }

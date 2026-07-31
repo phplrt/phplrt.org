@@ -8,7 +8,7 @@ twig:
 services:
   Local\Twig\HighlightExtension\HighlightExtension:
     arguments:
-      $hl: '@Highlight\Highlighter'
+      $hl: '@Tempest\Highlight\Highlighter'
     tags: [ 'twig.extension' ]
 
 
