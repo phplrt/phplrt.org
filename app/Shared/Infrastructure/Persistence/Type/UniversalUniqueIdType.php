@@ -28,7 +28,13 @@ abstract class UniversalUniqueIdType extends Type
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return 'UUID';
+        // Note: SQLite has no native "UUID" type. Such a declaration would fall
+        //       back to the NUMERIC affinity, so a fixed-length string is used
+        //       instead: "CHAR(36)".
+        return $platform->getStringTypeDeclarationSQL([
+            'length' => 36,
+            'fixed' => true,
+        ]);
     }
 
     /**

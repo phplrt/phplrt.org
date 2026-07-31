@@ -22,6 +22,7 @@ services:
       - frontend
 
   php:
+    <<: *environment
     build: docker/php
     user: '1000:1000'
     container_name: phplrt-php
@@ -30,36 +31,17 @@ services:
       - composer:/home/phplrt/.composer:rw
       - .:/home/phplrt/phplrt.org:rw
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini:ro
-    depends_on:
-      - postgres
     networks:
       - frontend
-      - database
-
-  postgres:
-    <<: *environment
-    image: postgres:15.3
-    container_name: phplrt-postgres
-    volumes:
-      - postgres:/var/lib/postgresql/data
-      - ./docker/data/postgres:/home/db
-    environment:
-      - POSTGRES_DB=${DB_DATABASE:-phplrt}
-      - POSTGRES_USER=${DB_USERNAME:-user}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
-    ports:
-      - "${APP_DATABASE_PUBLIC_PORT:-5432}:5432"
-    networks:
-      - database
 
 networks:
   frontend:
     name: phplrt_org
     driver: bridge
-  database:
 
 volumes:
-  postgres:
   composer:
     driver_opts:
+      type: tmpfs
+      device: tmpfs
       o: "uid=${UID:-1000}"

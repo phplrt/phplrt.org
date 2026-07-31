@@ -14,7 +14,7 @@ RUN apt-get update \
     && apt-get -y --no-install-recommends install \
       libzip-dev \
       libicu-dev \
-      libpq-dev \
+      sqlite3 \
       unzip \
       git \
       curl
@@ -49,9 +49,12 @@ RUN docker-php-ext-install opcache
 # 8. Sockets
 RUN docker-php-ext-install sockets
 
-# 9. PDO PostgreSQL
-RUN docker-php-ext-install pdo_pgsql && \
-    docker-php-ext-enable pdo_pgsql
+# 9. PDO SQLite
+#
+# Note: The "pdo_sqlite" and "sqlite3" extensions are bundled with the official
+#       PHP image and are enabled out of the box, so no additional installation
+#       is required here. Enabling them explicitly would only produce
+#       "Module already loaded" warnings.
 
 # 10. Xdebug
 RUN pecl install xdebug && \

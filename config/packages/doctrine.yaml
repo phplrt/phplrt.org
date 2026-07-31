@@ -1,9 +1,5 @@
 parameters:
-  env(DB_DATABASE): phplrt
-  env(DB_HOST): postgres
-  env(DB_PORT): 5432
-  env(DB_USERNAME): user
-  env(DB_PASSWORD): password
+  env(DB_PATH): '%kernel.project_dir%/var/data.sqlite'
 
 doctrine:
   dbal:
@@ -11,18 +7,12 @@ doctrine:
     #use_savepoints: true
     connections:
       default:
-        dbname: '%env(string:DB_DATABASE)%'
-        host: '%env(string:DB_HOST)%'
-        port: '%env(int:DB_PORT)%'
-        user: '%env(string:DB_USERNAME)%'
-        password: '%env(string:DB_PASSWORD)%'
-        server_version: '15.3'
-        driver: pdo_pgsql
+        driver: pdo_sqlite
+        path: '%env(resolve:DB_PATH)%'
+        charset: utf8
         logging: "%kernel.debug%"
         profiling: "%kernel.debug%"
         schema_filter: ~^(?!moonshine_)~
-        mapping_types:
-          pages_type: string
     types:
       App\Domain\Documentation\MenuId: App\Infrastructure\Persistence\Doctrine\Type\MenuIdType
       App\Domain\Documentation\PageId: App\Infrastructure\Persistence\Doctrine\Type\PageIdType
@@ -51,8 +41,14 @@ doctrine:
 when@test:
   doctrine:
     dbal:
-      # "TEST_TOKEN" is typically set by ParaTest
-      dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+      connections:
+        default:
+          # Note: "dbname_suffix" is not applicable to SQLite, since the
+          #       connection is addressed by "path" and not by "dbname",
+          #       so a dedicated file is used instead.
+          #
+          # "TEST_TOKEN" is typically set by ParaTest
+          path: '%kernel.project_dir%/var/data_test%env(default::TEST_TOKEN)%.sqlite'
 
 when@prod:
   doctrine:
