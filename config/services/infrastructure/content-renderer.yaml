@@ -11,14 +11,19 @@ services:
 
   App\Infrastructure\Highlight\ConceptTheme: ~
 
+  App\Infrastructure\Highlight\Grammar\Pp2Language: ~
+  App\Infrastructure\Highlight\Grammar\Pp3Language: ~
+
   # Note: "php", "json", "bash", "graphql" and other common languages ship with
-  #       tempest/highlight and need no registration. The grammar languages
-  #       ("pp2", "pp3") are not among them, so those blocks are rendered as
-  #       plain text until a Tempest\Highlight\Language is written for them
-  #       from the actual grammar — and added here via "addLanguage".
+  #       tempest/highlight and need no registration. The grammar formats
+  #       ("pp2", "pp3") are not among them, so they are added by hand below.
+  #       Anything else stays plain text.
   Tempest\Highlight\Highlighter:
     arguments:
       $theme: '@App\Infrastructure\Highlight\ConceptTheme'
+    calls:
+      - addLanguage: [ '@App\Infrastructure\Highlight\Grammar\Pp2Language' ]
+      - addLanguage: [ '@App\Infrastructure\Highlight\Grammar\Pp3Language' ]
 
   #
   # ----------------------------------------------------------------------------
