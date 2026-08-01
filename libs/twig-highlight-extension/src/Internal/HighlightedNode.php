@@ -18,6 +18,8 @@ final class HighlightedNode extends Node
     /**
      * @param Highlighter $hl
      * @param string $lang
+     * @param int<1, max>|null $startAt the number the first line carries, or
+     *        null when the block is not numbered
      * @param Node $body
      * @param int $line
      * @param string $tag
@@ -25,12 +27,13 @@ final class HighlightedNode extends Node
     public function __construct(
         private readonly Highlighter $hl,
         string $lang,
+        ?int $startAt,
         Node $body,
         int $line,
         string $tag = 'highlight'
     )
     {
-        parent::__construct(['body' => $body], ['lang' => $lang], $line, $tag);
+        parent::__construct(['body' => $body], ['lang' => $lang, 'startAt' => $startAt], $line, $tag);
     }
 
     /**
@@ -45,6 +48,7 @@ final class HighlightedNode extends Node
             $body->setAttribute('data',
                 $this->render(
                     $this->getAttribute('lang'),
+                    $this->getAttribute('startAt'),
                     $body->getAttribute('data')
                 )
             );
@@ -55,18 +59,26 @@ final class HighlightedNode extends Node
 
     /**
      * @param string $lang
+     * @param int<1, max>|null $startAt
      * @param string $code
      * @return string
      * @throws \Exception
      */
-    private function render(string $lang, string $code): string
+    private function render(string $lang, ?int $startAt, string $code): string
     {
-        $highlighted = $this->hl->parse($code, $lang);
+        // withGutter() returns a clone, so the numbering is confined to this
+        // one block and the shared highlighter keeps its own settings.
+        $hl = $startAt === null ? $this->hl : $this->hl->withGutter($startAt);
+
+        $highlighted = $hl->parse($code, $lang);
 
         // The highlighter falls back to a default language when the requested
         // one is not registered, so the actually applied name is read back.
-        $applied = $this->hl->getCurrentLanguage()?->getName() ?? $lang;
+        $applied = $hl->getCurrentLanguage()?->getName() ?? $lang;
 
+        // No marker for "this block is numbered": the gutter spans are the
+        // marker, and the markdown path produces no <code> wrapper to carry
+        // one anyway — the two must be styleable by the same rule.
         return '<code data-language="' . \htmlspecialchars($applied, \ENT_QUOTES) . '">' .
             \trim($highlighted) .
         '</code>';

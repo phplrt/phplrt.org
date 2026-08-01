@@ -6,6 +6,7 @@ namespace Local\ContentRenderer;
 
 use Local\ContentRenderer\Extension\ImportHeaderClasses;
 use Local\ContentRenderer\Extension\NormalizeAnchors;
+use Local\ContentRenderer\Extension\NumberedCodeBlocks;
 use Local\ContentRenderer\Extension\QuotesFormatter;
 use Local\ContentRenderer\Extension\RemoveEmptyParagraphs;
 use Local\ContentRenderer\Extension\RemoveStyleTags;
@@ -29,6 +30,11 @@ class DocumentationRenderer extends Renderer
         // Fenced and inline code blocks are highlighted while the markdown is
         // converted, so the stored HTML is ready to be served as is.
         $this->env->addExtension(new HighlightExtension($highlighter));
+
+        // …and a fenced block is numbered unless it says otherwise. This one
+        // outranks the fenced-code renderer the line above registers; inline
+        // code still belongs to that one.
+        $this->env->addExtension(new NumberedCodeBlocks($highlighter));
 
         $this->env->addExtension(new ImportHeaderClasses($slugger));
         $this->env->addExtension(new ShortQuotesFormatter());

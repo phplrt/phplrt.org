@@ -701,6 +701,30 @@ a:hover { color: var(--brand); }
 .code--paper .c-kw   { color: var(--brand-ink); }
 .code--paper .c-dir  { color: var(--brand-ink); }
 
+/* Line numbers ------------------------------------------------------------
+ *
+ *  Written by tempest/highlight, one <span class="hl-gutter"> at the head of
+ *  every line, when a block asks for them:
+ *
+ *      {% code 'php' from 1 %} … {% endcode %}     a template
+ *      ```php{1}                                    a markdown fence
+ *
+ *  The library already pads the numbers to a common width with spaces, and
+ *  this is a monospace slab, so they line up on their own — nothing here sets
+ *  a width. What is left is the colour, the gap to the code, and the one
+ *  thing that matters more than either: a number is not part of the program,
+ *  so it must not come along when the block is copied.
+ * ------------------------------------------------------------------------ */
+
+.hl-gutter {
+    user-select: none;
+    -webkit-user-select: none;
+    margin-right: 18px;
+    color: rgba(255, 255, 255, .26);
+}
+
+.code--paper .hl-gutter { color: var(--ink-4); }
+
 /* ---------------------------------------------------------------------------
  *  9 · Anatomy — an annotated line of grammar
  *
@@ -1083,6 +1107,48 @@ a:hover { color: var(--brand); }
 .xy-lbl { font-family: var(--mono); font-size: 13.5px; font-weight: 700; fill: var(--ink-2); }
 .xy-lbl--lead { fill: var(--brand-ink); }
 
+/* One series at a time ----------------------------------------------------
+ *
+ *  Five lines that all mean something is five lines from which nobody can
+ *  follow one. Pointing at a line — or at its entry in the legend, which is
+ *  the larger target of the two — takes the other four back to a whisper.
+ *
+ *  The markup is what makes this cheap: everything belonging to a series is
+ *  inside the group that names it, so one rule per key covers the line, the
+ *  markers and the direct label at once. :has() is what carries the state
+ *  from the legend into the plot and back — the panel notices which key is
+ *  under the cursor, and everything carrying a different one steps back. A
+ *  sixth series needs a sixth line in the list and nothing else.
+ *
+ *  The dashed ×10-per-×10 guide is deliberately NOT in the dim set. It is
+ *  the thing a single series is worth comparing against — "is my line
+ *  parallel to it" is the question the chart exists to answer — so it stays
+ *  at full strength while the rest of the plot recedes.
+ * ------------------------------------------------------------------------ */
+
+/* The hit area: the same line, drawn in nothing, wide enough to point at.
+   `transparent` is not a painted stroke, so hit-testing has to be asked for
+   explicitly — without pointer-events the whole thing is inert. */
+.xy-hit {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 14;
+    stroke-linejoin: round;
+    pointer-events: stroke;
+}
+
+@media (hover: hover) {
+    :is(.xy, .legend--xy) [data-s] { transition: opacity .18s var(--ease); }
+
+    .panel:has(.xy):has([data-s="phplrt4"]:hover) [data-s]:not([data-s="phplrt4"]),
+    .panel:has(.xy):has([data-s="phplrt3"]:hover) [data-s]:not([data-s="phplrt3"]),
+    .panel:has(.xy):has([data-s="phpstan"]:hover) [data-s]:not([data-s="phpstan"]),
+    .panel:has(.xy):has([data-s="psalm"]:hover)   [data-s]:not([data-s="psalm"]),
+    .panel:has(.xy):has([data-s="hoa"]:hover)     [data-s]:not([data-s="hoa"]) {
+        opacity: .15;
+    }
+}
+
 .legend--xy i { height: 5px; border: 0; border-radius: var(--pill); background: var(--s); vertical-align: 2px; }
 .legend--xy .is-guide i { background: none; border-top: var(--bd) dashed var(--line-2); border-radius: 0; height: 0; }
 
@@ -1276,9 +1342,14 @@ a:hover { color: var(--brand); }
 
 .mig__head span:last-child { color: var(--brand-ink); }
 
-.mig__row { padding: 6px 26px; }
+.mig__row { padding: 6px 26px; transition: background-color .18s var(--ease); }
 .mig__row + .mig__row,
 .mig__head + .mig__row { border-top: var(--bd) solid var(--line); }
+
+/* A pair is read left to right, so pointing at it moves the arrow that way.
+   The wash is paper, not accent — rule 2: a row is not "ours", it is just
+   the one under the cursor. */
+.mig__row:hover { background: var(--paper-2); }
 
 .mig__row > * { padding: 12px 0; }
 
@@ -1294,7 +1365,10 @@ a:hover { color: var(--brand); }
     color: var(--line-2);
     font-family: var(--mono);
     font-size: 15px;
+    transition: transform .18s var(--ease), color .18s var(--ease);
 }
+
+.mig__row:hover .mig__to { transform: translateX(4px); color: var(--brand); }
 
 .mig__now {
     font-family: var(--mono);
@@ -1313,6 +1387,12 @@ a:hover { color: var(--brand); }
     .mig__row { grid-template-columns: minmax(0, 1fr); padding: 10px 22px; }
     .mig__row > * { padding: 4px 0; }
     .mig__to { justify-self: start; transform: rotate(90deg); }
+
+    /* The arrow points down here, so the nudge follows it down: the
+       translation is applied after the rotation, along the arrow's own
+       axis. Restated rather than inherited, because a bare translateX
+       would drop the rotation entirely. */
+    .mig__row:hover .mig__to { transform: rotate(90deg) translateX(4px); }
 }
 
 /* ---------------------------------------------------------------------------
@@ -1575,30 +1655,237 @@ a:hover { color: var(--brand); }
 
 /* ---------------------------------------------------------------------------
  *  19 · Motion
+ *
+ *  THE FOUR RULES OF THIS SECTION
+ *
+ *    1. NOTHING MOVES ON ITS OWN. Every animation here answers either a
+ *       scroll that brought a block into view or a click. No loop, no pulse,
+ *       no drift, no parallax — a page that keeps moving while it is being
+ *       read is a page nobody finishes reading.
+ *
+ *    2. A GROUP ARRIVES AS A SEQUENCE. Three cards fading in as one slab is
+ *       a slide transition; the same three 70ms apart read as a list being
+ *       written. So a container that holds a row stands still and hands the
+ *       reveal to its children.
+ *
+ *    3. WHAT IS DRAWN, DRAWS. A railroad line, a chart series, the leader
+ *       dropping out of a call-out and the accent rule of a chapter are all
+ *       strokes, so they arrive stroke-first, in the direction they are read.
+ *       Everything else only fades and rises 14px — one distance, one
+ *       duration, everywhere.
+ *
+ *    4. THE PAGE IS COMPLETE WITHOUT ANY OF IT. Every state that hides
+ *       something until it is revealed is gated behind `html.js`, set inline
+ *       in the head before the first paint. No script — nothing is ever
+ *       hidden. Reduced motion — the same, by way of the block at the end.
+ *
+ *  THE TWO CUSTOM PROPERTIES
+ *
+ *    --p    the position of one member inside a sequence (0, 1, 2 …).
+ *           Declared once, below, for every kind of member the page has.
+ *    --seq  the step between two members, set on the container.
+ *
+ *  Every stagger on this page is one multiplication of the two, so a new
+ *  sequence needs no new delays: name its container and give it a --seq.
  * ------------------------------------------------------------------------ */
 
-.rise {
+/* The reveal ------------------------------------------------------------- */
+
+.js .rise {
     opacity: 0;
     transform: translateY(14px);
     transition: opacity .5s var(--ease), transform .5s var(--ease);
 }
 
-.rise.is-in { opacity: 1; transform: none; }
+.js .rise.is-in { opacity: 1; transform: none; }
 
-.rr-line--draw { stroke-dasharray: 1400; stroke-dashoffset: 1400; }
-.is-in .rr-line--draw { transition: stroke-dashoffset 1.2s var(--ease); stroke-dashoffset: 0; }
+/* Rule 2 — these hand the reveal to their children instead of taking it
+   themselves. Nothing else about them changes. */
+.js :is(.head, .hero__lead, .specs, .trio, .duo, .stack, .lanes).rise {
+    --seq: 70ms;
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
 
-.ch-bar { transform-box: fill-box; transform-origin: bottom; transform: scaleY(0); }
-.is-in .ch-bar { transition: transform .7s var(--ease); transform: scaleY(1); }
-.is-in .ch-bar:nth-of-type(2) { transition-delay: .07s; }
-.is-in .ch-bar:nth-of-type(3) { transition-delay: .14s; }
-.is-in .ch-bar:nth-of-type(4) { transition-delay: .21s; }
+.js :is(.head, .hero__lead, .specs, .trio, .duo, .stack, .lanes).rise > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .5s var(--ease), transform .5s var(--ease);
+}
 
+.js :is(.head, .hero__lead, .specs, .trio, .duo, .stack, .lanes).rise.is-in > * {
+    opacity: 1;
+    transform: none;
+}
+
+/* The reveal above is a whole `transition`, so it replaces whatever the child
+   already had — and one child, the version badge, answers a hover. Its two
+   properties are restated here rather than dropped. It is the only element on
+   the page that is both a member of a sequence and interactive; a second one
+   would be a reason to split the reveal into transition-* longhands instead. */
+.js .hero__lead.rise > .hero__badge {
+    transition: opacity .5s var(--ease), transform .5s var(--ease),
+                border-color .18s var(--ease), color .18s var(--ease);
+}
+
+/* The position of a member. Eight is the longest row on the page (the token
+   chips); a ninth member simply arrives with the eighth. */
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(1) { --p: 0; }
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(2) { --p: 1; }
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(3) { --p: 2; }
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(4) { --p: 3; }
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(5) { --p: 4; }
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(6) { --p: 5; }
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(7) { --p: 6; }
+.js :is(.rise > *, .chip, .part, .ch-bar):nth-child(8) { --p: 7; }
+
+/* Read by every direct child of a revealed block. Where --seq was never set
+   this is a delay of zero, which is what a block that arrives on its own
+   wanted anyway. */
+.js .rise.is-in > * { transition-delay: calc(var(--p, 0) * var(--seq, 0ms)); }
+
+/* Chapter rule — the 26px accent dash is a stroke, so it is drawn (rule 3).
+   It belongs to ::before, which does not inherit the delay of its own
+   element, hence the second multiplication. */
+.js .head.rise .chapter::before { width: 0; }
+
+.js .head.rise.is-in .chapter::before {
+    width: 26px;
+    transition: width .45s var(--ease) calc(var(--p, 0) * var(--seq, 0ms) + 120ms);
+}
+
+/* Railroad diagrams ------------------------------------------------------ */
+
+.js .rr-line--draw { stroke-dasharray: 1400; stroke-dashoffset: 1400; }
+
+.js .is-in .rr-line--draw {
+    transition: stroke-dashoffset 1.2s var(--ease) .25s;
+    stroke-dashoffset: 0;
+}
+
+/* A diagram brought in by a tab, rather than by the scroll, draws again —
+   the panel it lives in was already revealed long ago. */
+@keyframes rr-draw {
+    from { stroke-dashoffset: 1400; }
+    to   { stroke-dashoffset: 0; }
+}
+
+.js .is-swap .rr-line--draw { animation: rr-draw 1.1s var(--ease) both; }
+
+/* Token chips — the lexer cutting the line, left to right. They start after
+   the panel holding them has landed. */
+.js .chip {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .32s var(--ease), transform .32s var(--ease);
+}
+
+.js .is-in .chip {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(240ms + var(--p, 0) * 50ms);
+}
+
+/* Anatomy — the leader drops out of the part it belongs to, and the call-out
+   it points at appears once it has arrived. Which is the order the device is
+   read in, so it is the order it is built in. */
+.js .part__leg { transform: scaleY(0); transform-origin: top; }
+.js .anno { opacity: 0; }
+
+.js .is-in .part__leg {
+    transform: none;
+    transition: transform .38s var(--ease) calc(300ms + var(--p, 0) * 90ms);
+}
+
+.js .is-in .anno {
+    opacity: 1;
+    transition: opacity .38s var(--ease) calc(460ms + var(--p, 0) * 90ms);
+}
+
+/* Benchmark charts ------------------------------------------------------- */
+
+/* pathLength="1" is on the paths themselves, so one dash covers a series
+   whatever its real length is — the five lines finish together instead of
+   the short ones finishing first. */
+.js .xy-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+.js .is-in .xy-line {
+    transition: stroke-dashoffset 1.4s var(--ease);
+    stroke-dashoffset: 0;
+}
+
+/* Least relevant first, ours last — the same order the series are plotted
+   in, so the line that should be read lands on top and last. */
+.js .is-in [data-s="hoa"] .xy-line     { transition-delay: 0s; }
+.js .is-in [data-s="psalm"] .xy-line   { transition-delay: .06s; }
+.js .is-in [data-s="phplrt3"] .xy-line { transition-delay: .12s; }
+.js .is-in [data-s="phpstan"] .xy-line { transition-delay: .18s; }
+.js .is-in [data-s="phplrt4"] .xy-line { transition-delay: .24s; }
+
+/* The markers and the direct labels are statements about a line that has to
+   exist first; the dashed guide is a claim of its own and arrives with them */
+.js :is(.xy-dot, .xy-lbl, .xy-guide) { opacity: 0; }
+
+.js .is-in :is(.xy-dot, .xy-lbl, .xy-guide) {
+    opacity: 1;
+    transition: opacity .5s var(--ease) 1s;
+}
+
+/* A column chart drawn in SVG grows out of its own baseline. Nothing on the
+   landing uses it at the moment — the benchmarks are lines and meters — it is
+   kept because it is the third member of the family above and a bar chart
+   dropped into a panel would otherwise arrive by fading. */
+.js .ch-bar { transform-box: fill-box; transform-origin: bottom; transform: scaleY(0); }
+
+.js .is-in .ch-bar {
+    transform: scaleY(1);
+    transition: transform .7s var(--ease) calc(var(--p, 0) * 70ms);
+}
+
+/* Migration table — the card is drawn, then it fills in row by row.
+   The delay is restated here rather than left to the general rule above: the
+   `transition` shorthand on the line before it resets transition-delay to
+   zero, and the two rules weigh the same, so the shorthand would win. */
+.js .mig.rise { --seq: 60ms; }
+.js .mig .mig__row { opacity: 0; transition: opacity .45s var(--ease); }
+
+.js .mig.is-in .mig__row {
+    opacity: 1;
+    transition-delay: calc(var(--p, 0) * var(--seq, 0ms));
+}
+
+/* Switching a view ------------------------------------------------------- */
+
+@keyframes swap-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* `both` on purpose: the finished state is the resting state, so nothing
+   snaps when the class is left on the element. */
+.js [data-view].is-swap { animation: swap-in .28s var(--ease) both; }
+
+/* ------------------------------------------------------------------------ */
+
+/* Motion turned down — every resting state above is put back to the state it
+   was going to animate to. !important throughout, because these selectors are
+   deliberately short and several of the rules they undo are longer. */
 @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
-    .rise { opacity: 1; transform: none; }
-    .rr-line--draw { stroke-dashoffset: 0; }
-    .ch-bar { transform: none; }
+
+    /* A rail link travels seven chapters in one click. Animating that trip is
+       the largest movement on the page, so it is the first thing to go. */
+    html { scroll-behavior: auto; }
+
+    .js :is(.rise, .rise > *, .chip, .anno, .xy-dot, .xy-lbl, .xy-guide, .mig__row) {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .js :is(.part__leg, .ch-bar) { transform: none !important; }
+    .js .head.rise .chapter::before { width: 26px !important; }
+    .js :is(.rr-line--draw, .xy-line) { stroke-dashoffset: 0 !important; }
 }
 
 @media (max-width: 720px) {

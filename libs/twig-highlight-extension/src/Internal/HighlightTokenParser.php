@@ -36,12 +36,13 @@ class HighlightTokenParser extends AbstractTokenParser
         $stream = $this->parser->getStream();
 
         $value = $this->getCodeLanguage($stream);
+        $startAt = $this->getGutterStart($stream);
 
         $stream->expect(Token::BLOCK_END_TYPE);
         $body = $this->parser->subparse([$this, 'decideBlockEnd'], true);
         $stream->expect(Token::BLOCK_END_TYPE);
 
-        return new HighlightedNode($this->hl, $value, $body, $lineno, $this->getTag());
+        return new HighlightedNode($this->hl, $value, $startAt, $body, $lineno, $this->getTag());
     }
 
     /**
@@ -67,6 +68,48 @@ class HighlightTokenParser extends AbstractTokenParser
         }
 
         return $expr->getAttribute('value');
+    }
+
+    /**
+     * Reads the optional "from <line>" suffix, which turns the line numbers on
+     * and says which number the first line carries:
+     *
+     *      {% code 'php' %}            no numbers
+     *      {% code 'php' from 1 %}     numbered, whole file
+     *      {% code 'php' from 42 %}    numbered, an excerpt out of a bigger one
+     *
+     * The number is the same one {@see Highlighter::withGutter()} takes, and
+     * the same one a markdown fence writes as ```php{42}.
+     *
+     * @param TokenStream $stream
+     * @return int<1, max>|null
+     * @throws SyntaxError
+     */
+    private function getGutterStart(TokenStream $stream): ?int
+    {
+        if (! $stream->nextIf(Token::NAME_TYPE, 'from')) {
+            return null;
+        }
+
+        $expr = $this->parser->getExpressionParser()
+            ->parseExpression()
+        ;
+
+        $value = $expr instanceof ConstantExpression
+            ? $expr->getAttribute('value')
+            : null;
+
+        // A gutter is written into the markup while the template is compiled,
+        // so the first line has to be known then: a variable would arrive too
+        // late to be of any use.
+        if (! \is_int($value) || $value < 1) {
+            $message = 'The line the numbering starts from must be an integer literal of 1 or more.';
+
+            throw new SyntaxError($message, $stream->getCurrent()
+                ->getLine(), $stream->getSourceContext());
+        }
+
+        return $value;
     }
 
     public function decideBlockEnd(Token $token): bool

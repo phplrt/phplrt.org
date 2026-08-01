@@ -6,6 +6,13 @@
     <title>{% block title %}Home{% endblock %} :: phplrt</title>
     <meta name="description" content="{% block description %}A lexer, a PEG parser, a grammar compiler and an error printer for PHP. Describe your format once and get tokens, a tree, and errors that point at the character.{% endblock %}" />
 
+    {# Section 19 of the sheet hides a block until the scroll reveals it, and
+       it only does so while this class is on the root — with no JavaScript
+       everything is simply already where it belongs. It has to be set before
+       the first paint, which is why it is inline here instead of a line in
+       the bundle at the end of the body. #}
+    <script>document.documentElement.className += ' js';</script>
+
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}

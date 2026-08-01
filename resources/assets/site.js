@@ -3,18 +3,23 @@
  *
  *   tabs()    — [data-tabs="id"] + [data-view-key] switch [data-view] blocks.
  *               Two looks share it: the pills above the grammars and the
- *               stage list in the diagnostics band.
+ *               stage list in the diagnostics band. The incoming block is
+ *               marked .is-swap for the length of its entrance.
  *   copy()    — the install command.
  *   fills()   — meter widths from data-fill, so real phpbench numbers can be
  *               dropped in as plain attributes later.
  *   rail()    — marks the current chapter, and inverts the rail while it is
  *               sitting over a dark band ([data-night]).
- *   rise()    — one reveal, which also starts the line-drawing of a railroad
- *               diagram and the growth of the benchmark bars.
+ *   rise()    — one reveal. Everything else in section 19 of the sheet hangs
+ *               off the .is-in it puts on a block: the sequence its children
+ *               arrive in, the drawing of a railroad diagram and of the five
+ *               benchmark series, and the meters below them.
  *
  * The page is complete without this file: code is highlighted in the markup,
  * inactive panels carry the `hidden` attribute themselves, the charts are
- * plotted in the SVG, and every meter has its number written next to it.
+ * plotted in the SVG, and every meter has its number written next to it. The
+ * reveals hide nothing until the inline script in <head> has put `js` on the
+ * root, so a page that never runs any of this is simply already there.
  */
 (function () {
     'use strict';
@@ -42,7 +47,22 @@
                     });
 
                     all('[data-view]', scope).forEach(function (view) {
-                        view.hidden = view.getAttribute('data-view') !== want;
+                        var show = view.getAttribute('data-view') === want;
+                        var shown = !view.hidden;
+
+                        view.hidden = !show;
+
+                        // A view arriving by click gets the same short entrance
+                        // the scroll gives a block, and its railroad diagram is
+                        // drawn again — the panel around it was revealed long
+                        // ago, so nothing else would move. Dropping the class
+                        // and reading a layout property restarts the animation
+                        // on a view that has already played it once.
+                        if (show && !shown) {
+                            view.classList.remove('is-swap');
+                            void view.offsetWidth;
+                            view.classList.add('is-swap');
+                        }
                     });
 
                     fills(scope);
