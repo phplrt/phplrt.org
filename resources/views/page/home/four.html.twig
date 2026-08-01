@@ -41,12 +41,7 @@
             <div class="mig__row">
                 <div class="mig__was">new Lexer($tokens, ['T_WHITESPACE'])</div>
                 <div class="mig__to">→</div>
-                <div class="mig__now">$builder-&gt;addPattern('\s++')-&gt;<b>hide()</b></div>
-            </div>
-            <div class="mig__row">
-                <div class="mig__was">$parser-&gt;check($source)</div>
-                <div class="mig__to">→</div>
-                <div class="mig__now">$parser-&gt;<b>analyze</b>($source, Mode::Fast)</div>
+                <div class="mig__now">$builder-&gt;addPattern('\s++')<br />&nbsp;&nbsp;-&gt;<b>hide()</b></div>
             </div>
             <div class="mig__row">
                 <div class="mig__was">new Parser($lexer, $rules, [...$handlers])</div>

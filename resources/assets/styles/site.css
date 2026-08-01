@@ -1020,63 +1020,106 @@ a:hover { color: var(--brand); }
 /* ---------------------------------------------------------------------------
  *  14 · Benchmarks
  *
- *  Two series with two orders of magnitude between them cannot share an
- *  axis and still mean anything — so they are two charts, each with its own
- *  scale, and each says so.
+ *  The growth chart is log-log. Five series spanning 1.25 ms to 4 936 ms over
+ *  inputs spanning 1 KB to 100 KB have no readable linear rendering: four of
+ *  the five would be a flat line along the floor. On log-log a power law is a
+ *  straight line and its slope is the exponent — which is the claim being
+ *  made, so it is the thing the chart should draw.
+ *
+ *  The five series colours are the only colours on this site that are not
+ *  brand or ink. They were picked against the white panel and checked as a
+ *  set — all-pairs, so it holds wherever two lines happen to cross — for
+ *  colour-blind separation, chroma and 3:1 contrast. Do not substitute one by
+ *  eye: re-check the whole set, because the gates are pairwise.
+ *
+ *    #f4645f  phplrt 4.x   (the brand)
+ *    #a8403c  phplrt 3.x   (brand-deep — same family, "the older us")
+ *    #2a78d6  phpstan
+ *    #199e8f  psalm
+ *    #4a3aa7  hoa
  * ------------------------------------------------------------------------ */
 
-.charts {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-}
+/* Bound to the tool, not to the chart it appears in: a reader who learned
+   which colour is psalm on the line chart must not have to learn it again on
+   the memory bars. This is why it is one global attribute and not a class per
+   chart. */
+[data-s="phplrt4"] { --s: #f4645f; }
+[data-s="phplrt3"] { --s: #a8403c; }
+[data-s="phpstan"] { --s: #2a78d6; }
+[data-s="psalm"]   { --s: #199e8f; }
+[data-s="hoa"]     { --s: #4a3aa7; }
 
-.charts > div + div { border-left: var(--bd) solid var(--line); }
+.xy { padding: 26px 30px 10px; }
+.xy svg { width: 100%; height: auto; overflow: visible; }
 
-@media (max-width: 780px) {
-    .charts { grid-template-columns: minmax(0, 1fr); }
-    .charts > div + div { border-left: 0; border-top: var(--bd) solid var(--line); }
-}
+/* Chrome recedes: hairlines one shade off the panel, never dashed — a dashed
+   grid reads as "projection" when it is only a grid. The one dashed stroke
+   here is the linear reference, and that one IS a claim. */
+.xy-grid { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.xy-axis { fill: none; stroke: var(--line-2); stroke-width: 2; }
+.xy-guide { fill: none; stroke: var(--line-2); stroke-width: 2; stroke-dasharray: 7 8; stroke-linecap: round; }
 
-.chart { padding: 22px 24px 18px; }
-
-.chart__cap {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 10px;
-    margin-bottom: 6px;
-    font-family: var(--mono);
-    font-size: 12.5px;
-    color: var(--ink-3);
-}
-
-.chart__cap b { color: var(--ink); font-size: 13.5px; }
-.chart__cap i { font-style: normal; margin-left: auto; color: var(--ink-4); font-size: 11.5px; }
-
-.chart svg { width: 100%; height: auto; overflow: visible; }
-
-
-.ch-bar { fill: var(--line-2); }
-.ch-bar--now { fill: var(--brand); }
-
-.ch-val {
-    font-family: var(--mono);
-    font-size: 15px;
-    font-weight: 700;
-    fill: var(--ink-2);
-    text-anchor: middle;
-}
-
-.ch-val--now { fill: var(--brand-ink); }
-
-.ch-tick {
+.xy-tick {
     font-family: var(--mono);
     font-size: 13px;
     fill: var(--ink-3);
-    text-anchor: middle;
+    font-variant-numeric: tabular-nums;
 }
 
-.ch-tick--now { fill: var(--ink); font-weight: 700; }
+.xy-line {
+    fill: none;
+    stroke: var(--s);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.xy-line--lead { stroke-width: 4; }
+
+/* The 2px ring is what keeps two markers readable where the data really does
+   put them on top of each other — phpstan and psalm are 0.09 ms apart at 1 KB. */
+.xy-dot { fill: var(--s); stroke: var(--paper); stroke-width: 2; }
+
+.xy-lbl { font-family: var(--mono); font-size: 13.5px; font-weight: 700; fill: var(--ink-2); }
+.xy-lbl--lead { fill: var(--brand-ink); }
+
+.legend--xy i { height: 5px; border: 0; border-radius: var(--pill); background: var(--s); vertical-align: 2px; }
+.legend--xy .is-guide i { background: none; border-top: var(--bd) dashed var(--line-2); border-radius: 0; height: 0; }
+
+/* Table view — the chart's WCAG-clean twin. Wide, so it scrolls inside its
+   own box rather than pushing the page sideways. */
+.tv { overflow-x: auto; padding: 4px 0 0; }
+.tv table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13.5px; }
+
+.tv th, .tv td { padding: 13px 18px; text-align: right; white-space: nowrap; }
+.tv thead th { font-size: 12px; font-weight: 500; color: var(--ink-3); }
+.tv th:first-child, .tv thead th:first-child { text-align: left; }
+
+.tv tbody th {
+    font-weight: 500;
+    color: var(--ink);
+    text-align: left;
+    padding-left: 30px;
+}
+
+.tv tbody td { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.tv tbody tr + tr th, .tv tbody tr + tr td { border-top: var(--bd) solid var(--line); }
+
+/* The swatch ties a row to its line. Colour is never the only cue — the name
+   is right beside it. */
+.tv tbody th i {
+    display: inline-block;
+    width: 14px;
+    height: 5px;
+    margin-right: 10px;
+    border-radius: var(--pill);
+    background: var(--s);
+    vertical-align: 3px;
+}
+
+.tv tbody .is-self th { font-weight: 700; }
+.tv .tv-k { color: var(--ink); font-weight: 700; }
+.tv .tv-k--bad { color: var(--warn-ink); }
 
 /* Comparison rows — the row that is ours is marked, not washed (rule 2) */
 .rows { display: grid; grid-template-columns: minmax(0, 1fr); }
@@ -1089,15 +1132,6 @@ a:hover { color: var(--brand); }
     align-items: center;
     padding: 15px 22px 15px 32px;
 }
-
-/* Every row is its own grid, so an "auto" last column is measured per row:
-   in the comparison table a row without a "×" factor, or with a three-digit
-   figure instead of a four-digit one, ends up narrower and drags its meter
-   out of line with the rest. A floor on the figure cell makes every row
-   measure the same without pinning a width on tables that do not need one —
-   the second table holds one uniform column of figures in half the space,
-   and a fixed width there would squeeze its names into the meters. */
-.rows--cmp .rows__num { min-width: 116px; }
 
 .rows__row + .rows__row { border-top: var(--bd) solid var(--line); }
 
@@ -1112,7 +1146,7 @@ a:hover { color: var(--brand); }
     background: var(--brand);
 }
 
-/* "analyze(Mode::Fast)" has nowhere to break on its own — without this it
+/* "analyze(SyntaxCheck)" has nowhere to break on its own — without this it
    runs out of its track and over the meter next to it. */
 .rows__name { font-family: var(--mono); font-size: 14px; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
 
@@ -1146,6 +1180,11 @@ a:hover { color: var(--brand); }
 }
 
 .is-self .meter i { background: var(--brand); }
+
+/* A row that names a tool wears that tool's colour — including its "ours"
+   marker, so the brand rule and the series rule cannot disagree. */
+.rows__row[data-s] .meter i { background: var(--s); }
+.rows__row[data-s].is-self::before { background: var(--s); }
 
 .rows__num { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; text-align: right; }
 .is-self .rows__num { color: var(--brand-ink); }

@@ -68,7 +68,7 @@
  <span class="d-bar">--&gt;</span> <span class="d-file">filter.txt:1:24</span>
   <span class="d-bar">|</span>
 <span class="d-bar">1 |</span> <span class="d-src">price &lt; 100 and brand in and ("acme")</span>
-  <span class="d-bar">|</span>                        <span class="d-hit">^^^</span>
+  <span class="d-bar">|</span>                          <span class="d-hit">^^^</span>
   <span class="d-bar">|</span>
   <span class="d-dim">= the position reported is the furthest one any rule</span>
   <span class="d-dim">  reached, not where the last attempt gave up</span>
@@ -198,7 +198,7 @@
 
 <span class="c-cm">// greedy rules tell "not finished" from "written wrong" —
 // which is exactly what a search box needs</span>
-<span class="c-kw">if</span> (<span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">analyze</span>(<span class="c-var">$typed</span>, <span class="c-cls">Mode</span><span class="c-op">::</span>Fast)
+<span class="c-kw">if</span> (<span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">analyze</span>(<span class="c-var">$typed</span>, <span class="c-cls">Mode</span><span class="c-op">::</span>SyntaxCheck)
     <span class="c-kw">instanceof</span> <span class="c-cls">SuccessfulResult</span>) {
     <span class="c-var">$button</span><span class="c-op">-&gt;</span><span class="c-fn">enable</span>();
 }</pre>

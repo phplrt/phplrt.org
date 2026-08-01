@@ -33,8 +33,9 @@
 
                 <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/compiler</span> --dev
 
-<span class="c-op">$</span> vendor/bin/phplrt compile grammar.pp3 src/Parser.php \
-      --namespace=<span class="c-str">'App\Routing'</span> --class=RouteParser</pre>
+<span class="c-op">$</span> vendor/bin/phplrt compile grammar.pp3 src/RouteParser.php \
+      --namespace=<span class="c-str">'App\Routing'</span> \
+      --class=RouteParser</pre>
             </div>
 
             <div class="lane lane--ships">
@@ -53,10 +54,7 @@
                     <div class="pkg pkg--extra"><code>phplrt/exception</code><span>offsets into snippets — a separate package, add it if you print errors</span></div>
                 </div>
 
-                <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/runtime</span> <span class="c-cm"># the three above and their contracts</span>
-
-<span class="c-cm"># or the pieces, or just the interfaces:</span>
-<span class="c-op">$</span> composer require <span class="c-str">phplrt/parser-contracts</span></pre>
+                <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/runtime</span></pre>
             </div>
         </div>
 
