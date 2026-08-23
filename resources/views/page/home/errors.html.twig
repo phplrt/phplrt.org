@@ -52,9 +52,9 @@
                     <span class="fact__tag">the one thing to do</span>
                     <h3>Name your sources</h3>
                     <p>
-                        A bare <code>Source</code> can only show the snippet.
-                        <code>new VirtualFile('input.txt', $text)</code> costs nothing and lets
-                        every error above say <em>where</em>.
+                        A bare <code>StringSource</code> can only show the snippet.
+                        <code>VirtualSource::createFromString('input.txt', $text)</code> costs
+                        nothing and lets every error above say <em>where</em>.
                     </p>
                 </div>
             </div>
@@ -78,10 +78,13 @@
                     <div class="panel panel--night" style="margin-top: 20px;">
                         <div class="panel__bar"><b>read.php</b></div>
                         <pre class="code code--sm"><span class="c-kw">use</span> <span class="c-cls">Phplrt\Parser\Exception\UnexpectedTokenException</span>;
-<span class="c-kw">use</span> <span class="c-cls">Phplrt\Source\VirtualFile</span>;
+<span class="c-kw">use</span> <span class="c-cls">Phplrt\Source\VirtualSource</span>;
 
 <span class="c-kw">try</span> {
-    <span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">parse</span>(<span class="c-kw">new</span> <span class="c-cls">VirtualFile</span>(<span class="c-str">'filter.txt'</span>, <span class="c-var">$input</span>));
+    <span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">parse</span>(<span class="c-cls">VirtualSource</span><span class="c-op">::</span><span class="c-fn">createFromString</span>(
+        <span class="c-str">'filter.txt'</span>,
+        <span class="c-var">$input</span>,
+    ));
 } <span class="c-kw">catch</span> (<span class="c-cls">UnexpectedTokenException</span> <span class="c-var">$e</span>) {
     <span class="c-kw">echo</span> <span class="c-var">$e</span><span class="c-op">-&gt;</span><span class="c-fn">getMessage</span>();  <span class="c-cm">// the sentence</span>
     <span class="c-kw">echo</span> <span class="c-var">$e</span>;                <span class="c-cm">// …and the block above</span>
@@ -176,7 +179,7 @@
   <span class="d-bar">|</span> <span class="d-msg">value</span>  <span class="d-src">Every(Cond(price, &lt;, 100))</span>
   <span class="d-bar">|</span> <span class="d-msg">token</span>  <span class="d-src">"and" at offset 12</span>
 
-<span class="d-note">diagnostics[0]</span> <span class="d-dim">— the exception parse() would have thrown</span>
+<span class="d-note">error</span> <span class="d-dim">— the exception parse() would have thrown</span>
  <span class="d-bar">--&gt;</span> <span class="d-file">filter.txt:1:13</span>
   <span class="d-bar">|</span>
 <span class="d-bar">1 |</span> <span class="d-src">price &lt; 100 and</span>
@@ -187,19 +190,26 @@
                     <div class="panel panel--night" style="margin-top: 20px;">
                         <div class="panel__bar"><b>analyze.php</b><span class="push">nothing about a source makes it throw</span></div>
                         <pre class="code code--sm"><span class="c-kw">use</span> <span class="c-cls">Phplrt\Parser\Analysis\Mode</span>;
+<span class="c-kw">use</span> <span class="c-cls">Phplrt\Parser\Analysis\Result\PartialResult</span>;
 <span class="c-kw">use</span> <span class="c-cls">Phplrt\Parser\Analysis\Result\SuccessfulResult</span>;
 
 <span class="c-var">$result</span> <span class="c-op">=</span> <span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">analyze</span>(<span class="c-var">$source</span>);
 
 <span class="c-cm">// SuccessfulResult · PartialResult · FailureResult</span>
-<span class="c-var">$result</span><span class="c-op">-&gt;</span>value;          <span class="c-cm">// what the fragment reduced to</span>
-<span class="c-var">$result</span><span class="c-op">-&gt;</span>token<span class="c-op">-&gt;</span>offset;  <span class="c-cm">// where it stopped</span>
-<span class="c-var">$result</span><span class="c-op">-&gt;</span>diagnostics;    <span class="c-cm">// and what stood in the way</span>
+<span class="c-var">$result</span><span class="c-op">-&gt;</span>value;               <span class="c-cm">// what it reduced to</span>
+
+<span class="c-cm">// a source read in full has nothing more to say</span>
+<span class="c-kw">if</span> (<span class="c-var">$result</span> <span class="c-kw">instanceof</span> <span class="c-cls">PartialResult</span>) {
+    <span class="c-var">$result</span><span class="c-op">-&gt;</span>token<span class="c-op">-&gt;</span>offset;  <span class="c-cm">// where it stopped</span>
+    <span class="c-var">$result</span><span class="c-op">-&gt;</span>error;           <span class="c-cm">// and what stood in the way</span>
+}
 
 <span class="c-cm">// greedy rules tell "not finished" from "written wrong" —
 // which is exactly what a search box needs</span>
-<span class="c-kw">if</span> (<span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">analyze</span>(<span class="c-var">$typed</span>, <span class="c-cls">Mode</span><span class="c-op">::</span>SyntaxCheck)
-    <span class="c-kw">instanceof</span> <span class="c-cls">SuccessfulResult</span>) {
+<span class="c-var">$check</span> <span class="c-op">=</span> <span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">analyze</span>(<span class="c-var">$typed</span>, <span class="c-cls">Mode</span><span class="c-op">::</span>SyntaxCheck);
+
+<span class="c-kw">if</span> (<span class="c-var">$check</span> <span class="c-kw">instanceof</span> <span class="c-cls">SuccessfulResult</span>
+    <span class="c-op">&amp;&amp;</span> !<span class="c-var">$check</span> <span class="c-kw">instanceof</span> <span class="c-cls">PartialResult</span>) {
     <span class="c-var">$button</span><span class="c-op">-&gt;</span><span class="c-fn">enable</span>();
 }</pre>
                     </div>

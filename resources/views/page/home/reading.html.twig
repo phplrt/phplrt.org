@@ -23,13 +23,14 @@
                     </p>
                 </div>
                 <pre class="code code--paper code--sm">{% code %}
-new File(__DIR__ . '/example.txt');
+FileSource::createFromPathname(__DIR__ . '/example.txt');
 
-new VirtualFile('config.txt', $text);
+StringSource::createFromString('2 + 2');
 
-new Source('2 + 2');
+ResourceSource::createFromResource($resource);
 
-new Stream($resource);
+// a string with a name, so an error can say where
+VirtualSource::createFromString('config.txt', $text);
 {% endcode %}</pre>
             </div>
 
@@ -76,12 +77,14 @@ new Stream($resource);
         <div class="duo rise" style="margin-top: 22px;">
             <div class="fact fact--flat">
                 <span class="fact__tag">channels</span>
-                <h3>Nothing is thrown away</h3>
+                <h3>A label, not a bin</h3>
                 <p>
-                    Whitespace and comments are <em>hidden</em>, not skipped: the parser does
-                    not see them, a documentation generator can. Unrecognized text becomes an
-                    <code>Unknown</code> token instead of an exception, so a linter reports a
-                    whole file rather than its first problem.
+                    A token is labelled rather than dropped, and the lexer reports every
+                    channel but the ones it is told to skip — <code>Hidden</code> alone by
+                    default. Put the docblocks on a channel of their own and they stay in
+                    the stream the parser reads past. Unrecognized text arrives as an
+                    <code>Unknown</code> token instead of an exception, so a linter reports
+                    a whole file rather than its first problem.
                 </p>
             </div>
             <div class="fact fact--flat">

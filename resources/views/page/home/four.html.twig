@@ -34,6 +34,11 @@
                 <div class="mig__now">$source-&gt;<b>content</b></div>
             </div>
             <div class="mig__row">
+                <div class="mig__was">new File($path), new Source($text)</div>
+                <div class="mig__to">→</div>
+                <div class="mig__now"><b>FileSource</b>, <b>StringSource</b>,<br /><b>ResourceSource</b>, <b>VirtualSource</b></div>
+            </div>
+            <div class="mig__row">
                 <div class="mig__was">$token-&gt;getName() === 'T_DIGIT'</div>
                 <div class="mig__to">→</div>
                 <div class="mig__now">$token-&gt;id === <b>Parser::T_DIGIT</b></div>
@@ -49,9 +54,9 @@
                 <div class="mig__now">new AppParser() <span class="c-cm">// generated</span></div>
             </div>
             <div class="mig__row mig__row--gone">
-                <div class="mig__was">phplrt/buffer · phplrt/position · phplrt/visitor</div>
+                <div class="mig__was">phplrt/buffer · phplrt/visitor · ast-contracts</div>
                 <div class="mig__to">→</div>
-                <div class="mig__now">removed — 4.x prescribes no node shape</div>
+                <div class="mig__now">gone — the buffer is internal to the parser now, and 4.x prescribes no node shape</div>
             </div>
         </div>
 
