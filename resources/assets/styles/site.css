@@ -696,8 +696,13 @@ a:hover { color: var(--brand); }
 .code--paper .c-op   { color: #5c6b7c; }
 .code--paper .c-str  { color: #43701f; }
 .code--paper .c-cap  { color: #22608f; }
+.code--paper .c-cls  { color: #22608f; }
+.code--paper .c-fn   { color: #6f6212; }
+.code--paper .c-tok  { color: #8a5a12; }
+.code--paper .c-var  { color: #6b3f9e; }
 .code--paper .c-rule { color: #0f7768; }
 .code--paper .c-num  { color: #a8551f; }
+.code--paper .c-re   { color: var(--ink-2); }
 .code--paper .c-kw   { color: var(--brand-ink); }
 .code--paper .c-dir  { color: var(--brand-ink); }
 
