@@ -1644,6 +1644,50 @@ a:hover { color: var(--brand); }
 .closing .cmd { margin: 30px auto 0; }
 .closing__acts { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
 
+/* The dateline under the closing call. `.closing p` sets a reading measure and
+   18px for the paragraph above it, so both are undone here rather than the
+   shared rule loosened. */
+.closing .lineage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 30px;
+    max-width: 74ch;
+    margin: 40px auto 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--on-night-2);
+}
+
+/* A block, not a flex item: inside a flex box every run of text becomes an
+   anonymous item and the gap opens up before the comma after the link. */
+.closing .lineage span { display: block; }
+.closing .lineage b { color: #fff; font-weight: 600; }
+
+.closing .lineage i {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin: 0 9px 2px 0;
+    border-radius: 50%;
+    background: var(--brand);
+    vertical-align: middle;
+}
+
+/* The page's link colour is ink on paper; on the night band it would read as
+   rust on charcoal, so the underline carries the affordance instead. */
+.closing .lineage a {
+    color: var(--on-night);
+    border-bottom: 1px solid rgba(203, 215, 227, .32);
+}
+
+.closing .lineage a:hover { color: var(--brand); border-bottom-color: currentColor; }
+
+@media (max-width: 640px) {
+    .closing .lineage { gap: 12px; text-align: left; }
+}
+
 .foot { padding: 32px 0; background: var(--night-2); color: var(--on-night-2); font-size: 14.5px; }
 
 .foot__in {
