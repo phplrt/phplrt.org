@@ -23,14 +23,17 @@
                     </p>
                 </div>
                 <pre class="code code--paper code--sm">{% code %}
-FileSource::createFromPathname(__DIR__ . '/example.txt');
+FileSource::createFromPathname(
+    pathname: __DIR__ . '/example.txt',
+);
 
-StringSource::createFromString('2 + 2');
+StringSource::createFromString(
+    content: '2 + 2',
+);
 
-ResourceSource::createFromResource($resource);
-
-// a string with a name, so an error can say where
-VirtualSource::createFromString('config.txt', $text);
+ResourceSource::createFromResource(
+    resource: $resource,
+);
 {% endcode %}</pre>
             </div>
 
