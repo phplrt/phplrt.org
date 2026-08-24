@@ -1,14 +1,14 @@
-<!-- ==========================================================================
+{# ==========================================================================
      Hero — two columns of comparable weight, closed by a full-width pill
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="hero">
     <div class="hold">
         <div class="hero__in">
-            <!-- The five lines below arrive one after another rather than as
+            {# The five lines below arrive one after another rather than as
                  one slab — the badge, the sentence, the lede, the command and
-                 the buttons are read in that order, so they land in it. -->
+                 the buttons are read in that order, so they land in it. #}
             <div class="hero__lead rise">
-                <a class="hero__badge" href="/docs/upgrade">
+                <a class="hero__badge" href="{{ path('docs.show', {path: docs('upgrade')}) }}">
                     <b>4.0</b> new lexer · analyze() · generated parsers
                 </a>
 
@@ -27,14 +27,14 @@
                 </div>
 
                 <div class="hero__acts">
-                    <a class="act act--brand" href="/docs/guide/quick-start">Quick start</a>
+                    <a class="act act--brand" href="{{ path('docs.show', {path: docs('quick-start')}) }}">Quick start</a>
                     <a class="act act--quiet" href="#grammars">Read a grammar</a>
                 </div>
             </div>
 
-            <!-- One rule, twice: as source and as a picture. Two cards rather
+            {# One rule, twice: as source and as a picture. Two cards rather
                  than one, because the source is dark and the diagram is light
-                 and a card is not allowed to be both. -->
+                 and a card is not allowed to be both. #}
             <div class="stack stack--tight rise">
                 <div class="panel panel--night">
                     <div class="panel__bar">
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="rr">
-                        <!--
+                        {#
                           Grid (620 × 152), main line y = 56, node height 44 (y 34…78):
 
                             dot 14 · line 19→44
@@ -76,7 +76,7 @@
                           gap). With a corner radius of 20 the loop reaches x=176 at
                           its leftmost — 14px clear of Number()'s right edge — and
                           x=550 at its rightmost. It never touches a node.
-                        -->
+                        #}
                         <svg viewBox="0 0 620 152" role="img" aria-label="Sum: Number, then zero or more times a discarded plus followed by Number">
                             <circle class="rr-dot" cx="14" cy="56" r="5"/>
                             <path class="rr-line rr-line--draw" d="M19,56 H44"/>
@@ -131,7 +131,7 @@
         </div>
     </div>
 
-    <!-- White rises into the hero -->
+    {# White rises into the hero #}
     <div class="wave wave--out" aria-hidden="true">
         <svg viewBox="0 0 1920 150" preserveAspectRatio="none">
             <path fill="#e8edf4" d="M0,150V70C380,0,880,120,1360,66C1640,34,1790,58,1920,74V150Z"/>

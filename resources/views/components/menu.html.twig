@@ -13,7 +13,7 @@
                 {% for page in category.pages %}
                     {% if page.type == "document" %}
                         <li>
-                            <a href="/docs/{{ page.url }}"
+                            <a href="{{ path('docs.show', {path: page.url}) }}"
                                {% if page.url == current %}class="is-here" aria-current="page"{% endif %}>{{ page.title }}</a>
                         </li>
                     {% else %}

@@ -1,0 +1,34 @@
+
+#
+# ------------------------------------------------------------------------------
+#   Documentation Links
+# ------------------------------------------------------------------------------
+#
+#   Pages linked from the templates, by name. The value is the page path inside
+#   "resources/docs" (the same one "manifest.json" uses), which is also what the
+#   "docs.show" route is built from: "basics/errors" is "/docs/basics/errors".
+#
+#   When a page moves, it is renamed here and every template follows.
+#
+
+parameters:
+  docs.pages:
+    introduction: 'guide/introduction'
+    installation: 'guide/installation'
+    quick-start: 'guide/quick-start'
+    upgrade: 'upgrade'
+    grammar: 'basics/grammar'
+    errors: 'basics/errors'
+    lexer: 'advanced/lexer'
+    parser: 'advanced/parser'
+    json: 'examples/json'
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\Infrastructure\Twig\DocumentationExtension:
+    arguments:
+      $pages: '%docs.pages%'
+    tags: [ 'twig.extension' ]

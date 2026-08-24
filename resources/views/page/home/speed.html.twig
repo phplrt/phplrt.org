@@ -1,4 +1,4 @@
-<!-- ==========================================================================
+{# ==========================================================================
      05 · Speed
      The two charts and the tables under them are measured, from
      github.com/phplrt/benchmarks — absolute values, in ms and mb.
@@ -6,7 +6,7 @@
      The "how much work do you need?" panel is deliberately NOT absolute: it
      is three percentages of a full parse, and its caveat box says so. If you
      ever put microseconds back in there, put the caveat back too.
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="band band--sunk" id="speed">
     <div class="hold">
         <div class="head rise">
@@ -22,7 +22,7 @@
             </p>
         </div>
 
-        <!--
+        {#
           COORDINATE PLAN — shared by both charts on this page.
 
           Grid (1000 × 500). Plot box x 96…800, y 30…430.
@@ -45,7 +45,7 @@
 
           Every point below is that formula applied to the table in the same
           panel; nothing here is eyeballed.
-        -->
+        #}
         <div class="panel rise">
             <div class="panel__bar">
                 <b>time against input size</b>
@@ -53,7 +53,7 @@
                 <span class="push">both axes <b>logarithmic</b> — a straight line is linear growth</span>
             </div>
 
-            <!--
+            {#
               Both axes logarithmic. The values span 0.68 ms to 24 seconds and
               the inputs 25 bytes to 250 KB: on linear axes four of the five
               series are a flat line along the floor for three quarters of the
@@ -65,23 +65,23 @@
               The dashed guide is exactly ×10-per-×10 anchored on phplrt 4.x's
               1 KB point. A series that tracks it is growing linearly with its
               input; phplrt 4.x finishes just under it.
-            -->
+            #}
             <div class="xy">
                 <svg viewBox="0 0 1000 500" role="img"
                      aria-label="Time against input size, both axes logarithmic, five inputs from 25 bytes to 250 KB. In milliseconds: phplrt 4.x 0.81, 1.15, 1.83, 8.92, 78.1, 194. phplrt 3.x 0.85, 1.74, 4.55, 35.1, 335, 901. phpstan/phpdoc-parser 0.70, 1.02, 2.15, 47.9, 3725, 24177. vimeo/psalm 0.68, 1.29, 2.28, 16.9, 722, 5154. hoa/compiler 0.85, 2.79, 9.99, 87.1, 877, 2353. Below a kilobyte the five lines sit on top of each other; past 10 KB phplrt and hoa stay straight while phpstan and psalm bend upward.">
-                    <!-- Grid: solid hairlines, one shade off the surface.
+                    {# Grid: solid hairlines, one shade off the surface.
                          Horizontals on the labelled decades, verticals on the
-                         samples. -->
+                         samples. #}
                     <g class="xy-grid">
                         <path d="M96,405.9 H800 M96,325.9 H800 M96,245.9 H800 M96,165.9 H800 M96,85.9 H800"/>
                         <path d="M272,30 V430 M378,30 V430 M554,30 V430 M730,30 V430 M800,30 V430"/>
                     </g>
                     <path class="xy-axis" d="M96,30 V430 H800"/>
 
-                    <!-- ×10 per ×10, from phplrt 4.x at 1 KB -->
+                    {# ×10 per ×10, from phplrt 4.x at 1 KB #}
                     <path class="xy-guide" d="M378,385 L800,193.2"/>
 
-                    <!--
+                    {#
                       Series, least relevant first so ours lands on top.
 
                       pathLength="1" is what lets the sheet draw them: one dash
@@ -104,7 +104,7 @@
                       chart, kept on the adjacent line for exactly that reason.
                       A 2.5px stroke is not something a cursor can be asked to
                       find.
-                    -->
+                    #}
                     <g data-s="hoa">
                         <path class="xy-hit" d="M96,411.5 L272,370.3 L378,325.9 L554,250.7 L730,170.5 L800,136.2"/>
                         <path class="xy-line" pathLength="1" d="M96,411.5 L272,370.3 L378,325.9 L554,250.7 L730,170.5 L800,136.2"/>
@@ -197,9 +197,9 @@
             </div>
         </div>
 
-        <!-- The table the chart is drawn from. Every value the plot encodes is
+        {# The table the chart is drawn from. Every value the plot encodes is
              printed here, so nothing on this page is reachable only by reading
-             a line off a grid. -->
+             a line off a grid. #}
         <div class="panel rise" style="margin-top: 22px;">
             <div class="panel__bar"><b>the same numbers, read off</b><span class="push">ms per parse · lower is better</span></div>
             <div class="tv">
@@ -246,8 +246,8 @@
             </div>
         </div>
 
-        <!-- Memory, same five inputs, same axis, same colours. A reader who
-             learned which line is psalm above must not have to learn it twice. -->
+        {# Memory, same five inputs, same axis, same colours. A reader who
+             learned which line is psalm above must not have to learn it twice. #}
         <div class="panel rise" style="margin-top: 22px;">
             <div class="panel__bar">
                 <b>peak memory against input size</b>
@@ -255,7 +255,7 @@
                 <span class="push">both axes <b>logarithmic</b> · lower is better</span>
             </div>
 
-            <!--
+            {#
               Same x. y is three decades instead of five, because memory spans
               0.78 mb to 336 mb where time spanned four and a half orders.
 
@@ -268,7 +268,7 @@
               finish 5–7px apart, which is the honest picture (49…61 mb, all
               within a quarter of each other) but cannot carry five labels. The
               table below carries them instead.
-            -->
+            #}
             <div class="xy">
                 <svg viewBox="0 0 1000 500" role="img"
                      aria-label="Peak memory against input size, both axes logarithmic, six inputs from 25 bytes to 250 KB. In megabytes: phplrt 4.x 0.81, 0.83, 0.92, 1.81, 11.9, 28.6. phplrt 3.x 0.83, 0.87, 1.10, 3.28, 24.0, 60.8. phpstan/phpdoc-parser 0.78, 0.81, 1.01, 2.86, 20.4, 55.2. vimeo/psalm 1.57, 1.61, 1.79, 3.63, 21.0, 49.2. hoa/compiler 0.95, 1.31, 2.64, 15.7, 139, 336. At 250 KB phplrt 4.x is lowest at 28.6 mb; psalm, phpstan and phplrt 3.x land together between 49 and 61 mb; hoa is 336 mb.">
@@ -278,11 +278,11 @@
                     </g>
                     <path class="xy-axis" d="M96,30 V430 H800"/>
 
-                    <!-- Same grouping as the chart above: line, hit area,
+                    {# Same grouping as the chart above: line, hit area,
                          markers and — for the two series that get one — the
                          direct label, all inside the group that names the
                          series. The .xy-hit `d` repeats the line's on purpose;
-                         they must stay equal. -->
+                         they must stay equal. #}
                     <g data-s="hoa">
                         <path class="xy-hit" d="M96,392.7 L272,374.4 L378,333.6 L554,230.5 L730,103.9 L800,53.1"/>
                         <path class="xy-line" pathLength="1" d="M96,392.7 L272,374.4 L378,333.6 L554,230.5 L730,103.9 L800,53.1"/>
@@ -417,12 +417,12 @@
         <div class="duo duo--lead rise" style="margin-top: 22px;">
             <div class="panel">
                 <div class="panel__bar"><b>how much work do you need?</b><span class="push">4.x · share of a full parse</span></div>
-                <!-- Percentages, not microseconds: only one of these three
+                {# Percentages, not microseconds: only one of these three
                      saves anything, and how much it saves is the whole point.
                      parse() and analyze() run the same lex → recognize →
                      reduce on a source the grammar reads in full; the mode is
                      what drops the reducers. Each number is the bar beside it,
-                     so the two cannot drift apart. -->
+                     so the two cannot drift apart. #}
                 <div class="rows">
                     <div class="rows__row is-self">
                         <div class="rows__name">Syntax Check<em>valid? and how far — no reducers run</em></div>

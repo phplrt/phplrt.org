@@ -1,6 +1,6 @@
-<!-- ==========================================================================
+{# ==========================================================================
      01 · Reading
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="band band--paper" id="reading">
     <div class="hold">
         <div class="head rise">
@@ -101,15 +101,15 @@ ResourceSource::createFromResource(
             </div>
         </div>
 
-        <!-- The parser in the words its own documentation uses, for the reader
-             who wants to know what kind of PEG this is before reading further. -->
+        {# The parser in the words its own documentation uses, for the reader
+             who wants to know what kind of PEG this is before reading further. #}
         <p class="note rise" style="margin-top: 18px;">
             <span>backtracking PEG recognizer · table-driven recursive descent · FIRST-set prediction · deferred tree construction</span>
-            <a class="more" href="/docs/parser#how-it-reads">how the parser works</a>
+            <a class="more" href="{{ path('docs.show', {path: docs('parser'), _fragment: 'how-it-reads'}) }}">how the parser works</a>
         </p>
     </div>
 
-    <!-- Into the graph-paper band -->
+    {# Into the graph-paper band #}
     <div class="wave wave--out" aria-hidden="true">
         <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
             <path fill="#e8edf4" d="M0,130V62C360,0,860,116,1350,60C1630,28,1790,52,1920,68V130Z"/>

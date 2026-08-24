@@ -1,6 +1,6 @@
-<!-- ==========================================================================
+{# ==========================================================================
      06 · New in 4
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="band band--paper" id="four">
     <div class="hold">
         <div class="head rise">
@@ -13,9 +13,9 @@
             </p>
         </div>
 
-        <!-- Full width. Two columns of mono at 300px was the reason this looked
+        {# Full width. Two columns of mono at 300px was the reason this looked
              torn apart in #5; the pairing is what matters, so the arrow joins
-             the sides instead of a rule dividing them. -->
+             the sides instead of a rule dividing them. #}
         <div class="mig rise">
             <div class="mig__head">
                 <span>3.x</span>
@@ -90,7 +90,7 @@
 
         <p class="note rise" style="margin-top: 20px;">
             <span>grammar files carry over · the constructors do not</span>
-            <a class="more" href="/docs/upgrade">upgrade guide</a>
+            <a class="more" href="{{ path('docs.show', {path: docs('upgrade')}) }}">upgrade guide</a>
         </p>
     </div>
 

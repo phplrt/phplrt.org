@@ -5,12 +5,12 @@
             HTML&amp;CSS by Claude
         </span>
         <nav>
-            <a href="/docs/installation">install</a>
-            <a href="/docs/compiler/grammar">grammar</a>
-            <a href="/docs/lexer">lexer</a>
-            <a href="/docs/parser">parser</a>
-            <a href="/docs/errors">errors</a>
-            <a href="/docs/upgrade">upgrade</a>
+            <a href="{{ path('docs.show', {path: docs('installation')}) }}">install</a>
+            <a href="{{ path('docs.show', {path: docs('grammar')}) }}">grammar</a>
+            <a href="{{ path('docs.show', {path: docs('lexer')}) }}">lexer</a>
+            <a href="{{ path('docs.show', {path: docs('parser')}) }}">parser</a>
+            <a href="{{ path('docs.show', {path: docs('errors')}) }}">errors</a>
+            <a href="{{ path('docs.show', {path: docs('upgrade')}) }}">upgrade</a>
             <a href="https://github.com/phplrt/phplrt" rel="noopener">github</a>
         </nav>
     </div>

@@ -1,9 +1,9 @@
 {# The template-language example inside contains literal "{{ … }}", so the
    whole chapter is passed through untouched. #}
 {% verbatim %}
-<!-- ==========================================================================
+{# ==========================================================================
      03 · Grammars
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="band band--paper" id="grammars">
     <div class="hold">
         <div class="head rise">
@@ -22,7 +22,7 @@
                 <button class="tab" type="button" role="tab" aria-selected="false" data-view-key="tmpl">a template language</button>
             </div>
 
-            <!-- Config -->
+            {# Config #}
             <div data-view="config">
                 <div class="duo duo--lead">
                     <div class="panel panel--night">
@@ -55,7 +55,7 @@
                         <div class="panel">
                             <div class="panel__bar"><b>Value</b><span class="push">an alternation, drawn</span></div>
                             <div class="rr">
-                                <!--
+                                {#
                                   Grid (620 × 250). Three branches from the fork at
                                   x=70, corner radius 22, arriving on the left edge of
                                   the nodes at x=150 — each on its own centre line:
@@ -63,7 +63,7 @@
                                   y=198, which is List()'s top-left corner.)
                                   Nodes are 190 wide, so they end at x=340; the three
                                   returns merge at x=442 on y=125.
-                                -->
+                                #}
                                 <svg viewBox="0 0 620 250" role="img" aria-label="Value is one of: a number, a string, or a list">
                                     <circle class="rr-dot" cx="16" cy="125" r="5"/>
                                     <path class="rr-line rr-line--draw" d="M21,125 H70"/>
@@ -109,7 +109,7 @@ tags    <span class="c-op">=</span> [<span class="c-str">"php"</span>, <span cla
                 </div>
             </div>
 
-            <!-- Filter expressions -->
+            {# Filter expressions #}
             <div data-view="filter" hidden>
                 <div class="duo duo--lead">
                     <div class="panel panel--night">
@@ -176,7 +176,7 @@ stock &gt; 0 or (rating &gt;= 4 and reviews &gt; 10)</pre>
                 </div>
             </div>
 
-            <!-- Template -->
+            {# Template #}
             <div data-view="tmpl" hidden>
                 <div class="duo duo--lead">
                     <div class="panel panel--night">
@@ -252,7 +252,7 @@ stock &gt; 0 or (rating &gt;= 4 and reviews &gt; 10)</pre>
 
         <p class="note rise" style="margin-top: 20px;">
             <span>the docs ship complete grammars: math, calculator, json, json5, phpdoc types, go! aop pointcuts</span>
-            <a class="more" href="/docs/examples/json">browse</a>
+            <a class="more" href="{{ path('docs.show', {path: docs('json')}) }}">browse</a>
         </p>
     </div>
 </section>

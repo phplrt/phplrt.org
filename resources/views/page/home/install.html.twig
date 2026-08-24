@@ -1,6 +1,6 @@
-<!-- ==========================================================================
+{# ==========================================================================
      07 · Install
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="band band--soft" id="install">
     <div class="hold">
         <div class="head rise">
@@ -13,9 +13,9 @@
             </p>
         </div>
 
-        <!-- Both lanes are the same paper. The rule over the heading tells them
+        {# Both lanes are the same paper. The rule over the heading tells them
              apart: dashed for the half that is thrown away, solid brand for the
-             half that ships. -->
+             half that ships. #}
         <div class="lanes rise">
             <div class="lane">
                 <div class="lane__tag">while developing</div>
@@ -60,7 +60,7 @@
 
         <p class="note rise" style="margin-top: 18px;">
             <span>php 8.4+ · pcre · mbstring recommended · mit</span>
-            <a class="more" href="/docs/installation">installation guide</a>
+            <a class="more" href="{{ path('docs.show', {path: docs('installation')}) }}">installation guide</a>
         </p>
     </div>
 </section>

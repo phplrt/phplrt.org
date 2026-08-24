@@ -1,8 +1,8 @@
-<!-- ==========================================================================
+{# ==========================================================================
      04 · Errors — the dark band
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="band band--night" id="errors" data-night>
-    <!-- White pours into the dark -->
+    {# White pours into the dark #}
     <div class="wave wave--in" aria-hidden="true">
         <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
             <path fill="#e8edf4" d="M0,0H1920V52C1540,120,1160,4,740,58C460,92,230,76,0,50Z"/>
@@ -60,7 +60,7 @@
             </div>
 
             <div class="stack">
-                <!-- 01 -->
+                {# 01 #}
                 <div data-view="parser">
                     <div class="console">
                         <div class="console__bar">php read.php</div>
@@ -95,7 +95,7 @@
                     </div>
                 </div>
 
-                <!-- 02 -->
+                {# 02 #}
                 <div data-view="lexer" hidden>
                     <div class="console">
                         <div class="console__bar">php lint.php</div>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
 
-                <!-- 03 -->
+                {# 03 #}
                 <div data-view="yours" hidden>
                     <div class="console">
                         <div class="console__bar">php check.php</div>
@@ -169,7 +169,7 @@
                     </div>
                 </div>
 
-                <!-- 04 -->
+                {# 04 #}
                 <div data-view="soft" hidden>
                     <div class="console">
                         <div class="console__bar">php analyze.php</div>
@@ -218,7 +218,7 @@
             </div>
         </div>
 
-        <!-- Full width, so the two columns above stay comparable in height -->
+        {# Full width, so the two columns above stay comparable in height #}
         <div class="trio rise" style="margin-top: 22px;">
             <div class="fact">
                 <span class="fact__tag">levels</span>
@@ -248,15 +248,15 @@
             </div>
         </div>
 
-        <!-- The interfaces come with the runtime; the renderer does not. Saying
-             so here saves a "class not found" on the first try. -->
+        {# The interfaces come with the runtime; the renderer does not. Saying
+             so here saves a "class not found" on the first try. #}
         <p class="note rise" style="margin-top: 18px;">
             <span>the three interfaces ship with <code>phplrt/runtime</code> · the printer is <code>phplrt/exception</code>, installed separately</span>
-            <a class="more" href="/docs/errors">printing errors</a>
+            <a class="more" href="{{ path('docs.show', {path: docs('errors')}) }}">printing errors</a>
         </p>
     </div>
 
-    <!-- The transition worth keeping: dark → white wave → grey -->
+    {# The transition worth keeping: dark → white wave → grey #}
     <div class="wave wave--out" aria-hidden="true">
         <svg viewBox="0 0 1920 170" preserveAspectRatio="none">
             <path fill="#ffffff" d="M0,170V66C400,0,900,130,1370,68C1650,32,1800,58,1920,78V170Z"/>

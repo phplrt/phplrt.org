@@ -1,6 +1,6 @@
-<!-- ==========================================================================
+{# ==========================================================================
      Closing
-     ====================================================================== -->
+     ====================================================================== #}
 <section class="closing band--night" data-night>
     <div class="wave wave--in" aria-hidden="true">
         <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
@@ -23,13 +23,13 @@
         </div>
 
         <div class="closing__acts">
-            <a class="act act--brand" href="/docs/guide/quick-start">Quick start</a>
+            <a class="act act--brand" href="{{ path('docs.show', {path: docs('quick-start')}) }}">Quick start</a>
             <a class="act" href="/docs">Documentation</a>
         </div>
 
-        <!-- A dateline, not a chapter. How long the library has been kept is
+        {# A dateline, not a chapter. How long the library has been kept is
              worth one line, and two dates say all of it: where it came from,
-             and when it stopped being that. -->
+             and when it stopped being that. #}
         <p class="lineage">
             <span>
                 <i></i><b>2017</b> — begun as a fork of
