@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-#[AsController, Route(path: '/')]
+#[AsController, Route(path: '/', name: 'home')]
 final readonly class HomeController
 {
     public function __construct(
