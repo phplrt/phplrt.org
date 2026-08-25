@@ -1,6 +1,13 @@
 imports:
   - { resource: services/*.yaml }
 
+parameters:
+  #
+  # The address the site is served from. Read by "framework.router.default_uri"
+  # in "config/packages/routing.yaml".
+  #
+  app.canonical_uri: 'https://phplrt.org'
+
 services:
   _defaults:
     autowire: true
