@@ -20,7 +20,7 @@
        built from, so a page never has to describe itself twice. #}
     {% set share_title = block('title')|trim %}
     {% set share_text = block('description')|trim %}
-    {% set share_image = absolute_url('/favicon/x128.png') %}
+    {% set share_image = absolute_url('/img/banner.png') %}
 
     <link rel="canonical" href="{{ canonical }}" />
 
@@ -29,14 +29,22 @@
     <meta property="og:url" content="{{ canonical }}" />
     <meta property="og:title" content="{{ share_title }}" />
     <meta property="og:description" content="{{ share_text }}" />
-    <meta property="og:image" content="{{ share_image }}" />
 
-    {# "summary", not "summary_large_image": the only artwork the site has is
-       the 128px mark, and a large card would blow it up into a blurred square. #}
-    <meta name="twitter:card" content="summary" />
+    {# The banner is 1200x630, the ratio every card crops to, so it arrives
+       whole. The dimensions are spelled out because a client that does not
+       know them yet has to fetch the image before it can lay the card out,
+       and it will hold the preview back until that finishes. #}
+    <meta property="og:image" content="{{ share_image }}" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="phplrt" />
+
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ share_title }}" />
     <meta name="twitter:description" content="{{ share_text }}" />
     <meta name="twitter:image" content="{{ share_image }}" />
+    <meta name="twitter:image:alt" content="phplrt" />
 
     {# Section 19 of the sheet hides a block until the scroll reveals it, and
        it only does so while this class is on the root — with no JavaScript
