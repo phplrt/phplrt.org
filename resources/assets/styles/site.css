@@ -51,9 +51,9 @@
  * ------------------------------------------------------------------------ */
 
 :root {
-    --brand: #f4645f;
-    --brand-ink: #c8514c;
-    --brand-deep: #a8403c;
+    --brand: #ff3a52;
+    --brand-ink: #ea465a;
+    --brand-deep: #c03c4c;
 
     /* Tinted surface + the line that is allowed to touch it. Used together
        or not at all — see rule 2. */
