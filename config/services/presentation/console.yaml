@@ -13,3 +13,7 @@ services:
   App\Presentation\Command\DocsUpdateCommand:
     tags:
       - { name: 'console.command' }
+
+  App\Presentation\Command\DocsLlmsCommand:
+    tags:
+      - { name: 'console.command' }

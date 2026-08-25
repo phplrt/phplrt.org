@@ -25,11 +25,10 @@ The whole documentation is also available as one file: https://phplrt.org/llms-f
 ## The Basics
 
 - [PP3 Grammar](https://phplrt.org/docs/basics/grammar): A grammar file describes a language: the words it is made of, and the order they may appear in.
-- [Tokens & Channels](https://phplrt.org/docs/basics/tokens): A token is the smallest thing a lexer produces.
-- [PHP Injections](https://phplrt.org/docs/basics/grammar-php): A grammar on its own only answers "is this valid?".
-- [Results and Reducers](https://phplrt.org/docs/basics/reducers): A parser does two things: it decides whether the input is valid, and it builds something out of it.
 - [Compiling a Grammar](https://phplrt.org/docs/basics/compiler): The compiler reads a grammar file - the tokens, the rules, the reducers - and gives you back a working parser.
-- [Code Generation](https://phplrt.org/docs/basics/generation): Reading a grammar file takes time.
+- [Results and Reducers](https://phplrt.org/docs/basics/reducers): A parser does two things: it decides whether the input is valid, and it builds something out of it.
+- [Source](https://phplrt.org/docs/basics/source): Everything phplrt reads - a grammar file, an expression typed by a user, a template - is wrapped in a source object.
+- [Position](https://phplrt.org/docs/basics/position): An offset is what a parser works with: a number of bytes from the beginning of the source.
 - [Command Line](https://phplrt.org/docs/basics/cli): A grammar is edited far more often than the code around it, and two things get done over and over while editing: making sure the grammar still holds together, and writing the parser out again.
 - [Error Reporting](https://phplrt.org/docs/basics/errors): An error that says "syntax error at offset 137" is technically correct and practically useless.
 - [Best Practices](https://phplrt.org/docs/basics/best-practice): What follows is a list of decisions that make a parser pleasant to work with and cheap to run: where your own code goes, how the grammar reaches it, and how much the runtime is willing to say about…
@@ -37,12 +36,11 @@ The whole documentation is also available as one file: https://phplrt.org/llms-f
 ## Digging Deeper
 
 - [Lexer](https://phplrt.org/docs/advanced/lexer): The lexer is the first half of reading source code: it turns a stream of characters into a stream of tokens. 23 + 42 becomes "a number, a plus, a number" - and the parser never has to look at a…
+- [Lexer Builder](https://phplrt.org/docs/advanced/lexer-builder): A lexer is described before it can read anything: which tokens there are, what each of them looks like, and what the lexer does with them.
 - [Nested Lexers](https://phplrt.org/docs/advanced/embedding): Some fragments of a language are not written in that language.
 - [Parser](https://phplrt.org/docs/advanced/parser): The parser is the second half of reading source code.
-- [Grammar Rules](https://phplrt.org/docs/advanced/rules): A grammar is a flat array of rules.
-- [Building a Grammar](https://phplrt.org/docs/advanced/builder): Writing the rule array by hand works, but you have to keep track of indices yourself, and one inserted rule renumbers everything.
-- [Source](https://phplrt.org/docs/advanced/source): Everything phplrt reads - a grammar file, an expression typed by a user, a template - is wrapped in a source object.
-- [Position](https://phplrt.org/docs/advanced/position): An offset is what a parser works with: a number of bytes from the beginning of the source.
+- [Parser Builder](https://phplrt.org/docs/advanced/parser-builder): Writing the rule array by hand works, but you have to keep track of indices yourself, and one inserted rule renumbers everything.
+- [Custom Generator](https://phplrt.org/docs/advanced/generator): A PHP parser is not the only thing a compiled grammar is good for.
 - [Analysing an Error](https://phplrt.org/docs/advanced/analyzer): ErrorPrinter turns an exception into a picture.
 - [Reading a Snippet](https://phplrt.org/docs/advanced/snippet-reader): SnippetReader is what a renderer reads the source code with.
 - [Automation and CI](https://phplrt.org/docs/advanced/automation): Rebuilding the parser after a grammar change is the kind of step that works right up until the day somebody forgets.
@@ -57,7 +55,7 @@ The whole documentation is also available as one file: https://phplrt.org/llms-f
 
 ## Examples
 
-- [Overview](https://phplrt.org/docs/examples): Nine complete grammars.
+- [Overview](https://phplrt.org/docs/examples): A few complete grammars, picked one per idea.
 - [JSON](https://phplrt.org/docs/examples/json): A JSON parser that produces plain PHP values - the result matches json_decode($input, true) exactly.
 - [Cron Expression](https://phplrt.org/docs/examples/cron): The five (or six) fields of a crontab line, the @daily shorthands and the extensions almost every scheduler ends up supporting
 - [Composer Constraints](https://phplrt.org/docs/examples/composer-constraints): The little language the require section of every composer.json is written in

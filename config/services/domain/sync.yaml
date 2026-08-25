@@ -12,3 +12,7 @@ services:
   App\Domain\Documentation\Search\IndexGenerator:
     arguments:
       $em: '@doctrine.orm.default_entity_manager'
+
+  App\Domain\Documentation\LlmsGenerator:
+    arguments:
+      $directory: "%kernel.project_dir%/public"
