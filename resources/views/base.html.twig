@@ -6,6 +6,38 @@
     <title>{% block title %}Home{% endblock %} :: phplrt</title>
     <meta name="description" content="{% block description %}phplrt is a parsing toolkit for PHP: a lexer, a PEG parser, a grammar compiler and an error printer. Describe your format in a grammar file and get back tokens, a syntax tree and error messages that point at the exact character.{% endblock %}" />
 
+    {# The canonical address is rebuilt from the route that matched rather than
+       copied out of the request, so a query string, a trailing "index.php" or
+       anything else appended to the url cannot turn one page into two in an
+       index. Error responses are rendered without a route, and those fall back
+       to the path as it was asked for. #}
+    {% set route = app.request.attributes.get('_route') %}
+    {% set canonical = route
+        ? url(route, app.request.attributes.get('_route_params')|default({}))
+        : app.request.schemeAndHttpHost ~ app.request.pathInfo %}
+
+    {# Both cards read the same two blocks the <title> and the description are
+       built from, so a page never has to describe itself twice. #}
+    {% set share_title = block('title')|trim %}
+    {% set share_text = block('description')|trim %}
+    {% set share_image = absolute_url('/favicon/x128.png') %}
+
+    <link rel="canonical" href="{{ canonical }}" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="phplrt" />
+    <meta property="og:url" content="{{ canonical }}" />
+    <meta property="og:title" content="{{ share_title }}" />
+    <meta property="og:description" content="{{ share_text }}" />
+    <meta property="og:image" content="{{ share_image }}" />
+
+    {# "summary", not "summary_large_image": the only artwork the site has is
+       the 128px mark, and a large card would blow it up into a blurred square. #}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="{{ share_title }}" />
+    <meta name="twitter:description" content="{{ share_text }}" />
+    <meta name="twitter:image" content="{{ share_image }}" />
+
     {# Section 19 of the sheet hides a block until the scroll reveals it, and
        it only does so while this class is on the root — with no JavaScript
        everything is simply already where it belongs. It has to be set before
