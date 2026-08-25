@@ -5,11 +5,11 @@
     <div class="hold">
         <div class="head rise">
             <span class="chapter">01 · reading</span>
-            <h2 class="title">Two halves: one cuts, one arranges</h2>
+            <h2 class="title">From text to a tree in two steps</h2>
             <p class="lede">
-                The lexer turns characters into tokens. The parser checks that those
-                tokens appear in an order the grammar allows, and builds whatever you
-                asked for. Nothing else happens in between.
+                The lexer turns characters into tokens. The parser then checks that those
+                tokens appear in an order the grammar allows and builds the result you
+                asked for. There are no other stages in between.
             </p>
         </div>
 
@@ -18,8 +18,9 @@
                 <div class="panel__bar"><b>1 · source</b><span class="push">named</span></div>
                 <div class="panel__body">
                     <p>
-                        A string, a file or a stream — wrapped in an object that knows its
-                        content and what to call itself when an error has to say <em>where</em>.
+                        A string, a file or a stream, wrapped in an object that knows both its
+                        content and its own name. The name is what an error message uses to say
+                        <em>where</em> the problem is.
                     </p>
                 </div>
                 <pre class="code code--paper code--sm">{% code %}
@@ -52,8 +53,9 @@ ResourceSource::createFromResource(
                     </div>
                     <p style="margin-top: 16px;">
                         Every token carries <code>id</code>, <code>name</code>,
-                        <code>value</code>, <code>offset</code> and <code>size</code> — offsets
-                        in bytes, which is what makes snippets possible later.
+                        <code>value</code>, <code>offset</code> and <code>size</code>. Offsets are
+                        counted in bytes, which is what lets an error printer cut out the right
+                        snippet later.
                     </p>
                 </div>
             </div>
@@ -62,9 +64,10 @@ ResourceSource::createFromResource(
                 <div class="panel__bar"><b>3 · parser</b><span class="push">backtracking PEG</span></div>
                 <div class="panel__body">
                     <p>
-                        Rules live in a table, not in a call graph, and each one knows the
-                        tokens it may start with. Recognition writes a flat trace; the reducers
-                        run once, afterwards, bottom-up. A branch that fails is simply truncated.
+                        Rules are kept in a table rather than compiled into nested function
+                        calls, and each rule knows which tokens it may start with. Recognition
+                        writes a flat trace of what matched; the reducers run afterwards, once
+                        each, from the innermost rule outwards. A branch that fails is cut off.
                     </p>
                 </div>
                 <pre class="code code--paper code--sm"><span class="c-rule">Config</span>
@@ -80,36 +83,38 @@ ResourceSource::createFromResource(
         <div class="duo rise" style="margin-top: 22px;">
             <div class="fact fact--flat">
                 <span class="fact__tag">channels</span>
-                <h3>A label, not a bin</h3>
+                <h3>Hidden tokens are labelled, not dropped</h3>
                 <p>
-                    A token is labelled rather than dropped, and the lexer reports every
-                    channel but the ones it is told to skip — <code>Hidden</code> alone by
-                    default. Put the docblocks on a channel of their own and they stay in
-                    the stream the parser reads past. Unrecognized text arrives as an
-                    <code>Unknown</code> token instead of an exception, so a linter reports
-                    a whole file rather than its first problem.
+                    Instead of throwing a token away, the lexer puts it on a channel, and it
+                    emits every channel except the ones you tell it to skip. By default that
+                    is <code>Hidden</code> alone. Give docblocks a channel of their own and
+                    they stay in the stream that the parser reads past. Text the lexer does
+                    not recognize arrives as an <code>Unknown</code> token instead of an
+                    exception, so a linter can report a whole file rather than stopping at
+                    the first problem.
                 </p>
             </div>
             <div class="fact fact--flat">
                 <span class="fact__tag">ordered choice</span>
-                <h3>There is only one reading</h3>
+                <h3>Only one way to read the input</h3>
                 <p>
-                    Alternatives are tried top to bottom and the first match wins, so a
-                    grammar is never ambiguous. The flip side: <code>"a" | "ab"</code> never
-                    reads <code>ab</code> — put the longer one first.
+                    Alternatives are tried from top to bottom and the first one that matches
+                    wins, so a grammar can never be ambiguous. The catch is that
+                    <code>"a" | "ab"</code> will never match <code>ab</code>, so the longer
+                    alternative has to come first.
                 </p>
             </div>
         </div>
 
-        {# The parser in the words its own documentation uses, for the reader
-             who wants to know what kind of PEG this is before reading further. #}
+        {# The parser described in the terms its own documentation uses, for a
+             reader who wants to know what kind of PEG this is before going on. #}
         <p class="note rise" style="margin-top: 18px;">
             <span>backtracking PEG recognizer · table-driven recursive descent · FIRST-set prediction · deferred tree construction</span>
             <a class="more" href="{{ path('docs.show', {path: docs('parser'), _fragment: 'how-it-reads'}) }}">how the parser works</a>
         </p>
     </div>
 
-    {# Into the graph-paper band #}
+    {# Transition into the graph-paper band #}
     <div class="wave wave--out" aria-hidden="true">
         <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
             <path fill="#e8edf4" d="M0,130V62C360,0,860,116,1350,60C1630,28,1790,52,1920,68V130Z"/>

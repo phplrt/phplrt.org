@@ -5,17 +5,18 @@
     <div class="hold">
         <div class="head rise">
             <span class="chapter">06 · new in 4</span>
-            <h2 class="title">A rewrite that kept your grammar files</h2>
+            <h2 class="title">A rewritten API, the same grammar files</h2>
             <p class="lede">
-                Almost every public API changed — property hooks, asymmetric visibility
+                Almost every public API has changed. Property hooks, asymmetric visibility
                 and <code>new</code> in initializers are used throughout, which is why so
-                much of it looks different. Grammar files mostly compile unchanged.
+                much of the code looks different. Grammar files, on the other hand, mostly
+                compile unchanged.
             </p>
         </div>
 
-        {# Full width. Two columns of mono at 300px was the reason this looked
-             torn apart in #5; the pairing is what matters, so the arrow joins
-             the sides instead of a rule dividing them. #}
+        {# Full width. Two columns of mono text at 300px were the reason this
+             looked torn apart in #5. The pairing is what matters here, so an
+             arrow joins the two sides instead of a rule dividing them. #}
         <div class="mig rise">
             <div class="mig__head">
                 <span>3.x</span>
@@ -56,7 +57,7 @@
             <div class="mig__row mig__row--gone">
                 <div class="mig__was">phplrt/buffer · phplrt/visitor · ast-contracts</div>
                 <div class="mig__to">→</div>
-                <div class="mig__now">gone — the buffer is internal to the parser now, and 4.x prescribes no node shape</div>
+                <div class="mig__now">removed. The buffer is now internal to the parser, and 4.x no longer prescribes a node shape</div>
             </div>
         </div>
 
@@ -65,31 +66,32 @@
                 <span class="fact__tag">requires</span>
                 <h3>PHP 8.4</h3>
                 <p>
-                    The API is built on features that only exist there, which is also what
-                    made the lookahead tables and the code generation practical.
+                    The API is built on language features that only exist from 8.4 onwards,
+                    and those same features are what made the lookahead tables and the code
+                    generation practical.
                 </p>
             </div>
             <div class="fact">
                 <span class="fact__tag">back</span>
                 <h3>Code generation</h3>
                 <p>
-                    A generated parser is a real class again — the lexer, the token
+                    A generated parser is an ordinary class again, with the lexer, the token
                     constants and the reducers as methods. Commit it and the compiler stays
-                    a dev dependency.
+                    a development dependency.
                 </p>
             </div>
             <div class="fact">
                 <span class="fact__tag">safer</span>
                 <h3>Nothing is kept on the parser</h3>
                 <p>
-                    No execution context between calls, so one parser is safe to share and
-                    to call from several places at once.
+                    No state is carried between calls, so a single parser instance is safe
+                    to share and to call from several places at once.
                 </p>
             </div>
         </div>
 
         <p class="note rise" style="margin-top: 20px;">
-            <span>grammar files carry over · the constructors do not</span>
+            <span>grammar files carry over · constructors do not</span>
             <a class="more" href="{{ path('docs.show', {path: docs('upgrade')}) }}">upgrade guide</a>
         </p>
     </div>

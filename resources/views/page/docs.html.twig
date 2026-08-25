@@ -14,7 +14,7 @@
     <main class="docs">
         <div class="hold docs__in">
             {# The sidebar is a dialog on narrow screens and a column on wide
-               ones; one element, two behaviours, so the markup stays single. #}
+               ones: one element with two behaviours, so the markup stays single. #}
             <aside class="docs__side" id="docs-side">
                 <div class="docs__side-in">
                     {% include "components/search.html.twig" %}
@@ -28,8 +28,8 @@
                 {% else %}
                     <h1>Page not found</h1>
                     <p>
-                        This page has moved or never existed. The chapters on the left are
-                        the whole of the documentation — or start from
+                        This page has either moved or never existed. The chapters on the left
+                        are the whole documentation, or you can start from
                         <a href="{{ path('docs.show', {path: docs('introduction')}) }}">the introduction</a>.
                     </p>
                 {% endif %}

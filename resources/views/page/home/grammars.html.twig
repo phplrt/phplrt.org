@@ -1,5 +1,5 @@
-{# The chapter shows template syntax, so it holds literal "{{ … }}" and is
-   passed through untouched — up to the closing note, which links out. #}
+{# The chapter shows template syntax, so it contains literal "{{ … }}" and is
+   passed through untouched, up to the closing note, which links out. #}
 {# ==========================================================================
      03 · Grammars
      ====================================================================== #}
@@ -8,10 +8,10 @@
     <div class="hold">
         <div class="head rise">
             <span class="chapter">03 · grammars</span>
-            <h2 class="title">Three languages, none of them long</h2>
+            <h2 class="title">Three example grammars</h2>
             <p class="lede">
-                A grammar is normally shorter than the code you would write to read the
-                same thing by hand — and unlike that code, it can be drawn.
+                A grammar is usually shorter than the code you would write to read the same
+                format by hand, and unlike that code it can be drawn as a diagram.
             </p>
         </div>
 
@@ -53,7 +53,7 @@
 
                     <div class="stack">
                         <div class="panel">
-                            <div class="panel__bar"><b>Value</b><span class="push">an alternation, drawn</span></div>
+                            <div class="panel__bar"><b>Value</b><span class="push">the alternation as a diagram</span></div>
                             <div class="rr">
                                 <!--
                                   Grid (620 × 250). Three branches from the fork at
@@ -125,7 +125,7 @@ tags    <span class="c-op">=</span> [<span class="c-str">"php"</span>, <span cla
 <span class="c-dir">%pragma</span> root <span class="c-rule">Query</span>
 
 <span class="c-cm">// "or" binds looser, so it is read first and
-// written in terms of "and" — precedence is nesting</span>
+// written in terms of "and": precedence is nesting</span>
 <span class="c-rule">Query</span> <span class="c-op">-&gt;</span> { <span class="c-kw">return</span> <span class="c-cls">Any</span><span class="c-op">::</span><span class="c-fn">of</span>(<span class="c-var">$children</span>); }
   <span class="c-op">:</span> <span class="c-rule">All</span>() (<span class="c-cap">::T_OR::</span> <span class="c-rule">All</span>())<span class="c-op">*</span>
   <span class="c-op">;</span>
@@ -157,19 +157,19 @@ stock &gt; 0 or (rating &gt;= 4 and reviews &gt; 10)</pre>
                             <span class="fact__tag">note</span>
                             <h3>The operators are never declared</h3>
                             <p>
-                                <code>"&lt;="</code>, <code>"("</code> and friends declare their tokens
-                                where they are read, and an inline token is always discarded — five
-                                <code>%token</code> lines saved, none of which needed a name.
+                                <code>"&lt;="</code>, <code>"("</code> and the rest declare their tokens
+                                right where they are used, and an inline token is always discarded.
+                                That saves five <code>%token</code> lines, none of which needed a name.
                             </p>
                         </div>
 
                         <div class="fact fact--flat">
                             <span class="fact__tag">why not a regex</span>
-                            <h3>Because of the brackets</h3>
+                            <h3>Regular expressions cannot nest</h3>
                             <p>
-                                The moment a language nests, a regular expression stops being able
-                                to describe it — and the hand-written reader that replaces it is
-                                exactly the code this grammar is instead of.
+                                As soon as a format allows brackets inside brackets, a regular
+                                expression can no longer describe it. You end up writing the reader by
+                                hand instead, and that is exactly the code this grammar replaces.
                             </p>
                         </div>
                     </div>
@@ -180,7 +180,7 @@ stock &gt; 0 or (rating &gt;= 4 and reviews &gt; 10)</pre>
             <div data-view="tmpl" hidden>
                 <div class="duo duo--lead">
                     <div class="panel panel--night">
-                        <div class="panel__bar"><b>template.pp3</b><span class="push">one lexer per lexical world</span></div>
+                        <div class="panel__bar"><b>template.pp3</b><span class="push">one lexer per state</span></div>
                         <pre class="code code--fill"><span class="c-cm">// inside {{ … }} the rules are different, so the
 // opening token hands the reading to another lexer</span>
 
@@ -192,10 +192,10 @@ stock &gt; 0 or (rating &gt;= 4 and reviews &gt; 10)</pre>
 <span class="c-dir">%token</span> <span class="c-cap">code:</span><span class="c-tok">T_DOT</span>    <span class="c-re">\.</span>
 <span class="c-dir">%token</span> <span class="c-cap">code:</span><span class="c-tok">T_CLOSE</span>  <span class="c-re">\}\}</span>  <span class="c-op">-&gt;</span> <span class="c-fn">exit</span>()
 
-<span class="c-cm">// kept out of the grammar, but not thrown away</span>
+<span class="c-cm">// hidden from the parser, but still in the stream</span>
 <span class="c-dir">%token</span> <span class="c-tok">T_DOC</span>  <span class="c-re">/\*\*.*?\*/</span>  <span class="c-op">-&gt;</span> <span class="c-fn">channel</span>(docblocks)
 
-<span class="c-cm">// and when no regex will do — write the lexer</span>
+<span class="c-cm">// and when no regex will do, plug in your own</span>
 <span class="c-dir">%token</span> <span class="c-tok">T_PHP</span>  <span class="c-re">&lt;\?php</span>  <span class="c-op">-&gt;</span> <span class="c-fn">state</span>(php)
 <span class="c-dir">%lexer</span> php <span class="c-op">-&gt;</span> { <span class="c-kw">new</span> <span class="c-cls">\App\Lexer\PhpTokenLexer</span>() }
 
@@ -230,19 +230,20 @@ stock &gt; 0 or (rating &gt;= 4 and reviews &gt; 10)</pre>
                             <span class="fact__tag">nesting</span>
                             <h3>The outer stream stays flat</h3>
                             <p>
-                                Everything the inner lexer read is carried by the token that entered
-                                it: <code>$token-&gt;children</code> is the inner stream and
-                                <code>$token-&gt;size</code> covers all of it. The grammar only ever
-                                names <code>&lt;T_OPEN&gt;</code>.
+                                Everything the inner lexer read is carried by the token that opened
+                                it: <code>$token-&gt;children</code> holds the inner stream, and
+                                <code>$token-&gt;size</code> covers all of it. The outer grammar only
+                                ever mentions <code>&lt;T_OPEN&gt;</code>.
                             </p>
                         </div>
 
                         <div class="fact fact--flat">
                             <span class="fact__tag">channels</span>
-                            <h3>Docblocks are still there</h3>
+                            <h3>Docblocks are hidden, not lost</h3>
                             <p>
-                                <code>channel(docblocks)</code> hides a token from the parser and
-                                leaves it in the stream — your doc generator reads the same pass.
+                                <code>channel(docblocks)</code> hides a token from the parser but
+                                keeps it in the stream, so a documentation generator can work off
+                                the same single pass.
                             </p>
                         </div>
                     </div>
@@ -252,7 +253,7 @@ stock &gt; 0 or (rating &gt;= 4 and reviews &gt; 10)</pre>
 {% endverbatim %}
 
         <p class="note rise" style="margin-top: 20px;">
-            <span>the docs ship complete grammars: math, calculator, json, json5, phpdoc types, go! aop pointcuts</span>
+            <span>the documentation contains complete grammars: math, calculator, json, json5, phpdoc types and go! aop pointcuts</span>
             <a class="more" href="{{ path('docs.show', {path: docs('json')}) }}">browse</a>
         </p>
     </div>

@@ -1,11 +1,11 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Read anything that has rules in it{% endblock %}
+{% block title %}Lexer, PEG parser and grammar compiler for PHP{% endblock %}
 
 {% block content %}
-    {# The scroll target for "00 · start". It cannot live on the masthead:
-       that is position:sticky, so it is always already inside the viewport
-       and jumping to it scrolls nowhere. #}
+    {# The scroll target for "00 · start". It cannot live on the masthead,
+       because that is position:sticky and so is always inside the viewport
+       already, which means jumping to it would scroll nowhere. #}
     <div id="top"></div>
 
     {% include "partials/rail.html.twig" %}

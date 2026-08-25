@@ -3,9 +3,9 @@
      The two charts and the tables under them are measured, from
      github.com/phplrt/benchmarks — absolute values, in ms and mb.
 
-     The "how much work do you need?" panel is deliberately NOT absolute: it
-     is three percentages of a full parse, and its caveat box says so. If you
-     ever put microseconds back in there, put the caveat back too.
+     The "how much work do you need?" panel is deliberately NOT absolute. It
+     shows three percentages of a full parse, and its caveat box says so. If
+     microseconds ever go back in there, the caveat has to go back too.
      ====================================================================== #}
 <section class="band band--sunk" id="speed">
     <div class="hold">
@@ -13,11 +13,11 @@
             <span class="chapter">05 · speed</span>
             <h2 class="title">Ten times the input, ten times the time</h2>
             <p class="lede">
-                Under a kilobyte every one of these reads a type expression in about a
-                millisecond and the difference between them is noise. It is the hundredth
-                kilobyte that separates them: phplrt costs ×8.8 for every ×10 of input,
-                which is as close to linear as reading gets.
-                <code>phpstan/phpdoc-parser</code> costs ×78 — and at a quarter of a
+                On inputs under a kilobyte every parser here reads a type expression in
+                about a millisecond, and the differences between them are noise. The gap
+                opens up on larger inputs: phplrt takes ×8.8 longer for every ×10 more
+                input, which is about as close to linear as parsing gets, while
+                <code>phpstan/phpdoc-parser</code> takes ×78 longer. On a quarter of a
                 megabyte that is 24 seconds against 194 ms.
             </p>
         </div>
@@ -50,7 +50,7 @@
             <div class="panel__bar">
                 <b>time against input size</b>
                 <span>phpdoc type expressions, 25 B → 250 KB</span>
-                <span class="push">both axes <b>logarithmic</b> — a straight line is linear growth</span>
+                <span class="push">both axes <b>logarithmic</b> · a straight line means linear growth</span>
             </div>
 
             {#
@@ -184,7 +184,7 @@
                 <span data-s="phpstan"><i></i>phpstan/phpdoc-parser</span>
                 <span data-s="psalm"><i></i>vimeo/psalm</span>
                 <span data-s="hoa"><i></i>hoa/compiler</span>
-                <span class="is-guide"><i></i>×10 per ×10 — linear</span>
+                <span class="is-guide"><i></i>×10 per ×10 · linear</span>
             </div>
 
             <div class="panel__bar panel__bar--foot">
@@ -242,12 +242,12 @@
             </div>
             <div class="panel__bar panel__bar--foot">
                 <b>read it this way</b>
-                <span class="push">the last column is the 100 KB cell over the 10 KB cell — ×10 is linear, and only phpstan and psalm are far from it</span>
+                <span class="push">the last column divides the 100 KB cell by the 10 KB cell · ×10 means linear growth, and only phpstan and psalm are far from it</span>
             </div>
         </div>
 
-        {# Memory, same five inputs, same axis, same colours. A reader who
-             learned which line is psalm above must not have to learn it twice. #}
+        {# Memory, same five inputs, same axis, same colours. A reader who has
+             worked out which line is psalm above should not have to do it twice. #}
         <div class="panel rise" style="margin-top: 22px;">
             <div class="panel__bar">
                 <b>peak memory against input size</b>
@@ -410,32 +410,32 @@
             </div>
             <div class="panel__bar panel__bar--foot">
                 <b>read it this way</b>
-                <span class="push">below a kilobyte you are looking at the runtime's own footprint, not the parse · rstdev across every run above ±0.52…3.32%</span>
+                <span class="push">below a kilobyte this is the runtime's own footprint rather than the parse · rstdev across every run above: ±0.52…3.32%</span>
             </div>
         </div>
 
         <div class="duo duo--lead rise" style="margin-top: 22px;">
             <div class="panel">
                 <div class="panel__bar"><b>how much work do you need?</b><span class="push">4.x · share of a full parse</span></div>
-                {# Percentages, not microseconds: only one of these three
-                     saves anything, and how much it saves is the whole point.
-                     parse() and analyze() run the same lex → recognize →
-                     reduce on a source the grammar reads in full; the mode is
-                     what drops the reducers. Each number is the bar beside it,
-                     so the two cannot drift apart. #}
+                {# Percentages rather than microseconds. Only one of these three
+                     modes saves anything, and how much it saves is the point.
+                     parse() and analyze() run the same lex → recognize → reduce
+                     on a source the grammar reads in full; it is the mode that
+                     drops the reducers. Each number is the bar beside it, so the
+                     two cannot drift apart. #}
                 <div class="rows">
                     <div class="rows__row is-self">
-                        <div class="rows__name">Syntax Check<em>valid? and how far — no reducers run</em></div>
+                        <div class="rows__name">Syntax Check<em>is it valid, and how far does it get? no reducers run</em></div>
                         <span class="meter"><i data-fill="54"></i></span>
                         <div class="rows__num">54%</div>
                     </div>
                     <div class="rows__row is-self">
-                        <div class="rows__name">Tolerant Mode<em>the same work, reported instead of thrown</em></div>
+                        <div class="rows__name">Tolerant Mode<em>the same work, but problems are reported instead of thrown</em></div>
                         <span class="meter"><i data-fill="99"></i></span>
                         <div class="rows__num">99%</div>
                     </div>
                     <div class="rows__row">
-                        <div class="rows__name">Parse<em> builds everything, throws on a mistake</em></div>
+                        <div class="rows__name">Parse<em>builds the full result, throws on a mistake</em></div>
                         <span class="meter"><i data-fill="100"></i></span>
                         <div class="rows__num">100%</div>
                     </div>
@@ -445,10 +445,10 @@
             <div class="caveat">
                 <b>⚠</b>
                 <div>
-                    <b>Relative, not absolute.</b> These figures are not real-world
-                    performance in absolute units — only the order and the relative
-                    difference between the modes. They tell you which mode is faster and
-                    which is slower, not the exact numbers any of them will cost you.
+                    <b>These numbers are relative.</b> They are not absolute performance
+                    figures; they only show how the three modes compare with each other.
+                    Use them to see which mode is cheaper and which is more expensive, not
+                    to predict what any of them will cost in your own application.
                 </div>
             </div>
         </div>
@@ -457,19 +457,19 @@
             <div class="figure">
                 <b>1</b>
                 <span>regex per lexer state</span>
-                <em>alternatives marked with <code>(*MARK:n)</code>, one pass over the input</em>
+                <em>the alternatives are marked with <code>(*MARK:n)</code>, so the input is scanned once</em>
             </div>
             <div class="figure">
                 <b>9</b>
-                <span>loosely coupled packages</span>
-                <em>three components and the six interface packages they are written
-                    against — take the lexer without the parser, or the contracts on their
-                    own. Nothing outside phplrt</em>
+                <span>packages in the runtime</span>
+                <em>the lexer, the parser and the source reader, plus the six contract
+                    packages they are written against. Take the lexer without the parser,
+                    or the contracts on their own. Nothing outside phplrt is required</em>
             </div>
             <div class="figure">
                 <b>1×</b>
                 <span>grammar compilation, ever</span>
-                <em>compile once, commit the PHP, stop paying for it per request</em>
+                <em>compile the grammar once, commit the generated PHP, and stop paying for it on every request</em>
             </div>
         </div>
     </div>

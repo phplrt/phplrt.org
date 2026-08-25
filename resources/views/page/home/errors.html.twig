@@ -1,8 +1,8 @@
 {# ==========================================================================
-     04 · Errors — the dark band
+     04 · Errors (the dark band)
      ====================================================================== #}
 <section class="band band--night" id="errors" data-night>
-    {# White pours into the dark #}
+    {# Transition from the white band into the dark one #}
     <div class="wave wave--in" aria-hidden="true">
         <svg viewBox="0 0 1920 110" preserveAspectRatio="none">
             <path fill="#e8edf4" d="M0,0H1920V52C1540,120,1160,4,740,58C460,92,230,76,0,50Z"/>
@@ -13,11 +13,11 @@
     <div class="hold">
         <div class="head head--mid rise">
             <span class="chapter">04 · errors</span>
-            <h2 class="title">Every stage points at the character it broke on</h2>
+            <h2 class="title">Every error points at the character that caused it</h2>
             <p class="lede">
-                “Syntax error at offset 137” is technically correct and practically
-                useless. Four things can go wrong while reading a source — all four
-                print the same way.
+                "Syntax error at offset 137" is correct and useless at the same time.
+                Four different things can go wrong while a source is being read, and all
+                four of them are printed the same way.
             </p>
         </div>
 
@@ -32,13 +32,13 @@
                 <button class="stage" type="button" role="tab" aria-selected="false" data-view-key="lexer">
                     <span class="stage__in">
                         <span class="stage__no">02</span>
-                        <span><strong>The lexer</strong><span>a character that is not a word of the language</span></span>
+                        <span><strong>The lexer</strong><span>a character that belongs to no token</span></span>
                     </span>
                 </button>
                 <button class="stage" type="button" role="tab" aria-selected="false" data-view-key="yours">
                     <span class="stage__in">
                         <span class="stage__no">03</span>
-                        <span><strong>Your own stage</strong><span>names, types, anything after parsing</span></span>
+                        <span><strong>Your own code</strong><span>names, types, anything checked after parsing</span></span>
                     </span>
                 </button>
                 <button class="stage" type="button" role="tab" aria-selected="false" data-view-key="soft">
@@ -52,9 +52,9 @@
                     <span class="fact__tag">the one thing to do</span>
                     <h3>Name your sources</h3>
                     <p>
-                        A bare <code>StringSource</code> can only show the snippet.
+                        A plain <code>StringSource</code> can only show the snippet itself.
                         <code>VirtualSource::createFromString('input.txt', $text)</code> costs
-                        nothing and lets every error above say <em>where</em>.
+                        nothing and lets every error above say <em>where</em> it came from.
                     </p>
                 </div>
             </div>
@@ -70,8 +70,8 @@
 <span class="d-bar">1 |</span> <span class="d-src">price &lt; 100 and brand in and ("acme")</span>
   <span class="d-bar">|</span>                          <span class="d-hit">^^^</span>
   <span class="d-bar">|</span>
-  <span class="d-dim">= the position reported is the furthest one any rule</span>
-  <span class="d-dim">  reached, not where the last attempt gave up</span>
+  <span class="d-dim">= the reported position is the furthest point any rule</span>
+  <span class="d-dim">  reached, not the place where the last attempt failed</span>
 </pre>
                     </div>
 
@@ -86,8 +86,8 @@
         <span class="c-var">$input</span>,
     ));
 } <span class="c-kw">catch</span> (<span class="c-cls">UnexpectedTokenException</span> <span class="c-var">$e</span>) {
-    <span class="c-kw">echo</span> <span class="c-var">$e</span><span class="c-op">-&gt;</span><span class="c-fn">getMessage</span>();  <span class="c-cm">// the sentence</span>
-    <span class="c-kw">echo</span> <span class="c-var">$e</span>;                <span class="c-cm">// …and the block above</span>
+    <span class="c-kw">echo</span> <span class="c-var">$e</span><span class="c-op">-&gt;</span><span class="c-fn">getMessage</span>();  <span class="c-cm">// just the message</span>
+    <span class="c-kw">echo</span> <span class="c-var">$e</span>;                <span class="c-cm">// the whole block above</span>
 
     <span class="c-var">$e</span><span class="c-op">-&gt;</span>token<span class="c-op">-&gt;</span>name;    <span class="c-cm">// T_AND</span>
     <span class="c-var">$e</span><span class="c-op">-&gt;</span>token<span class="c-op">-&gt;</span>offset;  <span class="c-cm">// 23</span>
@@ -105,9 +105,9 @@
 <span class="d-bar">1 |</span> <span class="d-src">price &lt; 100 § and stock &gt; 0</span>
   <span class="d-bar">|</span>             <span class="d-hit-warn">^</span>
   <span class="d-bar">|</span>
-  <span class="d-dim">= the lexer never stops on strange input: "§" arrives</span>
-  <span class="d-dim">  on the Unknown channel, so one pass reports a whole</span>
-  <span class="d-dim">  file instead of its first problem</span>
+  <span class="d-dim">= the lexer does not stop on unknown input. "§" arrives</span>
+  <span class="d-dim">  on the Unknown channel, so a single pass can report a</span>
+  <span class="d-dim">  whole file instead of only its first problem</span>
 </pre>
                     </div>
 
@@ -173,13 +173,13 @@
                 <div data-view="soft" hidden>
                     <div class="console">
                         <div class="console__bar">php analyze.php</div>
-<pre class="console__out"><span class="d-dim">// "price &lt; 100 and" — someone is still typing</span>
+<pre class="console__out"><span class="d-dim">// "price &lt; 100 and" - someone is still typing</span>
 
 <span class="d-ok">PartialResult</span>  <span class="d-src">read a fragment and stopped</span>
   <span class="d-bar">|</span> <span class="d-msg">value</span>  <span class="d-src">Every(Cond(price, &lt;, 100))</span>
   <span class="d-bar">|</span> <span class="d-msg">token</span>  <span class="d-src">"and" at offset 12</span>
 
-<span class="d-note">error</span> <span class="d-dim">— the exception parse() would have thrown</span>
+<span class="d-note">error</span> <span class="d-dim">- the exception parse() would have thrown</span>
  <span class="d-bar">--&gt;</span> <span class="d-file">filter.txt:1:13</span>
   <span class="d-bar">|</span>
 <span class="d-bar">1 |</span> <span class="d-src">price &lt; 100 and</span>
@@ -188,7 +188,7 @@
                     </div>
 
                     <div class="panel panel--night" style="margin-top: 20px;">
-                        <div class="panel__bar"><b>analyze.php</b><span class="push">nothing about a source makes it throw</span></div>
+                        <div class="panel__bar"><b>analyze.php</b><span class="push">reports problems instead of throwing</span></div>
                         <pre class="code code--sm"><span class="c-kw">use</span> <span class="c-cls">Phplrt\Parser\Analysis\Mode</span>;
 <span class="c-kw">use</span> <span class="c-cls">Phplrt\Parser\Analysis\Result\PartialResult</span>;
 <span class="c-kw">use</span> <span class="c-cls">Phplrt\Parser\Analysis\Result\SuccessfulResult</span>;
@@ -201,11 +201,11 @@
 <span class="c-cm">// a source read in full has nothing more to say</span>
 <span class="c-kw">if</span> (<span class="c-var">$result</span> <span class="c-kw">instanceof</span> <span class="c-cls">PartialResult</span>) {
     <span class="c-var">$result</span><span class="c-op">-&gt;</span>token<span class="c-op">-&gt;</span>offset;  <span class="c-cm">// where it stopped</span>
-    <span class="c-var">$result</span><span class="c-op">-&gt;</span>error;           <span class="c-cm">// and what stood in the way</span>
+    <span class="c-var">$result</span><span class="c-op">-&gt;</span>error;           <span class="c-cm">// what stood in the way</span>
 }
 
-<span class="c-cm">// greedy rules tell "not finished" from "written wrong" —
-// which is exactly what a search box needs</span>
+<span class="c-cm">// greedy rules separate "not finished yet" from
+// "written wrong", which is what a search box needs</span>
 <span class="c-var">$check</span> <span class="c-op">=</span> <span class="c-var">$parser</span><span class="c-op">-&gt;</span><span class="c-fn">analyze</span>(<span class="c-var">$typed</span>, <span class="c-cls">Mode</span><span class="c-op">::</span>SyntaxCheck);
 
 <span class="c-kw">if</span> (<span class="c-var">$check</span> <span class="c-kw">instanceof</span> <span class="c-cls">SuccessfulResult</span>
@@ -224,39 +224,40 @@
                 <span class="fact__tag">levels</span>
                 <h3>Error · Warning · Debug</h3>
                 <p>
-                    One renderer, three levels, colours that follow the output stream.
-                    <code>withLinesAround(0)</code> when a linter has forty of them.
+                    One renderer with three levels, and colours that adapt to the output
+                    stream. Use <code>withLinesAround(0)</code> when a linter has forty
+                    errors to print at once.
                 </p>
             </div>
             <div class="fact">
                 <span class="fact__tag">format</span>
                 <h3>Or a format of your own</h3>
                 <p>
-                    <code>PrinterInterface</code> takes the captured lines and returns a
-                    string: SARIF, LSP diagnostics, GitHub annotations, one line per error
-                    for a CI log.
+                    <code>PrinterInterface</code> receives the captured lines and returns a
+                    string, so you can output SARIF, LSP diagnostics, GitHub annotations, or
+                    a single line per error for a CI log.
                 </p>
             </div>
             <div class="fact">
                 <span class="fact__tag">contracts</span>
                 <h3>One interface per stage</h3>
                 <p>
-                    <code>SourceExceptionInterface</code>, <code>LexerExceptionInterface</code>,
-                    <code>ParserExceptionInterface</code> — catch as coarsely or as finely as
-                    the situation deserves.
+                    <code>SourceExceptionInterface</code>, <code>LexerExceptionInterface</code>
+                    and <code>ParserExceptionInterface</code>, so you can catch errors as
+                    broadly or as narrowly as you need.
                 </p>
             </div>
         </div>
 
-        {# The interfaces come with the runtime; the renderer does not. Saying
-             so here saves a "class not found" on the first try. #}
+        {# The interfaces come with the runtime, the renderer does not. Saying so
+             here saves a "class not found" on the first attempt. #}
         <p class="note rise" style="margin-top: 18px;">
             <span>the three interfaces ship with <code>phplrt/runtime</code> · the printer is <code>phplrt/exception</code>, installed separately</span>
             <a class="more" href="{{ path('docs.show', {path: docs('errors')}) }}">printing errors</a>
         </p>
     </div>
 
-    {# The transition worth keeping: dark → white wave → grey #}
+    {# Transition out of the dark band: dark → white wave → grey #}
     <div class="wave wave--out" aria-hidden="true">
         <svg viewBox="0 0 1920 170" preserveAspectRatio="none">
             <path fill="#ffffff" d="M0,170V66C400,0,900,130,1370,68C1650,32,1800,58,1920,78V170Z"/>

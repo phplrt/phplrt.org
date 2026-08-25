@@ -5,24 +5,24 @@
     <div class="hold">
         <div class="head rise">
             <span class="chapter">07 · install</span>
-            <h2 class="title">One half never reaches production</h2>
+            <h2 class="title">Half of phplrt never reaches production</h2>
             <p class="lede">
-                The compiler reads <em>your grammar</em> and writes a parser — a
-                development job. The runtime reads <em>your users' text</em>. Keep them
-                apart and production carries very little.
+                The compiler reads <em>your grammar</em> and writes a parser, which is a
+                job for development time. The runtime reads <em>your users' text</em>. Keep
+                the two apart and production ends up carrying very little.
             </p>
         </div>
 
-        {# Both lanes are the same paper. The rule over the heading tells them
-             apart: dashed for the half that is thrown away, solid brand for the
-             half that ships. #}
+        {# Both lanes are the same paper. The rule above the heading tells them
+             apart: dashed for the half that is thrown away, solid brand colour
+             for the half that ships. #}
         <div class="lanes rise">
             <div class="lane">
                 <div class="lane__tag">while developing</div>
                 <h3>Describe and compile</h3>
                 <p>
-                    Read the grammar, generate the parser, commit the result. Re-run it when
-                    the grammar changes — which, at the start, is every five minutes.
+                    Read the grammar, generate the parser, commit the result. Run it again
+                    whenever the grammar changes, which at the beginning is often.
                 </p>
 
                 <div class="pkgs">
@@ -42,16 +42,16 @@
                 <div class="lane__tag">what ships</div>
                 <h3>Read and report</h3>
                 <p>
-                    The generated parser is plain PHP referring to the runtime — no grammar
-                    file, no compilation, nothing to warm up.
+                    The generated parser is plain PHP that refers only to the runtime. No
+                    grammar file, no compilation step, nothing to warm up.
                 </p>
 
                 <div class="pkgs">
-                    <div class="pkg"><code>phplrt/source</code><span>files, strings, streams — with names</span></div>
+                    <div class="pkg"><code>phplrt/source</code><span>files, strings and streams, each with a name</span></div>
                     <div class="pkg"><code>phplrt/lexer</code><span>text into tokens</span></div>
                     <div class="pkg"><code>phplrt/parser</code><span>tokens into your result</span></div>
-                    <div class="pkg"><code>· 6 contracts</code><span>the lexer, parser and source interfaces the three are written against — the source ones come in two packages</span></div>
-                    <div class="pkg pkg--extra"><code>phplrt/exception</code><span>offsets into snippets — a separate package, add it if you print errors</span></div>
+                    <div class="pkg"><code>· 6 contracts</code><span>the lexer, parser and source interfaces the three packages are written against; the source ones are split across two packages</span></div>
+                    <div class="pkg pkg--extra"><code>phplrt/exception</code><span>turns offsets into snippets; a separate package, add it if you print errors</span></div>
                 </div>
 
                 <pre class="code code--paper code--sm"><span class="c-op">$</span> composer require <span class="c-str">phplrt/runtime</span></pre>
