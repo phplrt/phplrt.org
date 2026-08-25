@@ -1,0 +1,13 @@
+# Everything on this site is public documentation, so everything may be crawled.
+User-agent: *
+Allow: /
+
+# The search endpoint answers the sidebar's queries with JSON.
+Disallow: /api/
+
+# Symfony's development toolbar. Never deployed, listed so that a stray
+# request cannot end up in an index either.
+Disallow: /_profiler/
+Disallow: /_wdt/
+
+Sitemap: https://phplrt.org/sitemap.xml
