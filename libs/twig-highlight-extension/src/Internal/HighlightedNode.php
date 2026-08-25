@@ -74,13 +74,15 @@ final class HighlightedNode extends Node
 
         // The highlighter falls back to a default language when the requested
         // one is not registered, so the actually applied name is read back.
-        $applied = $hl->getCurrentLanguage()?->getName() ?? $lang;
+        $applied = $hl->getCurrentLanguage()
+            ?->getName() ?? $lang;
 
         // No marker for "this block is numbered": the gutter spans are the
         // marker, and the markdown path produces no <code> wrapper to carry
         // one anyway — the two must be styleable by the same rule.
-        return '<code data-language="' . \htmlspecialchars($applied, \ENT_QUOTES) . '">' .
-            \trim($highlighted) .
-        '</code>';
+        return \vsprintf('<code data-language="%s">%s</code>', [
+            \htmlspecialchars($applied, \ENT_QUOTES),
+            \trim($highlighted),
+        ]);
     }
 }

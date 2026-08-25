@@ -25,7 +25,7 @@ final readonly class TokenDefinitionNamePattern implements Pattern
     #[Override]
     public function getPattern(): string
     {
-        return '/^\h*+%(?:token|skip)\h++(?<match>(?:(?:[a-zA-Z_]\w*+|\*):)?[a-zA-Z_]\w*+)/m';
+        return '/^\h*+%(?:token|skip|fragment)\h++(?<match>(?:(?:[a-zA-Z_]\w*+|\*):)?[a-zA-Z_]\w*+)/m';
     }
 
     #[Override]

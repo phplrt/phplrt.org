@@ -6,7 +6,6 @@ namespace App\Infrastructure\Highlight\Grammar;
 
 use App\Infrastructure\Highlight\Grammar\Patterns\InlineRegexPattern;
 use App\Infrastructure\Highlight\Grammar\Patterns\LexerNamePattern;
-use Override;
 
 /**
  * The grammar format phplrt v4 reads.
@@ -18,19 +17,19 @@ use Override;
  */
 final class Pp3Language extends GrammarLanguage
 {
-    #[Override]
+    #[\Override]
     public function getName(): string
     {
         return 'pp3';
     }
 
-    #[Override]
+    #[\Override]
     protected function getDirectives(): array
     {
-        return ['pragma', 'include', 'token', 'skip', 'lexer'];
+        return ['pragma', 'include', 'token', 'skip', 'lexer', 'fragment'];
     }
 
-    #[Override]
+    #[\Override]
     public function getPatterns(): array
     {
         return [
