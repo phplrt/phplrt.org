@@ -1,0 +1,69 @@
+# phplrt
+
+> phplrt (PHP Language Recognition Tool) is a set of PHP libraries for reading source code: a lexer, a PEG parser, a grammar compiler and an error printer. You describe a format once in a grammar file, and phplrt turns that description into a lexer that cuts the text into tokens and a parser that checks their order and builds whatever result you asked for.
+
+Requires PHP 8.4 or above. Published under the MIT licence.
+
+The library is split in half. The compiler reads `.pp3` grammar files and writes
+a parser as plain PHP, which is a job for development time. The runtime, meaning
+the lexer, the parser and the source reader, is the only half that ships to
+production.
+
+The whole documentation is also available as one file: https://phplrt.org/llms-full.txt
+
+## Prologue
+
+- [Upgrade Guide](https://phplrt.org/docs/upgrade): Version 4.0 is a rewrite, so this is a porting guide rather than a list of renames.
+- [Contribution Guide](https://phplrt.org/docs/contributions): To encourage active collaboration, we strongly encourages pull requests, not just bug reports.
+
+## Getting Started
+
+- [Introduction](https://phplrt.org/docs/guide/introduction): Phplrt (PHP Language Recognition Tool) is a set of libraries for reading source code: your own configuration format, a template language, a query syntax, a subset of PHP - anything with rules.
+- [Installation](https://phplrt.org/docs/guide/installation): Phplrt is installed with composer.
+- [Quick Start](https://phplrt.org/docs/guide/quick-start): Let's build a parser for a small configuration format from scratch: text in, a tree of objects out.
+
+## The Basics
+
+- [PP3 Grammar](https://phplrt.org/docs/basics/grammar): A grammar file describes a language: the words it is made of, and the order they may appear in.
+- [Tokens & Channels](https://phplrt.org/docs/basics/tokens): A token is the smallest thing a lexer produces.
+- [PHP Injections](https://phplrt.org/docs/basics/grammar-php): A grammar on its own only answers "is this valid?".
+- [Results and Reducers](https://phplrt.org/docs/basics/reducers): A parser does two things: it decides whether the input is valid, and it builds something out of it.
+- [Compiling a Grammar](https://phplrt.org/docs/basics/compiler): The compiler reads a grammar file - the tokens, the rules, the reducers - and gives you back a working parser.
+- [Code Generation](https://phplrt.org/docs/basics/generation): Reading a grammar file takes time.
+- [Command Line](https://phplrt.org/docs/basics/cli): A grammar is edited far more often than the code around it, and two things get done over and over while editing: making sure the grammar still holds together, and writing the parser out again.
+- [Error Reporting](https://phplrt.org/docs/basics/errors): An error that says "syntax error at offset 137" is technically correct and practically useless.
+- [Best Practices](https://phplrt.org/docs/basics/best-practice): What follows is a list of decisions that make a parser pleasant to work with and cheap to run: where your own code goes, how the grammar reaches it, and how much the runtime is willing to say about…
+
+## Digging Deeper
+
+- [Lexer](https://phplrt.org/docs/advanced/lexer): The lexer is the first half of reading source code: it turns a stream of characters into a stream of tokens. 23 + 42 becomes "a number, a plus, a number" - and the parser never has to look at a…
+- [Nested Lexers](https://phplrt.org/docs/advanced/embedding): Some fragments of a language are not written in that language.
+- [Parser](https://phplrt.org/docs/advanced/parser): The parser is the second half of reading source code.
+- [Grammar Rules](https://phplrt.org/docs/advanced/rules): A grammar is a flat array of rules.
+- [Building a Grammar](https://phplrt.org/docs/advanced/builder): Writing the rule array by hand works, but you have to keep track of indices yourself, and one inserted rule renumbers everything.
+- [Source](https://phplrt.org/docs/advanced/source): Everything phplrt reads - a grammar file, an expression typed by a user, a template - is wrapped in a source object.
+- [Position](https://phplrt.org/docs/advanced/position): An offset is what a parser works with: a number of bytes from the beginning of the source.
+- [Analysing an Error](https://phplrt.org/docs/advanced/analyzer): ErrorPrinter turns an exception into a picture.
+- [Reading a Snippet](https://phplrt.org/docs/advanced/snippet-reader): SnippetReader is what a renderer reads the source code with.
+- [Automation and CI](https://phplrt.org/docs/advanced/automation): Rebuilding the parser after a grammar change is the kind of step that works right up until the day somebody forgets.
+- [PP2 Grammar Syntax (Legacy)](https://phplrt.org/docs/advanced/legacy-grammar): This page describes the .pp2 format - the one phplrt 3.x read.
+
+## Contracts
+
+- [Lexer](https://phplrt.org/docs/contracts/lexer): This document describes a common interface for lexical analysis - turning a source into the tokens it consists of - together with the interfaces for the tokens themselves, for the channels those…
+- [Parser](https://phplrt.org/docs/contracts/parser): This document describes a common interface for syntax analysis - turning a source into whatever that source means - together with the interfaces for the errors raised along the way.
+- [Source](https://phplrt.org/docs/contracts/source): This document describes a common interface for reading source code - a file on disk, a string typed by a user, a stream - together with the interface for creating such a source out of an arbitrary…
+- [Position](https://phplrt.org/docs/contracts/position): This document describes a common interface for a human-readable location inside a source - a line and a column - together with the interface for converting between such a location and an offset in…
+
+## Examples
+
+- [Overview](https://phplrt.org/docs/examples): Nine complete grammars.
+- [JSON](https://phplrt.org/docs/examples/json): A JSON parser that produces plain PHP values - the result matches json_decode($input, true) exactly.
+- [Cron Expression](https://phplrt.org/docs/examples/cron): The five (or six) fields of a crontab line, the @daily shorthands and the extensions almost every scheduler ends up supporting
+- [Composer Constraints](https://phplrt.org/docs/examples/composer-constraints): The little language the require section of every composer.json is written in
+- [URL](https://phplrt.org/docs/examples/url): Every part of an address, in the order RFC 3986 writes them
+- [Graphviz DOT](https://phplrt.org/docs/examples/dot): The language dot, neato and every "render me a graph" tool read - nodes, edges and the attributes hung on both
+- [EBNF](https://phplrt.org/docs/examples/ebnf): A grammar for writing grammars: the notation half the specifications on your shelf are written in, read by a grammar of its own.
+- [Rule Engine](https://phplrt.org/docs/examples/rules): A rule language of the kind that ends up in the database of every application with permissions or discounts in it - a condition written by someone who is not going to deploy PHP to change it
+- [PhpDoc Types (psalm/phpstan)](https://phplrt.org/docs/examples/phpdoc-types): The type language of phpstan and psalm - the one hiding inside @param, @return and @var, which has quietly grown into a language with generics, shapes and conditionals
+- [Regular Expressions](https://phplrt.org/docs/examples/regex): A grammar that reads PCRE - the notation the %token lines of every other example here are written in

@@ -5,7 +5,12 @@ framework:
 
     # Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
     # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
-    #default_uri: http://localhost
+    #
+    # This is what "docs:update" builds the addresses inside "llms.txt" and
+    # "llms-full.txt" from: there is no request on the command line to take a
+    # hostname off. During a web request the router uses the request instead,
+    # so this only ever applies to the console.
+    default_uri: '%app.canonical_uri%'
 
 # when@prod:
 #   framework:
