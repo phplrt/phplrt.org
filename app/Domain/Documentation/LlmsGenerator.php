@@ -192,6 +192,11 @@ final readonly class LlmsGenerator
 
     /**
      * The address a menu entry is read at.
+     *
+     * A model is given the markdown the page was written in rather than the
+     * rendered page, so this points at "docs.show.md" and not at "docs.show":
+     * the html carries a menu, a header and a search box that say nothing
+     * about the subject.
      */
     private function getPageUrl(Page $page): string
     {
@@ -201,9 +206,9 @@ final readonly class LlmsGenerator
             return $page->getUrl();
         }
 
-        return $this->routes->generate('docs.show', [
+        return '/' . $this->routes->generate('docs.show.md', [
             'path' => $page->getUrl(),
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        ], UrlGeneratorInterface::RELATIVE_PATH);
     }
 
     /**
