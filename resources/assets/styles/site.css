@@ -384,6 +384,115 @@ a:hover { color: var(--brand); }
 .rail.on-night a.is-here::before { background: var(--brand); }
 
 /* ---------------------------------------------------------------------------
+ *  4½ · Notice — the announcement strip above the masthead
+ *
+ *  A poster for somebody else's event, so it wears that event's colours
+ *  (pyhnik.phpyh.ru: a deep navy ground and one bright green) rather than
+ *  ours. The four rules still hold: a flat ground, the accent as a solid
+ *  pill and as text, no gradient, no shadow. It is not sticky — it is news,
+ *  and the masthead below it takes over once it has scrolled off.
+ * ------------------------------------------------------------------------ */
+
+.notice {
+    --pyhnik: #000a2f;
+    --pyhnik-accent: #4bfb75;
+    --pyhnik-line: rgba(255, 255, 255, .12);
+
+    background: var(--pyhnik);
+    color: #fff;
+}
+
+.notice__in {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 48px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 14.5px;
+    line-height: 1.35;
+}
+
+/* The event's name, as a solid pill in the event's green. Navy ink on it —
+   the only combination of the two that is legible. */
+.notice__tag {
+    flex: none;
+    padding: 3px 12px;
+    border: var(--bd) solid var(--pyhnik-accent);
+    border-radius: var(--pill);
+    background: var(--pyhnik-accent);
+    color: var(--pyhnik);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    transition: background-color .18s var(--ease), color .18s var(--ease);
+}
+
+.notice__tag:hover { background: transparent; color: var(--pyhnik-accent); }
+
+.notice__text {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 14px;
+    margin: 0;
+    min-width: 0;
+}
+
+.notice__text b { color: #fff; font-weight: 800; }
+
+/* The dates are the one fact a reader takes away, so they get the accent
+   and the mono face — a stated number, like every other one on the page. */
+.notice__when {
+    color: var(--pyhnik-accent);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.notice__note { color: rgba(255, 255, 255, .64); }
+
+/* The call: an outlined pill on the dark ground, the same way .act behaves
+   on a night band, only smaller so the strip stays one line tall. */
+.notice__act {
+    flex: none;
+    margin-left: auto;
+    padding: 3px 14px;
+    border: var(--bd) solid var(--pyhnik-line);
+    border-radius: var(--pill);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 800;
+    white-space: nowrap;
+    transition: background-color .18s var(--ease), color .18s var(--ease),
+                border-color .18s var(--ease);
+}
+
+.notice__act::after { content: ' →'; }
+
+.notice__act:hover {
+    background: var(--pyhnik-accent);
+    border-color: var(--pyhnik-accent);
+    color: var(--pyhnik);
+}
+
+/* Narrow: the aside drops first. On a phone the strip becomes two rows —
+   the name and the call share the first, the title and the dates take the
+   second — so nothing is ever squeezed and the strip stays short. */
+@media (max-width: 720px) {
+    .notice__note { display: none; }
+}
+
+@media (max-width: 480px) {
+    .notice__in { flex-wrap: wrap; gap: 6px 12px; }
+    .notice__text { flex-basis: 100%; order: 3; }
+    .notice__act { order: 2; }
+}
+
+/* ---------------------------------------------------------------------------
  *  5 · Masthead
  * ------------------------------------------------------------------------ */
 

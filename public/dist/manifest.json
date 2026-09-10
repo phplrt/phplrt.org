@@ -1,6 +1,6 @@
 {
-  "dist/app.css": "/dist/app.4fa0cc7c.css",
-  "dist/app.js": "/dist/app.08456cfd.js",
-  "dist/runtime.js": "/dist/runtime.620a04ca.js",
-  "dist/649.f0f571b7.js": "/dist/649.f0f571b7.js"
+  "dist/app.css": "/dist/app.css",
+  "dist/app.js": "/dist/app.js",
+  "dist/runtime.js": "/dist/runtime.js",
+  "dist/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-ef9a92.js": "/dist/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-ef9a92.js"
 }

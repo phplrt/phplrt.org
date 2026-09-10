@@ -159,7 +159,10 @@
             }
 
             if (head) {
-                head.classList.toggle('is-off', window.scrollY > 8);
+                // The masthead is sticky, but an announcement strip may sit above it —
+                // so the line appears once the masthead itself has hit the top, not
+                // once the page has moved at all.
+                head.classList.toggle('is-off', head.getBoundingClientRect().top <= 0 && window.scrollY > 8);
             }
 
             ticking = false;
