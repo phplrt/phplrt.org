@@ -2,13 +2,19 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/dist/runtime.js",
-        "/dist/vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-ef9a92.js",
-        "/dist/app.js"
+        "/dist/runtime.620a04ca.js",
+        "/dist/649.f0f571b7.js",
+        "/dist/app.e3eb1b6a.js"
       ],
       "css": [
-        "/dist/app.css"
+        "/dist/app.c9b9aef7.css"
       ]
     }
+  },
+  "integrity": {
+    "/dist/runtime.620a04ca.js": "sha384-8SUbaqZcoWTF6OTY2ldWfYkqJCrTWMo5tJ6r5e+ly/swAAQUsEbZj98Omh5sMDvB",
+    "/dist/649.f0f571b7.js": "sha384-M+WmL7Hgc+pqXq6Q855JhPM3dBf6PpkAKSDdqwQhhe6CgmNbeXIyLzbmj1zkcg6I",
+    "/dist/app.e3eb1b6a.js": "sha384-5tLTbyo24Vl9rblXCPuSiHq29r4fpmK8DDAia1BHUyL7Sa2tw9PaTNBe+QeJzrV3",
+    "/dist/app.c9b9aef7.css": "sha384-QLkCeuGKRn97aw7IJBPtrfvRq1tv/GejE6g81txbBQVCeF17xIdbwAsUk6HxgYba"
   }
 }
