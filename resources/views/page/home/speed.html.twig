@@ -1,7 +1,7 @@
 {# ==========================================================================
      05 · Speed
      The two charts and the tables under them are measured, from
-     github.com/phplrt/benchmarks — absolute values, in ms and mb.
+     github.com/phplrt/benchmarks — absolute values, in µs, ms and kb.
 
      The "how much work do you need?" panel is deliberately NOT absolute. It
      shows three percentages of a full parse, and its caveat box says so. If
@@ -13,12 +13,13 @@
             <span class="chapter">05 · speed</span>
             <h2 class="title">Ten times the input, ten times the time</h2>
             <p class="lede">
-                On inputs under a kilobyte every parser here reads a type expression in
-                about a millisecond, and the differences between them are noise. The gap
-                opens up on larger inputs: phplrt takes ×8.8 longer for every ×10 more
-                input, which is about as close to linear as parsing gets, while
-                <code>phpstan/phpdoc-parser</code> takes ×78 longer. On a quarter of a
-                megabyte that is 24 seconds against 194 ms.
+                On a single short type every parser here takes microseconds, and on the
+                shortest of them the hand-written ones win: <code>phpstan/phpdoc-parser</code>
+                reads <code>string|int</code> in 4.9 µs, phplrt in 11. From a kilobyte on
+                phplrt is the fastest of the five, and the gap keeps opening: phplrt takes
+                ×9.6 longer for every ×10 more input, which is about as close to linear as
+                parsing gets, while <code>phpstan/phpdoc-parser</code> takes ×24 longer.
+                On 10 KB that is 5.1 ms against 14.7 ms.
             </p>
         </div>
 
@@ -27,21 +28,22 @@
 
           Grid (1000 × 500). Plot box x 96…800, y 30…430.
 
-            x = 96 + (log10(KB) + 1.60206) × 176
-                25 B  = 96     250 B = 272    1 KB  = 378
-                10 KB = 554    100 KB = 730   250 KB = 800
+            x = 96 + (log10(bytes) − 1) × 233.87
+                10 B  = 96      64 B = 284.5    256 B = 425.3
+                1 KB  = 566.1   4 KB = 706.9    10 KB = 800
 
-          The 5 samples span exactly four decades (0.025 KB → 250 KB), so the
-          axis is a true log axis and the ticks land where the data does. The
-          last two sit closer together because 100 → 250 KB really is only ×2.5.
+          The 6 samples span three decades (10 B → 10 KB), so the axis is a
+          true log axis and the ticks land where the data does. 64 B → 4 KB
+          are evenly spaced because each is ×4 the one before; the last two
+          sit closer because 4 → 10 KB really is only ×2.5.
 
-          Time, five decades over 400px (0.5 ms … 50 000 ms):
-            y = 430 − (log10(ms) + 0.30103) × 80
-                1 ms = 405.9   10 = 325.9   100 = 245.9   1 s = 165.9   10 s = 85.9
+          Time, five decades over 400px (1 µs … 100 ms):
+            y = 430 − (log10(ms) + 3) × 80
+                10 µs = 350   100 µs = 270   1 ms = 190   10 ms = 110   100 ms = 30
 
-          Memory, three decades over 400px (0.5 mb … 500 mb):
-            y = 430 − (log10(mb) + 0.30103) × 133.333
-                1 mb = 389.9   10 mb = 256.5   100 mb = 123.2
+          Memory, four decades over 400px (1 kb … 10 000 kb, 1 kb = 1024 bytes):
+            y = 430 − log10(kb) × 100
+                10 kb = 330   100 kb = 230   1 000 kb = 130
 
           Every point below is that formula applied to the table in the same
           panel; nothing here is eyeballed.
@@ -49,18 +51,18 @@
         <div class="panel rise">
             <div class="panel__bar">
                 <b>time against input size</b>
-                <span>phpdoc type expressions, 25 B → 250 KB</span>
+                <span>phpdoc type expressions, 10 B → 10 KB</span>
                 <span class="push">both axes <b>logarithmic</b> · a straight line means linear growth</span>
             </div>
 
             {#
-              Both axes logarithmic. The values span 0.68 ms to 24 seconds and
-              the inputs 25 bytes to 250 KB: on linear axes four of the five
-              series are a flat line along the floor for three quarters of the
-              width. On log-log a power law is a straight line and its slope IS
-              the exponent, which is the whole point — the question is not who
-              is fastest at 250 bytes (nobody is, they are within 1.8 ms of each
-              other) but whose line stays straight.
+              Both axes logarithmic. The values span 4.9 µs to 60 ms and the
+              inputs 10 bytes to 10 KB: on linear axes five of the six samples
+              are a flat line along the floor. On log-log a power law is a
+              straight line and its slope IS the exponent, which is the whole
+              point — the question is not who is fastest on ten bytes (the
+              hand-written parsers are, by a few microseconds) but whose line
+              stays straight.
 
               The dashed guide is exactly ×10-per-×10 anchored on phplrt 4.x's
               1 KB point. A series that tracks it is growing linearly with its
@@ -68,18 +70,18 @@
             #}
             <div class="xy">
                 <svg viewBox="0 0 1000 500" role="img"
-                     aria-label="Time against input size, both axes logarithmic, five inputs from 25 bytes to 250 KB. In milliseconds: phplrt 4.x 0.81, 1.15, 1.83, 8.92, 78.1, 194. phplrt 3.x 0.85, 1.74, 4.55, 35.1, 335, 901. phpstan/phpdoc-parser 0.70, 1.02, 2.15, 47.9, 3725, 24177. vimeo/psalm 0.68, 1.29, 2.28, 16.9, 722, 5154. hoa/compiler 0.85, 2.79, 9.99, 87.1, 877, 2353. Below a kilobyte the five lines sit on top of each other; past 10 KB phplrt and hoa stay straight while phpstan and psalm bend upward.">
+                     aria-label="Time against input size, both axes logarithmic, six inputs from 10 bytes to 10 KB. phplrt 4.x 11.3 µs, 30.8 µs, 147 µs, 527 µs, 2.07 ms, 5.07 ms. phplrt 3.x 46.9 µs, 149 µs, 731 µs, 2.74 ms, 10.9 ms, 26.3 ms. phpstan/phpdoc-parser 4.9 µs, 22.1 µs, 141 µs, 611 µs, 3.65 ms, 14.7 ms. vimeo/psalm 6.6 µs, 20.5 µs, 170 µs, 587 µs, 2.76 ms, 8.69 ms. hoa/compiler 60.7 µs, 286 µs, 1.45 ms, 5.51 ms, 22.8 ms, 60.4 ms. Below 256 bytes phpstan and psalm are fastest; from 1 KB phplrt 4.x is, and its line stays straight while phpstan and psalm bend upward.">
                     {# Grid: solid hairlines, one shade off the surface.
                          Horizontals on the labelled decades, verticals on the
                          samples. #}
                     <g class="xy-grid">
-                        <path d="M96,405.9 H800 M96,325.9 H800 M96,245.9 H800 M96,165.9 H800 M96,85.9 H800"/>
-                        <path d="M272,30 V430 M378,30 V430 M554,30 V430 M730,30 V430 M800,30 V430"/>
+                        <path d="M96,350 H800 M96,270 H800 M96,190 H800 M96,110 H800 M96,30 H800"/>
+                        <path d="M284.5,30 V430 M425.3,30 V430 M566.1,30 V430 M706.9,30 V430 M800,30 V430"/>
                     </g>
                     <path class="xy-axis" d="M96,30 V430 H800"/>
 
                     {# ×10 per ×10, from phplrt 4.x at 1 KB #}
-                    <path class="xy-guide" d="M378,385 L800,193.2"/>
+                    <path class="xy-guide" d="M566.1,212.2 L800,132.2"/>
 
                     {#
                       Series, least relevant first so ours lands on top.
@@ -95,7 +97,7 @@
                       four (see "one series at a time" in the sheet). The label
                       sits at x=812, past the plot's right edge at x=800, so
                       moving it inside a group cannot put it under a later line.
-                      All five get one because the series finish 27px or more
+                      All five get one because the series finish 18px or more
                       apart here; the memory chart below cannot and says so.
 
                       .xy-hit is that group's hit area: the same line, drawn in
@@ -106,74 +108,74 @@
                       find.
                     #}
                     <g data-s="hoa">
-                        <path class="xy-hit" d="M96,411.5 L272,370.3 L378,325.9 L554,250.7 L730,170.5 L800,136.2"/>
-                        <path class="xy-line" pathLength="1" d="M96,411.5 L272,370.3 L378,325.9 L554,250.7 L730,170.5 L800,136.2"/>
-                        <circle class="xy-dot" cx="96" cy="411.5" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="370.3" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="325.9" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="250.7" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="170.5" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="136.2" r="5"/>
-                        <text class="xy-lbl" x="812" y="141">hoa · 2.35 s</text>
+                        <path class="xy-hit" d="M96,287.3 L284.5,233.5 L425.3,177.0 L566.1,130.7 L706.9,81.3 L800,47.5"/>
+                        <path class="xy-line" pathLength="1" d="M96,287.3 L284.5,233.5 L425.3,177.0 L566.1,130.7 L706.9,81.3 L800,47.5"/>
+                        <circle class="xy-dot" cx="96" cy="287.3" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="233.5" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="177.0" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="130.7" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="81.3" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="47.5" r="5"/>
+                        <text class="xy-lbl" x="812" y="52">hoa · 60.4 ms</text>
                     </g>
                     <g data-s="psalm">
-                        <path class="xy-hit" d="M96,419.5 L272,397.1 L378,377.3 L554,307.7 L730,177.2 L800,108.9"/>
-                        <path class="xy-line" pathLength="1" d="M96,419.5 L272,397.1 L378,377.3 L554,307.7 L730,177.2 L800,108.9"/>
-                        <circle class="xy-dot" cx="96" cy="419.5" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="397.1" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="377.3" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="307.7" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="177.2" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="108.9" r="5"/>
-                        <text class="xy-lbl" x="812" y="113">psalm · 5.15 s</text>
+                        <path class="xy-hit" d="M96,364.3 L284.5,325.0 L425.3,251.5 L566.1,208.5 L706.9,154.7 L800,114.9"/>
+                        <path class="xy-line" pathLength="1" d="M96,364.3 L284.5,325.0 L425.3,251.5 L566.1,208.5 L706.9,154.7 L800,114.9"/>
+                        <circle class="xy-dot" cx="96" cy="364.3" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="325.0" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="251.5" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="208.5" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="154.7" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="114.9" r="5"/>
+                        <text class="xy-lbl" x="812" y="119">psalm · 8.69 ms</text>
                     </g>
                     <g data-s="phplrt3">
-                        <path class="xy-hit" d="M96,411.6 L272,386.7 L378,353.3 L554,282.3 L730,203.9 L800,169.5"/>
-                        <path class="xy-line" pathLength="1" d="M96,411.6 L272,386.7 L378,353.3 L554,282.3 L730,203.9 L800,169.5"/>
-                        <circle class="xy-dot" cx="96" cy="411.6" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="386.7" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="353.3" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="282.3" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="203.9" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="169.5" r="5"/>
-                        <text class="xy-lbl" x="812" y="174">phplrt 3.x · 901 ms</text>
+                        <path class="xy-hit" d="M96,296.3 L284.5,256.1 L425.3,200.9 L566.1,155.0 L706.9,107.0 L800,76.4"/>
+                        <path class="xy-line" pathLength="1" d="M96,296.3 L284.5,256.1 L425.3,200.9 L566.1,155.0 L706.9,107.0 L800,76.4"/>
+                        <circle class="xy-dot" cx="96" cy="296.3" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="256.1" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="200.9" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="155.0" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="107.0" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="76.4" r="5"/>
+                        <text class="xy-lbl" x="812" y="81">phplrt 3.x · 26.3 ms</text>
                     </g>
                     <g data-s="phpstan">
-                        <path class="xy-hit" d="M96,418.3 L272,405.4 L378,379.3 L554,271.5 L730,120.2 L800,55.2"/>
-                        <path class="xy-line" pathLength="1" d="M96,418.3 L272,405.4 L378,379.3 L554,271.5 L730,120.2 L800,55.2"/>
-                        <circle class="xy-dot" cx="96" cy="418.3" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="405.4" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="379.3" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="271.5" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="120.2" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="55.2" r="5"/>
-                        <text class="xy-lbl" x="812" y="60">phpstan · 24.2 s</text>
+                        <path class="xy-hit" d="M96,375.1 L284.5,322.4 L425.3,258.0 L566.1,207.1 L706.9,145.0 L800,96.6"/>
+                        <path class="xy-line" pathLength="1" d="M96,375.1 L284.5,322.4 L425.3,258.0 L566.1,207.1 L706.9,145.0 L800,96.6"/>
+                        <circle class="xy-dot" cx="96" cy="375.1" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="322.4" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="258.0" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="207.1" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="145.0" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="96.6" r="5"/>
+                        <text class="xy-lbl" x="812" y="101">phpstan · 14.7 ms</text>
                     </g>
                     <g data-s="phplrt4">
-                        <path class="xy-hit" d="M96,413.3 L272,401.1 L378,385.0 L554,329.9 L730,254.5 L800,222.8"/>
-                        <path class="xy-line xy-line--lead" pathLength="1" d="M96,413.3 L272,401.1 L378,385.0 L554,329.9 L730,254.5 L800,222.8"/>
-                        <circle class="xy-dot" cx="96" cy="413.3" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="401.1" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="385.0" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="329.9" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="254.5" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="222.8" r="6"/>
-                        <text class="xy-lbl xy-lbl--lead" x="812" y="227">phplrt 4.x · 194 ms</text>
+                        <path class="xy-hit" d="M96,345.7 L284.5,310.9 L425.3,256.7 L566.1,212.2 L706.9,164.8 L800,133.6"/>
+                        <path class="xy-line xy-line--lead" pathLength="1" d="M96,345.7 L284.5,310.9 L425.3,256.7 L566.1,212.2 L706.9,164.8 L800,133.6"/>
+                        <circle class="xy-dot" cx="96" cy="345.7" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="310.9" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="256.7" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="212.2" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="164.8" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="133.6" r="6"/>
+                        <text class="xy-lbl xy-lbl--lead" x="812" y="138">phplrt 4.x · 5.07 ms</text>
                     </g>
 
                     <g class="xy-tick">
-                        <text x="84" y="410" text-anchor="end">1 ms</text>
-                        <text x="84" y="330" text-anchor="end">10 ms</text>
-                        <text x="84" y="250" text-anchor="end">100 ms</text>
-                        <text x="84" y="170" text-anchor="end">1 s</text>
-                        <text x="84" y="90" text-anchor="end">10 s</text>
+                        <text x="84" y="354" text-anchor="end">10 µs</text>
+                        <text x="84" y="274" text-anchor="end">100 µs</text>
+                        <text x="84" y="194" text-anchor="end">1 ms</text>
+                        <text x="84" y="114" text-anchor="end">10 ms</text>
+                        <text x="84" y="34" text-anchor="end">100 ms</text>
 
-                        <text x="96" y="458" text-anchor="middle">25 B</text>
-                        <text x="272" y="458" text-anchor="middle">250 B</text>
-                        <text x="378" y="458" text-anchor="middle">1 KB</text>
-                        <text x="554" y="458" text-anchor="middle">10 KB</text>
-                        <text x="730" y="458" text-anchor="middle">100 KB</text>
-                        <text x="800" y="458" text-anchor="middle">250 KB</text>
+                        <text x="96" y="458" text-anchor="middle">10 B</text>
+                        <text x="284.5" y="458" text-anchor="middle">64 B</text>
+                        <text x="425.3" y="458" text-anchor="middle">256 B</text>
+                        <text x="566.1" y="458" text-anchor="middle">1 KB</text>
+                        <text x="706.9" y="458" text-anchor="middle">4 KB</text>
+                        <text x="800" y="458" text-anchor="middle">10 KB</text>
                     </g>
                 </svg>
             </div>
@@ -190,8 +192,9 @@
             <div class="panel__bar panel__bar--foot">
                 <b>method</b>
                 <span class="push">
-                    phpbench, mode of the run ·
+                    phpbench, mode of 5 iterations × 20 revs after 5 warm-ups ·
                     php 8.5 · opcache on, jit on ·
+                    every parser builds the same AST ·
                     parsers generated from <a href="https://github.com/phpstan/phpdoc-parser/blob/2.3.x/doc/grammars/type.abnf">grammars/type.abnf</a> ·
                     <a href="https://github.com/phplrt/benchmarks">phplrt/benchmarks</a></span>
             </div>
@@ -201,80 +204,84 @@
              printed here, so nothing on this page is reachable only by reading
              a line off a grid. #}
         <div class="panel rise" style="margin-top: 22px;">
-            <div class="panel__bar"><b>the same numbers, read off</b><span class="push">ms per parse · lower is better</span></div>
+            <div class="panel__bar"><b>the same numbers, read off</b><span class="push">time per parse · lower is better</span></div>
             <div class="tv">
                 <table>
                     <thead>
                         <tr>
                             <th scope="col">tool</th>
-                            <th scope="col">25 B</th>
-                            <th scope="col">250 B</th>
+                            <th scope="col">10 B</th>
+                            <th scope="col">64 B</th>
+                            <th scope="col">256 B</th>
                             <th scope="col">1 KB</th>
+                            <th scope="col">4 KB</th>
                             <th scope="col">10 KB</th>
-                            <th scope="col">100 KB</th>
-                            <th scope="col">250 KB</th>
                             <th scope="col">per ×10 of input</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="is-self">
                             <th scope="row"><i data-s="phplrt4"></i>phplrt 4.x</th>
-                            <td>0.81</td><td>1.15</td><td>1.83</td><td>8.92</td><td>78.1</td><td>194</td><td class="tv-k">×8.8</td>
+                            <td>11.3 µs</td><td>30.8 µs</td><td>147 µs</td><td>527 µs</td><td>2.07 ms</td><td>5.07 ms</td><td class="tv-k">×9.6</td>
                         </tr>
                         <tr>
                             <th scope="row"><i data-s="phplrt3"></i>phplrt 3.x</th>
-                            <td>0.85</td><td>1.74</td><td>4.55</td><td>35.1</td><td>335</td><td>901</td><td class="tv-k">×9.6</td>
+                            <td>46.9 µs</td><td>149 µs</td><td>731 µs</td><td>2.74 ms</td><td>10.9 ms</td><td>26.3 ms</td><td class="tv-k">×9.6</td>
                         </tr>
                         <tr>
                             <th scope="row"><i data-s="hoa"></i>hoa/compiler</th>
-                            <td>0.85</td><td>2.79</td><td>9.99</td><td>87.1</td><td>877</td><td>2 353</td><td class="tv-k">×10.1</td>
+                            <td>60.7 µs</td><td>286 µs</td><td>1.45 ms</td><td>5.51 ms</td><td>22.8 ms</td><td>60.4 ms</td><td class="tv-k">×11.0</td>
                         </tr>
                         <tr>
                             <th scope="row"><i data-s="psalm"></i>vimeo/psalm</th>
-                            <td>0.68</td><td>1.29</td><td>2.28</td><td>16.9</td><td>722</td><td>5 154</td><td class="tv-k tv-k--bad">×43</td>
+                            <td>6.6 µs</td><td>20.5 µs</td><td>170 µs</td><td>587 µs</td><td>2.76 ms</td><td>8.69 ms</td><td class="tv-k tv-k--bad">×14.8</td>
                         </tr>
                         <tr>
                             <th scope="row"><i data-s="phpstan"></i>phpstan/phpdoc-parser</th>
-                            <td>0.70</td><td>1.02</td><td>2.15</td><td>47.9</td><td>3 725</td><td>24 177</td><td class="tv-k tv-k--bad">×78</td>
+                            <td>4.9 µs</td><td>22.1 µs</td><td>141 µs</td><td>611 µs</td><td>3.65 ms</td><td>14.7 ms</td><td class="tv-k tv-k--bad">×24</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="panel__bar panel__bar--foot">
                 <b>read it this way</b>
-                <span class="push">the last column divides the 100 KB cell by the 10 KB cell · ×10 means linear growth, and only phpstan and psalm are far from it</span>
+                <span class="push">the last column divides the 10 KB cell by the 1 KB cell · ×10 means linear growth, and only phpstan and psalm are far from it · rstdev across every run above: ±0.28…2.79%</span>
             </div>
         </div>
 
-        {# Memory, same five inputs, same axis, same colours. A reader who has
+        {# Memory, same six inputs, same axis, same colours. A reader who has
              worked out which line is psalm above should not have to do it twice. #}
         <div class="panel rise" style="margin-top: 22px;">
             <div class="panel__bar">
-                <b>peak memory against input size</b>
-                <span>the same five inputs</span>
+                <b>memory against input size</b>
+                <span>the same six inputs</span>
                 <span class="push">both axes <b>logarithmic</b> · lower is better</span>
             </div>
 
             {#
-              Same x. y is three decades instead of five, because memory spans
-              0.78 mb to 336 mb where time spanned four and a half orders.
+              Same x. y is four decades instead of five, because memory spans
+              1.9 kb to 2 357 kb.
 
-              No ×10 guide here: every tool starts from a baseline of roughly a
-              megabyte, so nothing is linear from the origin and a guide anchored
-              anywhere would be arguing with the floor rather than the data. The
-              story on this chart is the vertical distance at the right edge.
+              What is plotted is what one parse allocates: the peak of the
+              process during the parse, over what it held right before it,
+              after a warm-up parse. The code of the parser is not in it — with
+              opcache on, compiling the parser's own source peaks at a few
+              megabytes in every CLI process, and that would bury the parse.
 
-              Only two direct labels: at 250 KB phplrt 3.x, phpstan and psalm
-              finish 5–7px apart, which is the honest picture (49…61 mb, all
+              No ×10 guide here: the story on this chart is the vertical
+              distance at the right edge, not the slope.
+
+              Only two direct labels: at 10 KB phpstan, hoa and psalm finish
+              4–10px apart, which is the honest picture (1 054…1 322 kb, all
               within a quarter of each other) but cannot carry five labels. The
               table below carries them instead.
             #}
             <div class="xy">
                 <svg viewBox="0 0 1000 500" role="img"
-                     aria-label="Peak memory against input size, both axes logarithmic, six inputs from 25 bytes to 250 KB. In megabytes: phplrt 4.x 0.81, 0.83, 0.92, 1.81, 11.9, 28.6. phplrt 3.x 0.83, 0.87, 1.10, 3.28, 24.0, 60.8. phpstan/phpdoc-parser 0.78, 0.81, 1.01, 2.86, 20.4, 55.2. vimeo/psalm 1.57, 1.61, 1.79, 3.63, 21.0, 49.2. hoa/compiler 0.95, 1.31, 2.64, 15.7, 139, 336. At 250 KB phplrt 4.x is lowest at 28.6 mb; psalm, phpstan and phplrt 3.x land together between 49 and 61 mb; hoa is 336 mb.">
+                     aria-label="Memory of one parse against input size, both axes logarithmic, six inputs from 10 bytes to 10 KB. In kilobytes: phplrt 4.x 1.9, 5.6, 25.5, 102, 366, 830. phplrt 3.x 13.6, 20.1, 69.1, 258, 990, 2357. phpstan/phpdoc-parser 2.5, 10.0, 39.6, 128, 456, 1054. vimeo/psalm 3.1, 11.7, 54.0, 156, 547, 1322. hoa/compiler 3.3, 7.8, 36.3, 129, 373, 1221. phplrt 4.x is lowest at every size; at 10 KB phpstan, hoa and psalm land together between 1054 and 1322 kb; phplrt 3.x is 2357 kb.">
                     <g class="xy-grid">
-                        <path d="M96,389.9 H800 M96,256.5 H800 M96,123.2 H800"/>
-                        <path d="M272,30 V430 M378,30 V430 M554,30 V430 M730,30 V430 M800,30 V430"/>
+                        <path d="M96,330 H800 M96,230 H800 M96,130 H800 M96,30 H800"/>
+                        <path d="M284.5,30 V430 M425.3,30 V430 M566.1,30 V430 M706.9,30 V430 M800,30 V430"/>
                     </g>
                     <path class="xy-axis" d="M96,30 V430 H800"/>
 
@@ -284,69 +291,69 @@
                          series. The .xy-hit `d` repeats the line's on purpose;
                          they must stay equal. #}
                     <g data-s="hoa">
-                        <path class="xy-hit" d="M96,392.7 L272,374.4 L378,333.6 L554,230.5 L730,103.9 L800,53.1"/>
-                        <path class="xy-line" pathLength="1" d="M96,392.7 L272,374.4 L378,333.6 L554,230.5 L730,103.9 L800,53.1"/>
-                        <circle class="xy-dot" cx="96" cy="392.7" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="374.4" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="333.6" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="230.5" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="103.9" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="53.1" r="5"/>
-                        <text class="xy-lbl" x="812" y="58">hoa · 336 mb</text>
+                        <path class="xy-hit" d="M96,378.8 L284.5,340.9 L425.3,274.1 L566.1,219.0 L706.9,172.9 L800,121.3"/>
+                        <path class="xy-line" pathLength="1" d="M96,378.8 L284.5,340.9 L425.3,274.1 L566.1,219.0 L706.9,172.9 L800,121.3"/>
+                        <circle class="xy-dot" cx="96" cy="378.8" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="340.9" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="274.1" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="219.0" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="172.9" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="121.3" r="5"/>
                     </g>
                     <g data-s="phplrt3">
-                        <path class="xy-hit" d="M96,400.9 L272,398.3 L378,384.3 L554,321.1 L730,205.8 L800,152.0"/>
-                        <path class="xy-line" pathLength="1" d="M96,400.9 L272,398.3 L378,384.3 L554,321.1 L730,205.8 L800,152.0"/>
-                        <circle class="xy-dot" cx="96" cy="400.9" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="398.3" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="384.3" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="321.1" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="205.8" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="152.0" r="5"/>
+                        <path class="xy-hit" d="M96,316.6 L284.5,299.7 L425.3,246.1 L566.1,188.8 L706.9,130.5 L800,92.8"/>
+                        <path class="xy-line" pathLength="1" d="M96,316.6 L284.5,299.7 L425.3,246.1 L566.1,188.8 L706.9,130.5 L800,92.8"/>
+                        <circle class="xy-dot" cx="96" cy="316.6" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="299.7" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="246.1" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="188.8" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="130.5" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="92.8" r="5"/>
+                        <text class="xy-lbl" x="812" y="97">phplrt 3.x · 2 357 kb</text>
                     </g>
                     <g data-s="phpstan">
-                        <path class="xy-hit" d="M96,404.5 L272,402.1 L378,389.1 L554,329.0 L730,215.2 L800,157.6"/>
-                        <path class="xy-line" pathLength="1" d="M96,404.5 L272,402.1 L378,389.1 L554,329.0 L730,215.2 L800,157.6"/>
-                        <circle class="xy-dot" cx="96" cy="404.5" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="402.1" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="389.1" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="329.0" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="215.2" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="157.6" r="5"/>
+                        <path class="xy-hit" d="M96,389.9 L284.5,329.9 L425.3,270.2 L566.1,219.2 L706.9,164.1 L800,127.7"/>
+                        <path class="xy-line" pathLength="1" d="M96,389.9 L284.5,329.9 L425.3,270.2 L566.1,219.2 L706.9,164.1 L800,127.7"/>
+                        <circle class="xy-dot" cx="96" cy="389.9" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="329.9" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="270.2" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="219.2" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="164.1" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="127.7" r="5"/>
                     </g>
                     <g data-s="psalm">
-                        <path class="xy-hit" d="M96,363.7 L272,362.4 L378,356.1 L554,315.3 L730,213.7 L800,164.3"/>
-                        <path class="xy-line" pathLength="1" d="M96,363.7 L272,362.4 L378,356.1 L554,315.3 L730,213.7 L800,164.3"/>
-                        <circle class="xy-dot" cx="96" cy="363.7" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="362.4" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="356.1" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="315.3" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="213.7" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="164.3" r="5"/>
+                        <path class="xy-hit" d="M96,380.2 L284.5,323.2 L425.3,256.8 L566.1,210.7 L706.9,156.2 L800,117.9"/>
+                        <path class="xy-line" pathLength="1" d="M96,380.2 L284.5,323.2 L425.3,256.8 L566.1,210.7 L706.9,156.2 L800,117.9"/>
+                        <circle class="xy-dot" cx="96" cy="380.2" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="323.2" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="256.8" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="210.7" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="156.2" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="117.9" r="5"/>
                     </g>
                     <g data-s="phplrt4">
-                        <path class="xy-hit" d="M96,402.2 L272,400.4 L378,394.8 L554,355.6 L730,246.3 L800,195.8"/>
-                        <path class="xy-line xy-line--lead" pathLength="1" d="M96,402.2 L272,400.4 L378,394.8 L554,355.6 L730,246.3 L800,195.8"/>
-                        <circle class="xy-dot" cx="96" cy="402.2" r="5"/>
-                        <circle class="xy-dot" cx="272" cy="400.4" r="5"/>
-                        <circle class="xy-dot" cx="378" cy="394.8" r="5"/>
-                        <circle class="xy-dot" cx="554" cy="355.6" r="5"/>
-                        <circle class="xy-dot" cx="730" cy="246.3" r="5"/>
-                        <circle class="xy-dot" cx="800" cy="195.8" r="6"/>
-                        <text class="xy-lbl xy-lbl--lead" x="812" y="200">phplrt 4.x · 28.6 mb</text>
+                        <path class="xy-hit" d="M96,402.5 L284.5,354.9 L425.3,289.3 L566.1,229.1 L706.9,173.6 L800,138.1"/>
+                        <path class="xy-line xy-line--lead" pathLength="1" d="M96,402.5 L284.5,354.9 L425.3,289.3 L566.1,229.1 L706.9,173.6 L800,138.1"/>
+                        <circle class="xy-dot" cx="96" cy="402.5" r="5"/>
+                        <circle class="xy-dot" cx="284.5" cy="354.9" r="5"/>
+                        <circle class="xy-dot" cx="425.3" cy="289.3" r="5"/>
+                        <circle class="xy-dot" cx="566.1" cy="229.1" r="5"/>
+                        <circle class="xy-dot" cx="706.9" cy="173.6" r="5"/>
+                        <circle class="xy-dot" cx="800" cy="138.1" r="6"/>
+                        <text class="xy-lbl xy-lbl--lead" x="812" y="143">phplrt 4.x · 830 kb</text>
                     </g>
 
                     <g class="xy-tick">
-                        <text x="84" y="394" text-anchor="end">1 mb</text>
-                        <text x="84" y="261" text-anchor="end">10 mb</text>
-                        <text x="84" y="128" text-anchor="end">100 mb</text>
+                        <text x="84" y="334" text-anchor="end">10 kb</text>
+                        <text x="84" y="234" text-anchor="end">100 kb</text>
+                        <text x="84" y="134" text-anchor="end">1 000 kb</text>
 
-                        <text x="96" y="458" text-anchor="middle">25 B</text>
-                        <text x="272" y="458" text-anchor="middle">250 B</text>
-                        <text x="378" y="458" text-anchor="middle">1 KB</text>
-                        <text x="554" y="458" text-anchor="middle">10 KB</text>
-                        <text x="730" y="458" text-anchor="middle">100 KB</text>
-                        <text x="800" y="458" text-anchor="middle">250 KB</text>
+                        <text x="96" y="458" text-anchor="middle">10 B</text>
+                        <text x="284.5" y="458" text-anchor="middle">64 B</text>
+                        <text x="425.3" y="458" text-anchor="middle">256 B</text>
+                        <text x="566.1" y="458" text-anchor="middle">1 KB</text>
+                        <text x="706.9" y="458" text-anchor="middle">4 KB</text>
+                        <text x="800" y="458" text-anchor="middle">10 KB</text>
                     </g>
                 </svg>
             </div>
@@ -362,55 +369,55 @@
             <div class="panel__bar panel__bar--foot">
                 <b>method</b>
                 <span class="push">
-                    phpbench, peak memory of one parse ·
+                    peak memory of one parse over the process right before it, after a warm-up parse ·
                     php 8.5 · opcache on, jit on ·
                     <a href="https://github.com/phplrt/benchmarks">phplrt/benchmarks</a></span>
             </div>
         </div>
 
         <div class="panel rise" style="margin-top: 22px;">
-            <div class="panel__bar"><b>the same numbers, read off</b><span class="push">mb per parse · lower is better</span></div>
+            <div class="panel__bar"><b>the same numbers, read off</b><span class="push">kb per parse · lower is better</span></div>
             <div class="tv">
                 <table>
                     <thead>
                         <tr>
                             <th scope="col">tool</th>
-                            <th scope="col">25 B</th>
-                            <th scope="col">250 B</th>
+                            <th scope="col">10 B</th>
+                            <th scope="col">64 B</th>
+                            <th scope="col">256 B</th>
                             <th scope="col">1 KB</th>
+                            <th scope="col">4 KB</th>
                             <th scope="col">10 KB</th>
-                            <th scope="col">100 KB</th>
-                            <th scope="col">250 KB</th>
-                            <th scope="col">× ours at 250 KB</th>
+                            <th scope="col">× ours at 10 KB</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="is-self">
                             <th scope="row"><i data-s="phplrt4"></i>phplrt 4.x</th>
-                            <td>0.81</td><td>0.83</td><td>0.92</td><td>1.81</td><td>11.9</td><td>28.6</td><td class="tv-k">1.0×</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><i data-s="psalm"></i>vimeo/psalm</th>
-                            <td>1.57</td><td>1.61</td><td>1.79</td><td>3.63</td><td>21.0</td><td>49.2</td><td class="tv-k">1.7×</td>
+                            <td>1.9</td><td>5.6</td><td>25.5</td><td>102</td><td>366</td><td>830</td><td class="tv-k">1.0×</td>
                         </tr>
                         <tr>
                             <th scope="row"><i data-s="phpstan"></i>phpstan/phpdoc-parser</th>
-                            <td>0.78</td><td>0.81</td><td>1.01</td><td>2.86</td><td>20.4</td><td>55.2</td><td class="tv-k">1.9×</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><i data-s="phplrt3"></i>phplrt 3.x</th>
-                            <td>0.83</td><td>0.87</td><td>1.10</td><td>3.28</td><td>24.0</td><td>60.8</td><td class="tv-k">2.1×</td>
+                            <td>2.5</td><td>10.0</td><td>39.6</td><td>128</td><td>456</td><td>1 054</td><td class="tv-k">1.3×</td>
                         </tr>
                         <tr>
                             <th scope="row"><i data-s="hoa"></i>hoa/compiler</th>
-                            <td>0.95</td><td>1.31</td><td>2.64</td><td>15.7</td><td>139</td><td>336</td><td class="tv-k tv-k--bad">11.8×</td>
+                            <td>3.3</td><td>7.8</td><td>36.3</td><td>129</td><td>373</td><td>1 221</td><td class="tv-k">1.5×</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><i data-s="psalm"></i>vimeo/psalm</th>
+                            <td>3.1</td><td>11.7</td><td>54.0</td><td>156</td><td>547</td><td>1 322</td><td class="tv-k">1.6×</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><i data-s="phplrt3"></i>phplrt 3.x</th>
+                            <td>13.6</td><td>20.1</td><td>69.1</td><td>258</td><td>990</td><td>2 357</td><td class="tv-k tv-k--bad">2.8×</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="panel__bar panel__bar--foot">
                 <b>read it this way</b>
-                <span class="push">below a kilobyte this is the runtime's own footprint rather than the parse · rstdev across every run above: ±0.52…3.32%</span>
+                <span class="push">what the parse itself allocates, the AST it returns included · the code of the parser is not counted</span>
             </div>
         </div>
 
@@ -421,18 +428,20 @@
                      modes saves anything, and how much it saves is the point.
                      parse() and analyze() run the same lex → recognize → reduce
                      on a source the grammar reads in full; it is the mode that
-                     drops the reducers. Each number is the bar beside it, so the
-                     two cannot drift apart. #}
+                     drops the reducers. Measured on every input from 10 B to
+                     10 KB: Syntax Check lands at 65…67% of a parse on all of
+                     them, Tolerant at 99…101%. Each number is the bar beside
+                     it, so the two cannot drift apart. #}
                 <div class="rows">
                     <div class="rows__row is-self">
                         <div class="rows__name">Syntax Check<em>is it valid, and how far does it get? no reducers run</em></div>
-                        <span class="meter"><i data-fill="54"></i></span>
-                        <div class="rows__num">54%</div>
+                        <span class="meter"><i data-fill="66"></i></span>
+                        <div class="rows__num">66%</div>
                     </div>
                     <div class="rows__row is-self">
                         <div class="rows__name">Tolerant Mode<em>the same work, but problems are reported instead of thrown</em></div>
-                        <span class="meter"><i data-fill="99"></i></span>
-                        <div class="rows__num">99%</div>
+                        <span class="meter"><i data-fill="100"></i></span>
+                        <div class="rows__num">100%</div>
                     </div>
                     <div class="rows__row">
                         <div class="rows__name">Parse<em>builds the full result, throws on a mistake</em></div>
